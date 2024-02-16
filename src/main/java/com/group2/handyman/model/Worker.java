@@ -7,12 +7,12 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "wrokers")
 public class Worker extends User {
     private String description;
     private String location;
@@ -33,7 +33,6 @@ public class Worker extends User {
     
 
 	public Worker(String description, String location, double averageRating, int totalRatings, Set<Skill> skills) {
-		super();
 		this.description = description;
 		this.location = location;
 		this.averageRating = averageRating;

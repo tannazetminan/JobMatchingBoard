@@ -6,15 +6,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "jobs")
 public class Job {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
@@ -31,9 +31,7 @@ public class Job {
     
     public Job() {}
     
-	public Job(Long id, User client, Worker worker, boolean completed, Double rating) {
-		super();
-		this.id = id;
+	public Job(User client, Worker worker, boolean completed, Double rating) {
 		this.client = client;
 		this.worker = worker;
 		this.completed = completed;

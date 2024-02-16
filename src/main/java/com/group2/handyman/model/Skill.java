@@ -7,15 +7,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "skills")
 public class Skill {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
@@ -27,9 +27,7 @@ public class Skill {
     
     public Skill() {}
 
-	public Skill(Long id, String name, Worker worker) {
-		super();
-		this.id = id;
+	public Skill(String name, Worker worker) {
 		this.name = name;
 		this.worker = worker;
 	}
