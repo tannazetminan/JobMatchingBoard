@@ -43,7 +43,7 @@ public class HandymanApplication {
 
             // Create and save Workers along with their Skills
             List<Worker> workers = IntStream.rangeClosed(1, 5)
-                    .mapToObj(i -> new Worker("Description" + i, "Location" + i, 5.0 - i % 5, i, new HashSet<>()))
+                    .mapToObj(i -> new Worker("worker" + i, passwordEncoder.encode("worker" + i), "worker" + i + "@example.com", "Description" + i, "Location" + i, 5.0 - i % 5, i, new HashSet<>()))
                     .map(workerRepository::save) // Save to generate ID
                     .peek(worker -> {
                         Skill skill = new Skill("Skill for " + worker.getDescription(), worker);

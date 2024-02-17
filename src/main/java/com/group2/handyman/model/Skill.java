@@ -1,5 +1,7 @@
 package com.group2.handyman.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +24,7 @@ public class Skill {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worker_id")
+    @JsonIgnore
     private Worker worker;
     
     
