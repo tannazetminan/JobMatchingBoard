@@ -23,6 +23,10 @@ public class UserController {
         return userRepository.findAll();
     }
 
+    @GetMapping("/{userId}/messages")
+    public List<Message> getMessagesForUser(@PathVariable Long userId, @RequestParam Long otherUserId) {
+        return userService.getMessagesForUser(userId, otherUserId);
+    }
     // GET endpoint to fetch a single user by ID, using /users/{id}
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
