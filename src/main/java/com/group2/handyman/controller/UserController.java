@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.group2.handyman.model.Message;
 import com.group2.handyman.model.User;
 import com.group2.handyman.model.UserRepository;
 
@@ -16,6 +17,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private UserService userService;
 
     // GET endpoint to fetch all users
     @GetMapping

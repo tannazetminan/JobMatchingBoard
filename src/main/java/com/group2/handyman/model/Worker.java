@@ -28,6 +28,7 @@ public class Worker{
     private String location;
     private double averageRating;
     private int totalRatings;
+    private String workingHours;
     
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Skill> skills = new HashSet<>();
@@ -42,7 +43,7 @@ public class Worker{
     
     
 
-	public Worker(String username, String password, String email, String description, String location, double averageRating, int totalRatings, Set<Skill> skills) {
+	public Worker(String username, String password, String email, String description, String location, double averageRating, int totalRatings, Set<Skill> skills, String workingHours) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -51,6 +52,7 @@ public class Worker{
 		this.averageRating = averageRating;
 		this.totalRatings = totalRatings;
 		this.skills = skills;
+		this.workingHours = workingHours;
 	}
 	
 	
@@ -126,6 +128,15 @@ public class Worker{
 	public void setSkills(Set<Skill> skills) {
 		this.skills = skills;
 	}
+
+	public String getWorkingHours() {
+		return workingHours;
+	}
+
+	public void setWorkingHours(String workingHours) {
+		this.workingHours = workingHours;
+	}
+	
     
     
     
