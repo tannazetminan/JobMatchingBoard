@@ -30,6 +30,27 @@ public class WorkerController {
                 .map(worker -> new ResponseEntity<>(worker, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+    
+    //GET endpoint to fecth worker base on skills
+    @GetMapping("/skills/{skill}")
+    public ResponseEntity<List<Worker>> getWorkersBySkill(@PathVariable String skill) {
+        List<Worker> workers = workerRepository.findBySkillsName(skill);
+        if (workers.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(workers, HttpStatus.OK);
+    }
+    
+    //GET Endpoint to fech worker base on rating 
+    @GetMapping("/rating/{rating}")
+    public ResponseEntity<List<Worker>> getWorkerByRating(@PathVariable int rating ){
+    	
+    	List <Worker> workers= workerRepository.findByRating(rating);
+    		if (workers.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(workers, HttpStatus.OK);
+    }
 
     // POST method to create a new worker, using /workers
     @PostMapping

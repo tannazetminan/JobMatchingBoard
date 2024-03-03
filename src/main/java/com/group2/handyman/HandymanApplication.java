@@ -45,21 +45,24 @@ public class HandymanApplication {
             List<Worker> workers = IntStream.rangeClosed(1, 5)
                     .mapToObj(i -> new Worker("worker" + i, passwordEncoder.encode("worker" + i), "worker" + i + "@example.com", "Description" + i, "Location" + i, 5.0 - i % 5, i, new HashSet<>(), "2024-01-01"))
                     .map(workerRepository::save) // Save to generate ID
-                    .peek(worker -> {
-                        Skill skill = new Skill("Skill for " + worker.getDescription(), worker);
-                        skillRepository.save(skill);
-                        worker.getSkills().add(skill);
-                        workerRepository.save(worker); // Update worker with the new skill
-                    })
                     .collect(Collectors.toList());
 
-            // Ensure Workers and Users are persisted before creating Jobs
+            
             IntStream.range(0, users.size()).forEach(i -> {
                 User client = users.get(i);
-                Worker worker = workers.get(i);
-                Job job = new Job(client, worker, false, 5.0 - i, "Description" + i, i * 20);
-                jobRepository.save(job);
-            });
+                Worker worker = workers.get(i);     
+                Job job = new Job(client, worker, false, 5.0 - i, "Description" + i, i * 20, new HashSet<>());
+                jobRepository.save(job); // Save the job first
+                
+                // Now create the skill for the job and worker 
+                Skill skill = new Skill("Skill" + (i+1)  ,worker,  job);
+                skillRepository.save(skill);
+                worker.getSkills().add(skill);
+                job.getSkills().add(skill);
+                skillRepository.save(skill);
+             
+           
+         });
         };
     }
 

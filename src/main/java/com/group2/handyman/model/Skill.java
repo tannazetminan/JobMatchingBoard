@@ -27,12 +27,33 @@ public class Skill {
     @JsonIgnore
     private Worker worker;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
+    @JsonIgnore
+    private Job job;
     
-    public Skill() {}
+    
+   
+
+	public Skill() {}
 
 	public Skill(String name, Worker worker) {
 		this.name = name;
 		this.worker = worker;
+	}
+	
+	
+	public Skill(String name, Job job ) {
+		this.name = name;
+		this.job = job;
+		
+	}
+	
+	public Skill(String name, Worker worker, Job job ) {
+		this.name = name;
+		this.worker = worker;
+		this.job =job;
+		
 	}
 
 	public Long getId() {
@@ -59,6 +80,12 @@ public class Skill {
 		this.worker = worker;
 	}
     
-    
+	 public Job getJob() {
+			return job;
+		}
+
+	public void setJob(Job job) {
+			this.job = job;
+	}
     
 }

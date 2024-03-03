@@ -1,6 +1,10 @@
 package com.group2.handyman.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.group2.handyman.model.Job;
@@ -15,6 +19,27 @@ public class JobController {
 
     @Autowired
     private WorkerService workerService;
+    
+    
+    //Fetch job base on skills
+    @GetMapping("/skills/{skill}")
+    public ResponseEntity<List<Job>> getJobBySkills(@PathVariable String skill){
+    	
+    	try {
+    	    List<Job> jobs = jobRepository.findJobsBySkillName(skill);
+    	    if (jobs.isEmpty()) {
+    	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	    } else {
+    	        return new ResponseEntity<>(jobs, HttpStatus.OK);
+    	    }
+    	} catch (Exception e) {
+    	    return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+    	
+
+    }
+    
+    
 
     @PostMapping("/{jobId}/rate")
     public Job rateWorker(@PathVariable Long jobId, @RequestParam double rating) {
@@ -36,5 +61,8 @@ public class JobController {
 
         return updatedJob; // Return the updated job entity
     }
+    
+    
+    
 }
 
