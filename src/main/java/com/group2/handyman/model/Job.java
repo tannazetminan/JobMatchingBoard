@@ -1,11 +1,17 @@
 package com.group2.handyman.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,16 +37,22 @@ public class Job {
     private double budget;
     private boolean isDone = false;
     
-    public Job() {}
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Skill> skills = new HashSet<>();
+    
+   
+
+	public Job() {}
 
 	public Job(User client, Worker worker, boolean completed, Double rating, String description,
-			double budget) {
+			double budget,Set<Skill> skills ) {
 		this.client = client;
 		this.worker = worker;
 		this.completed = completed;
 		this.rating = rating;
 		this.description = description;
 		this.budget = budget;
+		this.skills=skills;
 	}
 	public String getDescription() {
 		return description;
@@ -91,5 +103,11 @@ public class Job {
 		this.rating = rating;
 	}
 
-    
+	 public Set<Skill> getSkills() {
+			return skills;
+	}
+
+		public void setSkills(Set<Skill> skills) {
+			this.skills = skills;
+		}
 }
