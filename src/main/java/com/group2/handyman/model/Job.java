@@ -13,8 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "jobs")
@@ -31,11 +29,10 @@ public class Job {
     @JoinColumn(name = "worker_id")
     private Worker worker;
 
-    private boolean completed;
+    private boolean isCompleted;
     private Double rating; // Nullable, can be set after the job is marked as completed
     private String description;
     private double budget;
-    private boolean isDone = false;
     
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Skill> skills = new HashSet<>();
@@ -44,11 +41,11 @@ public class Job {
 
 	public Job() {}
 
-	public Job(User client, Worker worker, boolean completed, Double rating, String description,
-			double budget,Set<Skill> skills ) {
+	public Job(User client, Worker worker, boolean isCompleted, Double rating, String description,
+			   double budget, Set<Skill> skills ) {
 		this.client = client;
 		this.worker = worker;
-		this.completed = completed;
+		this.isCompleted = isCompleted;
 		this.rating = rating;
 		this.description = description;
 		this.budget = budget;
@@ -65,12 +62,6 @@ public class Job {
 	}
 	public void setBudget(double budget) {
 		this.budget = budget;
-	}
-	public boolean isDone() {
-		return isDone;
-	}
-	public void setDone(boolean isDone) {
-		this.isDone = isDone;
 	}
 	public Long getId() {
 		return id;
@@ -90,11 +81,11 @@ public class Job {
 	public void setWorker(Worker worker) {
 		this.worker = worker;
 	}
-	public boolean isCompleted() {
-		return completed;
+	public boolean isIsCompleted() {
+		return isCompleted;
 	}
-	public void setCompleted(boolean completed) {
-		this.completed = completed;
+	public void setIsCompleted(boolean completed) {
+		this.isCompleted = completed;
 	}
 	public Double getRating() {
 		return rating;

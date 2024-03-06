@@ -18,55 +18,63 @@ public class Message {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id")
-    private User sender;
+    @JoinColumn(name = "owner_id")
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_id")
-    private User receiver;
+    @JoinColumn(name = "worker_id")
+    private Worker worker;
 
     private String content;
     private LocalDateTime timestamp;
-    
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public User getSender() {
-		return sender;
-	}
-	public void setSender(User sender) {
-		this.sender = sender;
-	}
-	public User getReceiver() {
-		return receiver;
-	}
-	public void setReceiver(User receiver) {
-		this.receiver = receiver;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
-	}
-	public Message(Long id, User sender, User receiver, String content, LocalDateTime timestamp) {
-		super();
-		this.id = id;
-		this.sender = sender;
-		this.receiver = receiver;
+
+	public Message() {}
+
+	public Message(User user, Worker worker, String content, LocalDateTime timestamp) {
+		this.user = user;
+		this.worker = worker;
 		this.content = content;
 		this.timestamp = timestamp;
 	}
 
-    
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User sender) {
+		this.user = sender;
+	}
+
+	public Worker getWorker() {
+		return worker;
+	}
+
+	public void setWorker(Worker receiver) {
+		this.worker = receiver;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(LocalDateTime timestamp) {
+		this.timestamp = timestamp;
+	}
 }
 

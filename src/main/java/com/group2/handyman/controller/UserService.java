@@ -2,14 +2,10 @@ package com.group2.handyman.controller;
 
 import java.util.List;
 
+import com.group2.handyman.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.group2.handyman.model.Message;
-import com.group2.handyman.model.MessageRepository;
-import com.group2.handyman.model.User;
-import com.group2.handyman.model.UserRepository;
 
 @Service
 public class UserService {
@@ -23,10 +19,13 @@ public class UserService {
     @Autowired
     private MessageRepository messageRepository;
 
-    public List<Message> getMessagesForUser(Long userId, Long otherUserId) {
-        User user1 = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        User user2 = userRepository.findById(otherUserId).orElseThrow(() -> new RuntimeException("Other user not found"));
-        return messageRepository.findBySenderAndReceiver(user1, user2);
+    @Autowired
+    private WorkerRepository workerRepository;
+
+    public List<Message> getMessagesForUser(Long userId, Long workerId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Worker worker = workerRepository.findById(workerId).orElseThrow(() -> new RuntimeException("worker not found"));
+        return messageRepository.findByUserAndWorker(user, worker);
     }
 
     public User createUser(User user) {

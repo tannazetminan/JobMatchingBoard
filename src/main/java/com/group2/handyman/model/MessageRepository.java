@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    List<Message> findBySenderAndReceiver(User sender, User receiver);
-    List<Message> findByReceiverAndSender(User receiver, User sender);
+    List<Message> findByUserAndWorker(User user, Worker worker);
+    List<Message> findByWorkerAndUser(Worker worker, User user);
 }
 
 

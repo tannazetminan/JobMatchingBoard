@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, Long> {
-    List<Job> findByWorkerIdAndCompletedTrue(Long workerId);
+    List<Job> findByWorkerIdAndIsCompletedTrue(Long workerId);
     
     @Query("SELECT j FROM Job j JOIN j.skills s WHERE s.name = :skill")
     List<Job> findJobsBySkillName(@Param("skill") String skill);
