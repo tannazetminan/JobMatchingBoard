@@ -66,7 +66,21 @@ public class Message {
 		this.content = content;
 		this.timestamp = timestamp;
 	}
+	public Message() {
+	}
+	public Message(User sender, User receiver, String content) {
+		super();
+		this.sender = sender;
+		this.receiver = receiver;
+		this.content = content;
+	}
+	public Message(Long id, User sender, User receiver, String content) {
+		super();
+		this.id = id;
+		this.sender = sender;
+		this.receiver = receiver;
+		this.content = content;
+	}
 
     
 }
-
