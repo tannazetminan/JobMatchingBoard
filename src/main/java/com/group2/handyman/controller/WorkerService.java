@@ -21,18 +21,13 @@ public class WorkerService {
     @Autowired
     private MessageRepository messageRepository;
 
-    public void updateWorkerRating(Long workerId) {
-        List<Job> completedJobs = jobRepository.findByWorkerIdAndIsCompletedTrue(workerId);
-        double sumRatings = completedJobs.stream()
-                              .mapToDouble(Job::getRating)
-                              .sum();
-        double averageRating = sumRatings / completedJobs.size();
-
+    public void updateWorkerRating(Long workerId, double newRating) {
         Worker worker = workerRepository.findById(workerId).orElseThrow(() -> new RuntimeException("Worker not found"));
-        worker.setAverageRating(averageRating);
+        worker.addRating(newRating);
         workerRepository.save(worker);
     }
 
+    // get all messages between a worker and a user
     public List<Message> getMessagesForWorker(Long workerId, Long userId) {
         Worker worker = workerRepository.findById(workerId).orElseThrow(() -> new RuntimeException("Worker not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));

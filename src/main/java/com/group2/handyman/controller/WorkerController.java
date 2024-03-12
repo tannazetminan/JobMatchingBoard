@@ -1,7 +1,9 @@
 package com.group2.handyman.controller;
 
 import java.util.List;
+import java.util.Set;
 
+import com.group2.handyman.model.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +19,13 @@ public class WorkerController {
     @Autowired
     private WorkerRepository workerRepository;
     
-    // GET endpoint to fetch all workers
+    // get all workers
     @GetMapping
     public List<Worker> getAllWorkers() {
         return workerRepository.findAll();
     }
 
-    // GET endpoint to fetch a single worker by ID, using /workers/{id}
+    // get a single worker by ID
     @GetMapping("/{id}")
     public ResponseEntity<Worker> getWorkerById(@PathVariable Long id) {
         return workerRepository.findById(id)
@@ -31,7 +33,7 @@ public class WorkerController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     
-    //GET endpoint to fecth worker base on skills
+    // get worker base on skills
     @GetMapping("/skills/{skill}")
     public ResponseEntity<List<Worker>> getWorkersBySkill(@PathVariable String skill) {
         List<Worker> workers = workerRepository.findBySkillsName(skill);
@@ -41,7 +43,7 @@ public class WorkerController {
         return new ResponseEntity<>(workers, HttpStatus.OK);
     }
     
-    //GET Endpoint to fech worker base on rating 
+    // get worker base on rating
     @GetMapping("/rating/{rating}")
     public ResponseEntity<List<Worker>> getWorkerByRating(@PathVariable int rating ){
     	
@@ -52,15 +54,14 @@ public class WorkerController {
             return new ResponseEntity<>(workers, HttpStatus.OK);
     }
 
-    // POST method to create a new worker, using /workers
+    // create a new worker
     @PostMapping
     public ResponseEntity<Worker> createWorker(@RequestBody Worker worker) {
-        // Before creating, you might want to check for duplicates or validate the worker details
         Worker savedWorker = workerRepository.save(worker);
         return new ResponseEntity<>(savedWorker, HttpStatus.CREATED);
     }
 
- // POST method to give a new rate, based on the worker ID
+ // give a new rate, based on the worker ID
     @PostMapping("/{id}/rate")
     public Worker rateWorker(@PathVariable Long id, @RequestParam double rating) {
         Worker worker = workerRepository.findById(id).orElseThrow(() -> new RuntimeException("Worker not found"));
@@ -69,20 +70,31 @@ public class WorkerController {
         return worker;
     }
     
-    // PUT endpoint to update an existing worker, using /workers/{id}
+    // update an existing worker
     @PutMapping("/{id}")
     public ResponseEntity<Worker> updateWorker(@PathVariable Long id, @RequestBody Worker workerDetails) {
         Worker worker = workerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Worker not found with id " + id));
         
-        // Update worker details. Here, we update some fields as examples. Adjust according to your worker entity
+        // update worker
         worker.setUsername(workerDetails.getUsername());
         worker.setEmail(workerDetails.getEmail());
         worker.setDescription(workerDetails.getDescription());
         worker.setLocation(workerDetails.getLocation());
-        // Add other fields that you need to update
         
         final Worker updatedWorker = workerRepository.save(worker);
         return ResponseEntity.ok(updatedWorker);
+    }
+
+    // get a worker's past jobs
+    @GetMapping("/{id}/jobs")
+    public ResponseEntity<Set<Job>> getWorkerJobs(@PathVariable Long id) {
+        Worker worker = workerRepository.findById(id).orElseThrow(() -> new RuntimeException("Worker not found with id " + id));
+
+        Set<Job> jobs = worker.getJobs();
+        if (jobs.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 }

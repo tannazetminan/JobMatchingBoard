@@ -22,6 +22,7 @@ public class UserService {
     @Autowired
     private WorkerRepository workerRepository;
 
+    // get all messages between a user and a worker
     public List<Message> getMessagesForUser(Long userId, Long workerId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Worker worker = workerRepository.findById(workerId).orElseThrow(() -> new RuntimeException("worker not found"));
@@ -29,7 +30,7 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        // Hash the password before saving the user
+        // encrypt the password before saving the user
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 

@@ -44,14 +44,9 @@ public class MessageController {
         
         // get messages where user is the sender and worker is the receiver
         List<Message> messagesFromUserToWorker = messageRepository.findByUserAndWorker(user, worker);
-        
-        // get messages where worker is the sender and user is the receiver
-//        List<Message> messagesFromUser2ToUser1 = messageRepository.findBySenderAndReceiver(worker, user);
-        
-        // Combine and return the messages
+
         List<Message> allMessages = new ArrayList<>();
         allMessages.addAll(messagesFromUserToWorker);
-//        allMessages.addAll(messagesFromUser2ToUser1);
         
         return allMessages;
     }
@@ -65,7 +60,6 @@ public class MessageController {
         // get messages where worker is the sender and user is the receiver
         List<Message> messagesFromWorkerToUser = messageRepository.findByWorkerAndUser(worker, user);
 
-        // Combine and return the messages
         List<Message> allMessages = new ArrayList<>();
         allMessages.addAll(messagesFromWorkerToUser);
 

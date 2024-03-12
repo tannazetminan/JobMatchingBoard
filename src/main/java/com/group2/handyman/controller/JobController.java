@@ -2,16 +2,12 @@ package com.group2.handyman.controller;
 
 import java.util.List;
 
-import com.group2.handyman.model.Rating;
+import com.group2.handyman.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.group2.handyman.model.Job;
-import com.group2.handyman.model.JobRepository;
-
-// see the list of all jobs
 @RestController
 @RequestMapping("/jobs")
 public class JobController {
@@ -20,9 +16,21 @@ public class JobController {
     private JobRepository jobRepository;
 
     @Autowired
-    private WorkerService workerService;
-    
-    
+    private JobService jobService;
+
+
+    // create a job
+    @PostMapping("/create")
+    public ResponseEntity<Job> createJob(@RequestParam Long clientId, @RequestParam Long workerId, @RequestBody Job jobDetails) {
+        try {
+            Job createdJob = jobService.createJob(clientId, workerId, jobDetails);
+            return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     // get job base on skills
     @GetMapping("/skills/{skill}")
     public ResponseEntity<List<Job>> getJobBySkills(@PathVariable String skill){
@@ -37,30 +45,30 @@ public class JobController {
     	} catch (Exception e) {
     	    return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
     	}
-    	
 
+    }
+
+    //  complete a job
+    @PostMapping("/{jobId}/complete")
+    public ResponseEntity<Job> completeJob(@PathVariable Long jobId) {
+        try {
+            Job completedJob = jobService.completeJob(jobId);
+            return new ResponseEntity<>(completedJob, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
     
     
     // give a new rating to a job, when it is finished
     @PostMapping("/{jobId}/rating")
-    public Job rateWorker(@PathVariable Long jobId, @RequestBody Rating rating) {
-
-        Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new RuntimeException("Job not found"));
-        
-        // only completed jobs can be rated
-        if (!job.isIsCompleted()) {
-            throw new RuntimeException("Job is not completed yet. Cannot rate.");
+    public ResponseEntity<Job> rateWorker(@PathVariable Long jobId, @RequestBody Rating rating) {
+        try {
+            Job updatedJob = jobService.rateJob(jobId, rating.getRating());
+            return new ResponseEntity<>(updatedJob, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
-        job.setRating(rating.getRating());
-        Job updatedJob = jobRepository.save(job);
-        
-        // update the worker's average rating based on this new job rating
-        workerService.updateWorkerRating(job.getWorker().getId());
-
-        return updatedJob;
     }
     
     

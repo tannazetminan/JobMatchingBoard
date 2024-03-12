@@ -1,5 +1,7 @@
 package com.group2.handyman.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +12,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,14 +21,15 @@ public class User {
     private String username;
     private String password;
     private String email;
-    
+	private double credit;
     
     public User() {}
     
-	public User(String username, String password, String email) {
+	public User(String username, String password, String email, double credit) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
+		this.credit = credit;
 	}
 	public Long getId() {
 		return id;
@@ -50,6 +54,13 @@ public class User {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public double getCredit() {
+		return credit;
+	}
+
+	public void setCredit(double credit) {
+		this.credit = credit;
 	}
 
     

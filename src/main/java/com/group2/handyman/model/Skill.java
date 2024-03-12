@@ -31,9 +31,6 @@ public class Skill {
     @JoinColumn(name = "job_id")
     @JsonIgnore
     private Job job;
-    
-    
-   
 
 	public Skill() {}
 

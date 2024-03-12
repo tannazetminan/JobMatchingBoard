@@ -30,7 +30,7 @@ public class Job {
     private Worker worker;
 
     private boolean isCompleted;
-    private Double rating; // Nullable, can be set after the job is marked as completed
+    private Double rating;
     private String description;
     private double budget;
     
@@ -98,7 +98,7 @@ public class Job {
 			return skills;
 	}
 
-		public void setSkills(Set<Skill> skills) {
+	public void setSkills(Set<Skill> skills) {
 			this.skills = skills;
 		}
 }

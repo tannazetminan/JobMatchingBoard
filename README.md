@@ -1,0 +1,21 @@
+## Endpoints
+
+| HTTP Method | Path                                  | Description                                               | Parameters                                                                                                 |
+|-------------|---------------------------------------|-----------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| GET         | `/jobs/skills/{skill}`                | Retrieves jobs based on a specific skill.                 | `skill` (path variable): The skill name to filter jobs by.                                                 |
+| POST        | `/jobs/{jobId}/rating`                | Rates a worker for a completed job.                       | `jobId` (path variable): The ID of the job to rate.<br>`rating` (request body): Rating details.            |
+| POST        | `/messages/send`                      | Sends a message.                                          | `message` (request body): Message details, including sender, receiver, and content.                        |
+| GET         | `/messages/user/{userId}`             | Retrieves messages for a specific user from a worker.     | `userId` (path variable): The user's ID.<br>`workerId` (query parameter): The worker's ID.                 |
+| GET         | `/messages/worker/{workerId}`         | Retrieves messages for a specific worker from a user.     | `workerId` (path variable): The worker's ID.<br>`userId` (query parameter): The user's ID.                 |
+| GET         | `/users`                              | Fetches all users.                                        | None                                                                                                       |
+| GET         | `/users/{userId}/messages`            | Retrieves messages between two users.                     | `userId` (path variable): The user's ID.<br>`otherUserId` (query parameter): The other user's ID.         |
+| GET         | `/users/{id}`                         | Fetches a single user by their ID.                        | `id` (path variable): The ID of the user to retrieve.                                                      |
+| POST        | `/users`                              | Creates a new user.                                       | `user` (request body): User details to be created.                                                         |
+| PUT         | `/users/{id}`                         | Updates an existing user.                                 | `id` (path variable): The user's ID to update.<br>`userDetails` (request body): New details for the user. |
+| GET         | `/workers`                            | Fetches all workers.                                      | None                                                                                                       |
+| GET         | `/workers/{id}`                       | Fetches a single worker by their ID.                      | `id` (path variable): The worker's ID to retrieve.                                                         |
+| GET         | `/workers/skills/{skill}`             | Retrieves workers based on a specific skill.              | `skill` (path variable): The skill name to filter workers by.                                              |
+| GET         | `/workers/rating/{rating}`            | Fetches workers by a specific rating.                     | `rating` (path variable): The rating to filter workers by.                                                 |
+| POST        | `/workers`                            | Creates a new worker.                                     | `worker` (request body): Worker details to be created.                                                     |
+| POST        | `/workers/{id}/rate`                  | Gives a new rating to a worker, based on the worker ID.   | `id` (path variable): The worker's ID.<br>`rating` (request param): The rating to give.                    |
+| PUT         | `/workers/{id}`                       | Updates an existing worker.                               | `id` (path variable): The worker's ID to update.<br>`workerDetails` (request body): New details for worker.|

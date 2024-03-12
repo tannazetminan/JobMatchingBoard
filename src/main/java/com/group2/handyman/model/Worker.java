@@ -3,6 +3,8 @@ package com.group2.handyman.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +18,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "workers")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Worker{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +32,9 @@ public class Worker{
     private double averageRating;
     private int totalRatings;
     private String workingHours;
+	private double credit;
+	@OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<Job> jobs = new HashSet<>();
     
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Skill> skills = new HashSet<>();
@@ -40,10 +46,9 @@ public class Worker{
     }
     
     public Worker() {}
-    
-    
 
-	public Worker(String username, String password, String email, String description, String location, double averageRating, int totalRatings, Set<Skill> skills, String workingHours) {
+
+	public Worker(String username, String password, String email, String description, String location, double averageRating, int totalRatings, Set<Skill> skills, String workingHours, double credit) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -53,6 +58,7 @@ public class Worker{
 		this.totalRatings = totalRatings;
 		this.skills = skills;
 		this.workingHours = workingHours;
+		this.credit = credit;
 	}
 	
 	
@@ -135,6 +141,22 @@ public class Worker{
 
 	public void setWorkingHours(String workingHours) {
 		this.workingHours = workingHours;
+	}
+
+	public double getCredit() {
+		return credit;
+	}
+
+	public void setCredit(double credit) {
+		this.credit = credit;
+	}
+
+	public Set<Job> getJobs() {
+		return jobs;
+	}
+
+	public void setJobs(Set<Job> jobs) {
+		this.jobs = jobs;
 	}
 	
     
