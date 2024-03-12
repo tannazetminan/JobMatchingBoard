@@ -1,18 +1,13 @@
 package com.group2.handyman.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +28,17 @@ public class Worker{
     private int totalRatings;
     private String workingHours;
 	private double credit;
+	private String phone;
+	public enum PreferredCommunication {
+		EMAIL, PHONE
+	}
+
+	@Column(name = "preferred_communication")
+	@Enumerated(EnumType.STRING)
+	private PreferredCommunication preferredCommunication;
+
+	@ElementCollection
+	private List<String> previousTransactions = new ArrayList<>();
 	@OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Job> jobs = new HashSet<>();
     
@@ -48,7 +54,9 @@ public class Worker{
     public Worker() {}
 
 
-	public Worker(String username, String password, String email, String description, String location, double averageRating, int totalRatings, Set<Skill> skills, String workingHours, double credit) {
+	public Worker(String username, String password, String email, String description, String location,
+				  double averageRating, int totalRatings, Set<Skill> skills, String workingHours,
+				  double credit, String phone, PreferredCommunication preferredCommunication) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -59,6 +67,8 @@ public class Worker{
 		this.skills = skills;
 		this.workingHours = workingHours;
 		this.credit = credit;
+		this.phone = phone;
+		this.preferredCommunication = preferredCommunication;
 	}
 	
 	
@@ -158,8 +168,28 @@ public class Worker{
 	public void setJobs(Set<Job> jobs) {
 		this.jobs = jobs;
 	}
-	
-    
-    
-    
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public PreferredCommunication getPreferredCommunication() {
+		return preferredCommunication;
+	}
+
+	public void setPreferredCommunication(PreferredCommunication preferredCommunication) {
+		this.preferredCommunication = preferredCommunication;
+	}
+
+	public List<String> getPreviousTransactions() {
+		return previousTransactions;
+	}
+
+	public void setPreviousTransactions(List<String> previousTransactions) {
+		this.previousTransactions = previousTransactions;
+	}
 }

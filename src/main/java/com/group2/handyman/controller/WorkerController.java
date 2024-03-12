@@ -97,4 +97,44 @@ public class WorkerController {
         }
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
+
+    // get a worker's contact info based on their preferred communication
+    @GetMapping("/{id}/contact")
+    public ResponseEntity<String> getWorkerContactInfo(@PathVariable Long id) {
+        return workerRepository.findById(id)
+                .map(worker -> {
+                    String contactInfo;
+                    if (worker.getPreferredCommunication() == Worker.PreferredCommunication.EMAIL) {
+                        contactInfo = "Email: " + worker.getEmail();
+                    } else {
+                        contactInfo = "Phone: " + worker.getPhone();
+                    }
+                    return new ResponseEntity<>(contactInfo, HttpStatus.OK);
+                })
+                .orElseGet(() -> new ResponseEntity<>("Worker not found with id " + id, HttpStatus.NOT_FOUND));
+    }
+
+    // get a worker's transaction history
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<String>> getWorkerTransactions(@PathVariable Long id) {
+        Worker worker = workerRepository.findById(id).orElseThrow(() -> new RuntimeException("Worker not found with id " + id));
+
+        List<String> transactions = worker.getPreviousTransactions();
+        if (transactions.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
+
+    // get a worker's working hours
+    @GetMapping("/{id}/working-hours")
+    public ResponseEntity<String> getWorkerWorkingHours(@PathVariable Long id) {
+        Worker worker = workerRepository.findById(id).orElseThrow(() -> new RuntimeException("Worker not found with id " + id));
+
+        String workingHours = worker.getWorkingHours();
+        if (workingHours == null || workingHours.isEmpty()) {
+            return new ResponseEntity<>("No working hours set for this worker.", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(workingHours, HttpStatus.OK);
+    }
 }

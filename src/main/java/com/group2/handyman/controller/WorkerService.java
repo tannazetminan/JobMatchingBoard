@@ -13,9 +13,6 @@ public class WorkerService {
     private WorkerRepository workerRepository;
 
     @Autowired
-    private JobRepository jobRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
