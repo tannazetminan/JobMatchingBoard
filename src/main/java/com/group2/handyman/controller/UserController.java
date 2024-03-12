@@ -29,8 +29,8 @@ public class UserController {
 
     // get all messages for a user
     @GetMapping("/{userId}/messages")
-    public List<Message> getMessagesForUser(@PathVariable Long userId, @RequestParam Long otherUserId) {
-        return userService.getMessagesForUser(userId, otherUserId);
+    public List<Message> getMessagesForUser(@PathVariable Long userId, @RequestParam Long workerId) {
+        return userService.getMessagesForUser(userId, workerId);
     }
     // get a single user by ID
     @GetMapping("/{id}")
