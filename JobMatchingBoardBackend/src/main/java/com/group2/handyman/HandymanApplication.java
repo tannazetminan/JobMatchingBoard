@@ -37,15 +37,15 @@ public class HandymanApplication {
 
             // Create users
             for (int i = 0; i < 10; i++) {
-                User user = new User(firstNames.get(i) + " " + lastNames.get(i), passwordEncoder.encode("password" + i), "user" + i + "@example.com", 100 + i * 100);
+                User user = new User("user_" + firstNames.get(i) + lastNames.get(i), passwordEncoder.encode("password" + i), "user" + i + "@example.com", 100 + i * 100);
                 userRepository.save(user);
             }
 
             // Create workers
             List<Worker> allWorkers = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
-                Worker worker = new Worker(firstNames.get(i) + " " + lastNames.get(i),
-                        passwordEncoder.encode("worker" + i), "worker" + i + "@example.com",
+                Worker worker = new Worker("worker_" + firstNames.get(i) + lastNames.get(i),
+                        passwordEncoder.encode("password" + i), "worker" + i + "@example.com",
                         "Expert in " + skills.get(i), locations.get(i),
                         4.0 + (i % 5), 10 + i,
                         new HashSet<>(), "09:00-17:00", 100 + i * 100,
