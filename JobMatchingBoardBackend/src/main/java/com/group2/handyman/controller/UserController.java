@@ -1,15 +1,15 @@
 package com.group2.handyman.controller;
 
+import com.group2.handyman.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import com.group2.handyman.model.Message;
-import com.group2.handyman.model.User;
-import com.group2.handyman.model.UserRepository;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -20,6 +20,12 @@ public class UserController {
     
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private WorkerRepository workerRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // get all users
     @GetMapping
@@ -59,5 +65,31 @@ public class UserController {
         
         final User updatedUser = userRepository.save(user);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    // login a user
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials) {
+        String identifier = credentials.get("email");
+        String password = credentials.get("password");
+
+        // find user by email or username
+        User user = userRepository.findByEmailOrUsername(identifier, identifier);
+        // find worker by email or username
+        Worker worker = workerRepository.findByEmailOrUsername(identifier, identifier);
+
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("record", user);
+            response.put("type", "user");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else if (worker != null && passwordEncoder.matches(password, worker.getPassword())) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("record", worker);
+            response.put("type", "worker");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+        }
     }
 }

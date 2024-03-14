@@ -9,10 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-	
-	 @Query("SELECT w FROM Worker w JOIN w.skills s WHERE s.name = :skill")
-	    List<Worker> findBySkillsName(@Param("skill") String skill);
-	 
-	 @Query("SELECT w FROM Worker w WHERE w.totalRatings = :rating")
-	 List<Worker> findByRating(@Param("rating") int rating);
+	@Query("SELECT u FROM User u WHERE u.email = ?1 OR u.username = ?1")
+	User findByEmailOrUsername(String email, String username);
 }
