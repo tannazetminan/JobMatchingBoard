@@ -26,53 +26,73 @@ public class HandymanApplication {
                                   JobRepository jobRepository, SkillRepository skillRepository,
                                   PasswordEncoder passwordEncoder, MessageRepository messageRepository) {
         return args -> {
-            String[] firstNames = {"John", "Jane", "Mike", "Sara", "Alex", "Emma", "Noah", "Olivia", "Liam", "Sophia"};
-            String[] lastNames = {"Doe", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez"};
-            String[] locations = {"New York", "San Francisco", "Chicago", "Seattle", "Boston", "Los Angeles", "Denver", "Austin", "Miami", "Las Vegas"};
-            String[] skills = {"Plumbing", "Electrical", "Carpentry", "Landscaping", "Painting", "Cleaning", "Roofing", "Flooring", "Tiling", "Decorating"};
-            String[] jobDescriptions = {"Fix bathroom leak", "Install ceiling fan", "Build a deck", "Design garden", "Paint living room", "Clean the garage", "Replace roof shingles", "Install hardwood floors", "Tile the kitchen backsplash", "Decorate the office"};
+            List<String> firstNames = Arrays.asList("John", "Jane", "Mike", "Sara", "Alex", "Emma", "Noah", "Olivia", "Liam", "Sophia");
+            List<String> lastNames = Arrays.asList("Doe", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez");
+            List<String> locations = Arrays.asList("New York", "San Francisco", "Chicago", "Seattle", "Boston", "Los Angeles", "Denver", "Austin", "Miami", "Las Vegas");
+            List<String> skills = Arrays.asList("Plumbing", "Electrical", "Carpentry", "Landscaping", "Painting", "Cleaning", "Roofing", "Flooring", "Tiling", "Decorating");
+            List<String> jobDescriptions = Arrays.asList("Fix bathroom leak", "Install ceiling fan", "Build a deck", "Design garden", "Paint living room", "Clean the garage", "Replace roof shingles", "Install hardwood floors", "Tile the kitchen backsplash", "Decorate the office");
             Worker.PreferredCommunication[] communicationPreferences = Worker.PreferredCommunication.values();
-            Random random = new Random();
+
+            Random random = new Random(123456789);
 
             // Create users
-            List<User> users = IntStream.rangeClosed(1, 10)
-                    .mapToObj(i -> new User(firstNames[random.nextInt(firstNames.length)] + " " + lastNames[random.nextInt(lastNames.length)], passwordEncoder.encode("pass" + i), "user" + i + "@example.com", 100 + random.nextDouble() * 900))
-                    .map(userRepository::save)
-                    .collect(Collectors.toList());
-
-            // Create workers
-            List<Worker> workers = IntStream.rangeClosed(1, 10)
-                    .mapToObj(i -> {
-                        Worker worker = new Worker(firstNames[random.nextInt(firstNames.length)] + " " + lastNames[random.nextInt(lastNames.length)],
-                                passwordEncoder.encode("worker" + i), "worker" + i + "@example.com",
-                                "Expert in " + skills[random.nextInt(skills.length)], locations[random.nextInt(locations.length)],
-                                random.nextDouble() * 5, random.nextInt(100),
-                                new HashSet<>(), "09:00-17:00", 100 + random.nextDouble() * 900,
-                                "555-01" + String.format("%02d", i), communicationPreferences[random.nextInt(communicationPreferences.length)]);
-                        return workerRepository.save(worker);
-                    })
-                    .collect(Collectors.toList());
-
-            // Adjust job creation to link with workers
-            for (Worker worker : workers) {
-                Job job = new Job(users.get(random.nextInt(users.size())), worker, random.nextBoolean(),
-                        random.nextDouble() * 5, jobDescriptions[random.nextInt(jobDescriptions.length)],
-                        50 + random.nextDouble() * 150, new HashSet<>());
-                jobRepository.save(job);
-
-                String transaction = "Completed job '" + job.getDescription() + "' for $" + job.getBudget();
-                worker.getPreviousTransactions().add(transaction);
-                workerRepository.save(worker);
+            for (int i = 0; i < 10; i++) {
+                User user = new User(firstNames.get(i) + " " + lastNames.get(i), passwordEncoder.encode("password" + i), "user" + i + "@example.com", 100 + i * 100);
+                userRepository.save(user);
             }
 
-            // Create Message
-            users.forEach(user -> {
-                Worker worker = workers.get(random.nextInt(workers.size()));
-                LocalDateTime timestamp = LocalDateTime.now().minusDays(random.nextInt(30));
-                String content = "Can we schedule a visit for " + jobDescriptions[random.nextInt(jobDescriptions.length)] + "?";
+            // Create workers
+            List<Worker> allWorkers = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                Worker worker = new Worker(firstNames.get(i) + " " + lastNames.get(i),
+                        passwordEncoder.encode("worker" + i), "worker" + i + "@example.com",
+                        "Expert in " + skills.get(i), locations.get(i),
+                        4.0 + (i % 5), 10 + i,
+                        new HashSet<>(), "09:00-17:00", 100 + i * 100,
+                        "555-01" + String.format("%02d", i), communicationPreferences[i % 2]);
+                allWorkers.add(workerRepository.save(worker));
+            }
+
+            // Create jobs and link them with workers and users, then create skills linked to jobs and workers
+            allWorkers.forEach(worker -> {
+                IntStream.rangeClosed(1, 2).forEach(i -> {
+                    User user = userRepository.findById((long) random.nextInt(10) + 1).get();
+                    boolean isCompleted = random.nextBoolean();
+                    Job job = new Job(userRepository.findById((long) (i % 10 + 1)).get(), worker, isCompleted,
+                            isCompleted ? 4.0 + i % 5 : null,
+                            jobDescriptions.get(i), 100 + i * 10,
+                            new HashSet<>());
+                            job = jobRepository.save(job);
+
+                    // Assuming each job has 1 skill for simplification
+                    Skill skill = new Skill(skills.get(random.nextInt(skills.size())), worker, job);
+                    skillRepository.save(skill);
+
+                    worker.getSkills().add(skill);
+                    job.getSkills().add(skill);
+
+                    workerRepository.save(worker);
+                    jobRepository.save(job);
+
+                    // Transaction history for completed jobs
+                    if (isCompleted) {
+                        String transaction = "Completed job '" + job.getDescription() + "' for $" + job.getBudget();
+                        worker.getPreviousTransactions().add(transaction);
+                        workerRepository.save(worker);
+                    }
+                });
+            });
+
+            // Create messages
+            for (int i = 0; i < 10; i++) {
+                Worker worker = workerRepository.findById((long) (i % 10 + 1)).get();
+                User user = userRepository.findById((long) ((i + 1) % 10 + 1)).get();
+                LocalDateTime timestamp = LocalDateTime.now().minusDays(i % 30);
+                String content = "Can we schedule a visit for " + jobDescriptions.get(i) + "?";
                 Message message = new Message(user, worker, content, timestamp);
                 messageRepository.save(message);
-            });
+            }
         };
     }
+
 }
