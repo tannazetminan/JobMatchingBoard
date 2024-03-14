@@ -53,24 +53,15 @@ export default {
                 let user= response.data;
                 console.log(user)
                 console.log(response)
-                console.log("hi")
-                router.push('/workers')
+                router.push("/workers")
                 
             })
             .catch (error =>{
                 if (error.response) {
-            // Error de respuesta del servidor
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        } else if (error.request) {
-            // No hay respuesta del servidor
-            console.log(error.request);
-        } else {
-            // Otro tipo de error
-            console.log('Error', error.message);
-        }
-            })
+                console.log(error.response.data);
+                console.log(error.response.status);
+       
+        } })
         }
     }
     
