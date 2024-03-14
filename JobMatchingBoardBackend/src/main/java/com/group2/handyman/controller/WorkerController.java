@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.group2.handyman.model.Worker;
 import com.group2.handyman.model.WorkerRepository;
-
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/workers")
 public class WorkerController {

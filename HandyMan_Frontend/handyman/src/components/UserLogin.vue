@@ -7,14 +7,14 @@
             <h2 class ="grettings">Wellcome to Handyman</h2>
             <img src="images/waving-hand.png" class="img-hands" />
         </div>
-        <form>
+        <form @submit.prevent="login">
             <div>
                 <label for = "email">EMAIL: </label>
-                <input type=" text" id="email" placeholder="Enter your email" />
+                <input type=" text" id="email" placeholder="Enter your email" v-model="userLogin.email" />
             </div>
             <div>
                 <label for = "Password">PASSWORD: </label>
-                <input type="password" id="password" placeholder="Enter your password" />
+                <input type="password" id="password" placeholder="Enter your password"   v-model="userLogin.password"/>
             </div>
             <div>
                 <button type="submit">Login</button>
@@ -29,10 +29,50 @@
     </template>
     
 <script>
+import LoginService from "../services/LoginService";
+import router from "../router/index.js";
 
 export default {
    
-    name:"UserLogin"
+    name:"UserLogin",
+
+    data(){
+        return{
+            userLogin:{
+                email: " ",
+                password:''
+
+            }
+        }
+    },
+
+    methods:{
+        login(){
+            LoginService.login(this.userLogin)
+            .then(response =>{
+                let user= response.data;
+                console.log(user)
+                console.log(response)
+                console.log("hi")
+                router.push('/workers')
+                
+            })
+            .catch (error =>{
+                if (error.response) {
+            // Error de respuesta del servidor
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+        } else if (error.request) {
+            // No hay respuesta del servidor
+            console.log(error.request);
+        } else {
+            // Otro tipo de error
+            console.log('Error', error.message);
+        }
+            })
+        }
+    }
     
 }
     </script>

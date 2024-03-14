@@ -9,21 +9,19 @@
              <span>Gardening </span>
 
         </div>
-    
-    
 
     <div>
         <h1 class="title">Hire the best skilled workers </h1>
     </div>
     <div class="cards">
     <div v-for="worker in workers" :key="worker.id" class="card-worker">
-      <img :src="'images/' + worker.image" class="profile" />
-      <p>{{ worker.name }}</p>
-      <p>{{ worker.job }}</p>
+      <img src="images/people.png"  class="profile" />
+      <p>{{ worker.username }}</p>
+      <p>{{ worker.description }}</p>
       <div class="rating-container">
-        <img src="images/star.png" class="rating" /><span>{{ worker.rating }}</span>
+        <img src="images/star.png" class="rating" /><span>{{ worker.averageRating }}</span>
       </div>
-      <p>Availability: {{ worker.availability }}</p>  
+      <p>Availability: {{ worker.workingHours }}</p>  
       <button type="submit" class="button-profile">See more</button>        
     </div>
   </div>
@@ -33,23 +31,36 @@
 
 <script>
 
-
+import FetchDataService from "../services/FetchDataService";
 export default{
+
     
     name:"DisplayWorkers",
     data() {
     return {
-      workers: [
-        { id: 1, name: 'Jon Smith', job: 'Plumber', rating: 4.5, availability: '12/03/2020', image: 'people.png' },
-        { id: 2, name: 'Jane Doe', job: 'Electrician', rating: 4.8, availability: '14/03/2020', image: 'user.png' },
-        { id: 3, name: 'Emily Johnson', job: 'Carpenter', rating: 4.2, availability: '16/03/2020', image: 'user.png' },
-        { id: 4, name: 'Michael Brown', job: 'Mason', rating: 4.0, availability: '18/03/2020', image: 'people.png' },
-        { id: 5, name: 'Sophia Williams', job: 'Gardener', rating: 4.6, availability: '20/03/2020', image: 'people.png' }
-        
-      ]
+      workers: []
+      
     }
   },
-  
+
+    methods:{
+        fetchWorkers(){
+            FetchDataService.getAllWorkers()
+            .then(response =>{
+                this.workers =response.data
+                console.log(response)
+         
+                
+            })
+            .catch (error =>{
+                if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+        }} );
+      }},
+    mounted() {
+    this.fetchWorkers();
+  },
 }
 </script>
 
