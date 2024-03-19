@@ -31,8 +31,16 @@ public class MessageController {
     private WorkerRepository workerRepository;
 
     @PostMapping("/send")
-    public ResponseEntity<Message> sendMessage(@RequestBody Message message) {
+    public ResponseEntity<Message> sendMessage(@RequestBody MessageDTO messageDTO) {
+        User user = userRepository.findById(messageDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        Worker worker = workerRepository.findById(messageDTO.getWorkerId()).orElseThrow(() -> new RuntimeException("Worker not found"));
+
+        Message message = new Message();
+        message.setUser(user);
+        message.setWorker(worker);
+        message.setContent(messageDTO.getContent());
         message.setTimestamp(LocalDateTime.now());
+
         Message savedMessage = messageRepository.save(message);
         return new ResponseEntity<>(savedMessage, HttpStatus.CREATED);
     }
