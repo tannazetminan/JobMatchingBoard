@@ -16,7 +16,10 @@
                     </li>
                    
                     <li>
-                        <router-link to="/login" class="nav-link">Login</router-link>
+                        <router-link to="/login" class="nav-link">Hiring Login</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/workerlogin" class="nav-link">Worker Login</router-link>
                     </li>
                     <li>
                         <router-link to="/workers" class="nav-link">Workers</router-link>

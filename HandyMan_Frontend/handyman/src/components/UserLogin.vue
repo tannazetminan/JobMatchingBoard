@@ -1,72 +1,74 @@
 <template>
-    <div class = "container-login">
-        <img src="images/workers.jpg" class="img-workers" />
-        
-        <div class="container-form">
-            <div class ="container-grettings">
-            <h2 class ="grettings">Wellcome to Handyman</h2>
-            <img src="images/waving-hand.png" class="img-hands" />
+    <div class="container-login">
+      <img src="images/workers.jpg" class="img-workers" />
+  
+      <div class="container-form">
+        <div class="container-grettings">
+          <h2 class="grettings">Welcome to Handyman</h2>
+          <img src="images/waving-hand.png" class="img-hands" />
         </div>
         <form @submit.prevent="login">
-            <div>
-                <label for = "email">EMAIL: </label>
-                <input type=" text" id="email" placeholder="Enter your email" v-model="userLogin.email" />
-            </div>
-            <div>
-                <label for = "Password">PASSWORD: </label>
-                <input type="password" id="password" placeholder="Enter your password"   v-model="userLogin.password"/>
-            </div>
-            <div>
-                <button type="submit">Login</button>
-            </div>
+          <div>
+            <label for="email">EMAIL:</label>
+            <input type="text" id="email" placeholder="Enter your email" v-model="userLogin.email" />
+          </div>
+          <div>
+            <label for="password">PASSWORD:</label>
+            <input type="password" id="password" placeholder="Enter your password" v-model="userLogin.password" />
+          </div>
+          <div>
+            <button type="submit">Login</button>
+          </div>
         </form>
-       
-        <router-link to="/singup" class="nav-link"> Don't  have an  account? Sign up</router-link>
-
-    </div>
   
+        <router-link to="/SignUp" class="nav-link">Don't have an account? Sign up</router-link>
+
+        <!-- Display error message if login fails -->
+        <div v-if="errorMessage" class="error-message">
+        {{ errorMessage }}
+        </div>
     </div>
-    </template>
-    
-<script>
-import LoginService from "../services/LoginService";
-import router from "../router/index.js";
-
-export default {
-   
-    name:"UserLogin",
-
-    data(){
-        return{
-            userLogin:{
-                email: " ",
-                password:''
-
-            }
-        }
-    },
-
-    methods:{
-        login(){
-            LoginService.login(this.userLogin)
-            .then(response =>{
-                let user= response.data;
-                console.log(user)
-                console.log(response)
-                router.push("/workers")
-                
-            })
-            .catch (error =>{
-                if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-       
-        } })
-        }
+    </div>
+  </template>
+  
+  <script>
+  import LoginService from "../services/LoginService";
+  import router from "../router/index.js";
+  
+  export default {
+  name: "UserLogin",
+  data() {
+    return {
+      userLogin: {
+        email: "",
+        password: ""
+      },
+      errorMessage: null
+    };
+  },
+  methods: {
+    login() {
+      LoginService.login(this.userLogin)
+        .then((response) => {
+          let user = response.data;
+          console.log(user);
+          console.log(response);
+          router.push("/workers");
+        })
+        .catch((error) => {
+          console.error(error);
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            this.errorMessage = error.response.data.message || "Error logging in. Please try again.";
+          } else {
+            this.errorMessage = "An unexpected error occurred. Please try again.";
+          }
+        });
     }
-    
-}
-    </script>
+  }
+};
+  </script>
 
 <style scoped>
 
