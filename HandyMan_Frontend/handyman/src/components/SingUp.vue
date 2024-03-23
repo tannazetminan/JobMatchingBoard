@@ -11,6 +11,7 @@
           <button @click="userType = 'worker'" class="type-user ">I am worker</button>
           <button @click="userType = 'empresa'" class="type-user2">I'm hiring </button>
       </div>
+      
       <form v-if="userType === 'worker'" @submit.prevent="submitWorkerForm">
         <div class="names">
         <label for="firstName">First Name:</label>

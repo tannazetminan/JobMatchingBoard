@@ -29,13 +29,13 @@
         </div>
     </div>
     </div>
-  </template>
+</template>
   
-  <script>
-  import LoginService from "../services/LoginService";
-  import router from "../router/index.js";
+<script>
+import LoginService from "../services/LoginService";
+import router from "../router/index.js";
   
-  export default {
+export default {
   name: "UserLogin",
   data() {
     return {
@@ -43,9 +43,9 @@
         email: "",
         password: ""
       },
-      errorMessage: null
+      errorMessage: null,
     };
-  },
+},
   methods: {
     login() {
       LoginService.login(this.userLogin)
@@ -53,7 +53,15 @@
           let user = response.data;
           console.log(user);
           console.log(response);
+          
+          // Store token in local storage
+          localStorage.setItem('token', response.data.token);
+          
+          this.isLoggedIn = true; // Set isLoggedIn to true
+
+          // Redirect the user to the appropriate page
           router.push("/workers");
+          //window.location.reload();
         })
         .catch((error) => {
           console.error(error);
@@ -67,8 +75,9 @@
         });
     }
   }
+
 };
-  </script>
+</script>
 
 <style scoped>
 

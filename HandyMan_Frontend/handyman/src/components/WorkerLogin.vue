@@ -52,6 +52,11 @@
             let worker = response.data;
             console.log(worker);
             console.log(response);
+
+            // Store token in local storage
+            localStorage.setItem('token', response.data.token);
+
+            // Redirect the user to the appropriate page
             router.push("/dashboard");
           })
           .catch((error) => {
