@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/jobs")
 public class JobController {
@@ -18,6 +19,12 @@ public class JobController {
     @Autowired
     private JobService jobService;
 
+
+    // get all jobs
+    @GetMapping
+    public List<Job> getAllJobs() {
+        return jobRepository.findAll();
+    }
 
     // create a job
     @PostMapping("/create")
