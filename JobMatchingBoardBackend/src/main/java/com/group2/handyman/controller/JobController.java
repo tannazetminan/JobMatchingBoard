@@ -22,8 +22,17 @@ public class JobController {
 
     // get all jobs
     @GetMapping
-    public List<Job> getAllJobs() {
-        return jobRepository.findAll();
+    public ResponseEntity<List<Job>> getAllJobs() {
+        try {
+            List<Job> jobs = jobRepository.findAll();
+            if (jobs.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(jobs, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // create a job

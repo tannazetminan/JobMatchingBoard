@@ -3,6 +3,8 @@ package com.group2.handyman.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,7 +18,6 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "jobs")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
