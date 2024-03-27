@@ -10,6 +10,12 @@
             <li>
                 <router-link to="/" class="nav-link">Home</router-link>
             </li>
+            <li >
+                <router-link to="/workers" class="nav-link">Workers</router-link>
+            </li>
+            <li >
+                <router-link to="/jobs" class="nav-link">Jobs</router-link>
+            </li>
             <li  v-if="!isLoggedIn" >
                 <router-link to="/singup" class="nav-link">Sign up</router-link>
             </li>
@@ -19,9 +25,6 @@
             </li>
             <li v-if="!isLoggedIn">
                 <router-link to="/workerlogin" class="nav-link">Worker Login</router-link>
-            </li>
-            <li v-if="isLoggedIn">
-                <router-link to="/workers" class="nav-link">Workers</router-link>
             </li>
             <li v-if="isLoggedIn">
                 <router-link to="/" class="nav-link"><a href="#" @click="logout">Logout</a></router-link>

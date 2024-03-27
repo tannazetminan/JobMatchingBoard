@@ -12,6 +12,10 @@ class FetchDataService {
     createUser(userData) {
         return http.post("/users", userData); 
     }
+
+    getAllJobs() {
+        return http.get("/jobs"); 
+    }
 }
 
 export default new FetchDataService();

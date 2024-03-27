@@ -4,6 +4,7 @@ import WorkerLogin from "../components/WorkerLogin";
 import HomePage from "../components/HomePage.vue";
 import SingUp from "../components/SingUp.vue";
 import DisplayWorkers from "../components/DisplayWorkers.vue";
+import DisplayJobs from "../components/DisplayJobs.vue"
 
 const routes = [
   {
@@ -33,6 +34,11 @@ const routes = [
     name: "DisplayWorkers",
     component: DisplayWorkers,
     path: "/workers"
+  },
+  {
+    name: "DisplayJobs",
+    component: DisplayJobs,
+    path: "/jobs"
   }
  
 ];
