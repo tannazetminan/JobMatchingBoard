@@ -18,9 +18,24 @@
       <img src="images/people.png"  class="profile" />
       <p>{{ worker.username }}</p>
       <p>{{ worker.description }}</p>
-      <div class="rating-container">
+      <!-- <div class="rating-container">
         <img src="images/star.png" class="rating" /><span>{{ worker.averageRating }}</span>
-      </div>
+      </div> -->
+      <div v-if="worker.averageRating === 5"> 
+                <img src="images/5star.png" class="rating" />
+            </div>
+            <div v-if="worker.averageRating === 4"> 
+                <img src="images/4star.png" class="rating" />
+            </div>
+            <div v-if="worker.averageRating === 3"> 
+                <img src="images/3star.png" class="rating" />
+            </div>
+            <div v-if="worker.averageRating === 2"> 
+                <img src="images/2star.png" class="rating" />
+            </div>
+            <div v-if="worker.averageRating=== 1"> 
+                <img src="images/1star.png" class="rating" />
+            </div>
       <p>Availability: {{ worker.workingHours }}</p>  
       <button type="submit" class="button-profile">See more</button>        
     </div>
@@ -32,6 +47,8 @@
 <script>
 
 import FetchDataService from "../services/FetchDataService";
+
+
 export default{
 
     

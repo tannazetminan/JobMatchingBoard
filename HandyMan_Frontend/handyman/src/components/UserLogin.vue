@@ -56,6 +56,8 @@ export default {
           
           // Store token in local storage
           localStorage.setItem('token', response.data.token);
+          localStorage.setItem('userId', user.Id); 
+
           
           this.isLoggedIn = true; // Set isLoggedIn to true
 

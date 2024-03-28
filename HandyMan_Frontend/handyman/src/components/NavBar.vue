@@ -1,49 +1,42 @@
 <template>
-  <div class = "nav-container ">        
+  <div class="nav-container">
     <nav class="navbar">
       <div class="container">
         <router-link to="/" class="brand">
-            <span class="text-2xl font-semibold">HandyMan</span>
+          <span class="text-2xl font-semibold">HandyMan</span>
         </router-link>
 
         <ul class="nav-links">
-            <li>
-                <router-link to="/" class="nav-link">Home</router-link>
-            </li>
-            <li >
-                <router-link to="/workers" class="nav-link">Workers</router-link>
-            </li>
-            <li >
-                <router-link to="/jobs" class="nav-link">Jobs</router-link>
-            </li>
-            <li  v-if="!isLoggedIn" >
-                <router-link to="/singup" class="nav-link">Sign up</router-link>
-            </li>
-            
-            <li v-if="!isLoggedIn">
-                <router-link to="/login" class="nav-link">Hiring Login</router-link>
-            </li>
-            <li v-if="!isLoggedIn">
-                <router-link to="/workerlogin" class="nav-link">Worker Login</router-link>
-            </li>
-            <li v-if="isLoggedIn">
-                <router-link to="/" class="nav-link"><a href="#" @click="logout">Logout</a></router-link>
-            </li>
-            <!-- <li><router-link to="/" class="nav-link">Home</router-link></li>
-            <li v-if="!isLoggedIn" class="nav-link"><router-link to="/SignUp">Sign up</router-link></li>
-            <li v-if="!isLoggedIn" class="nav-link"><router-link to="/Login">Hiring Login</router-link></li>
-            <li v-if="!isLoggedIn" class="nav-link"><router-link to="/WorkerLogin">Worker Login</router-link></li>
-            <li v-if="isLoggedIn" class="nav-link"><router-link to="/Workers">Workers</router-link></li>
-            <li v-if="isLoggedIn" class="nav-link"><a href="#" @click="logout">Logout</a></li> -->
-
+          <li>
+            <router-link to="/" class="nav-link">Home</router-link>
+          </li>
+          <li v-if="!isLoggedIn">
+            <router-link to="/singup" class="nav-link">Sign up</router-link>
+          </li>
+          <li v-if="!isLoggedIn">
+            <router-link to="/login" class="nav-link">Hiring Login</router-link>
+          </li>
+          <li v-if="!isLoggedIn">
+            <router-link to="/workerlogin" class="nav-link">Worker Login</router-link>
+          </li>
+          <li v-if="isLoggedIn">
+            <router-link to="/" class="nav-link"><a href="#" @click="logout">Logout</a></router-link>
+          </li>
+          <li v-if="isLoggedIn">
+            <router-link to="/workers" class="nav-link">Workers</router-link>
+          </li>
+          <li v-if="isLoggedIn">
+            <router-link to="/jobs" class="nav-link">Jobs</router-link>
+          </li>
+          <!-- Add the following conditional rendering for the user's messages -->
+          <li v-if="isLoggedIn">
+            <router-link to="/usermessages" class="nav-link">Messages</router-link>
+          </li>
         </ul>
       </div>
-    </nav>      
+    </nav>
   </div>
-
 </template>
-
-
 
 <script>
 export default {
@@ -72,32 +65,6 @@ export default {
   }
 };
 </script>
-
-<!-- <script>
-export default {
-  data() {
-    return {
-      isLoggedIn: false
-    };
-  },
-  created() {
-    this.isLoggedIn = localStorage.getItem('token') !== null; // Check if token exists in localStorage
-  },
-  watch: {
-    isLoggedIn(newValue) {
-      if (!newValue) {
-        this.$router.push('/'); // Redirect to home page or login page if user logs out
-      }
-    }
-  },
-  methods: {
-    logout() {
-      localStorage.removeItem('token'); // Remove token from localStorage
-      this.isLoggedIn = false; // Update isLoggedIn state
-    }
-  }
-};
-</script> -->
 
 
 <style>

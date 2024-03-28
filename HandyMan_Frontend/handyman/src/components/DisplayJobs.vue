@@ -14,16 +14,32 @@
          <h1 class="title">View the jobs</h1>
      </div>
      <div class="cards">
-     <div v-for="job in jobs" :key="job.id" class="card-worker">
-       <img src="images/job.png"  class="profile" />
-       <p>{{ job.description }}</p>
-       <div class="rating-container">
-         <img src="images/budget.png" class="rating" /><span>Budget: {{ job.budget }}</span>
-       </div>
-       <p>Completed: {{ job.isCompleted }}</p>  
-       <button type="submit" class="button-profile">See more</button>        
-     </div>
-   </div>
+        <div v-for="job in jobs" :key="job.id" class="card-worker">
+            <img src="images/job.png"  class="profile" />
+            <p>{{ job.id }}</p>
+            <p>{{ job.description }}</p>
+            <div class="rating-container">
+                <img src="images/budget.png" class="rating" /><span>Budget: {{ job.budget }}</span>
+            </div>
+            <div v-if="job.rating === 5"> 
+                <img src="images/5star.png" class="rating" />
+            </div>
+            <div v-if="job.rating === 4"> 
+                <img src="images/4star.png" class="rating" />
+            </div>
+            <div v-if="job.rating === 3"> 
+                <img src="images/3star.png" class="rating" />
+            </div>
+            <div v-if="job.rating === 2"> 
+                <img src="images/2star.png" class="rating" />
+            </div>
+            <div v-if="job.rating === 1"> 
+                <img src="images/1star.png" class="rating" />
+            </div>
+            <p>Completed: {{ job.isCompleted }}</p>  
+            <button type="submit" class="button-profile">See more</button>        
+        </div>
+    </div>
     </div>
  
  </template>
@@ -43,22 +59,27 @@
    },
  
      methods:{
-         fetchWorkers(){
-             FetchDataService.getAllJobs()
-             .then(response =>{
+        fetchWorkers(){
+            FetchDataService.getAllJobs()
+            .then(response =>{
                 this.jobs =response.data
-                 console.log(response)
+                console.log(response)
           
                  
-             })
-             .catch (error =>{
-                 if (error.response) {
-             console.log(error.response.data);
-             console.log(error.response.status);
-         }} );
-       }},
+            })
+            .catch (error =>{
+                if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+                }
+            }
+            );
+        },
+    },
      mounted() {
      this.fetchWorkers();
+
+     
    },
  }
  </script>
@@ -119,11 +140,12 @@
  }
  
  .rating{
-   width: 18px;
-   height: 18px;
+   max-width: 70px;
+   max-height: 18px;
    margin: auto;
    margin-top: 15px;
-   display:inline
+   display:inline;
+   width: auto;
  }
  .rating-container img,
  .rating-container span {

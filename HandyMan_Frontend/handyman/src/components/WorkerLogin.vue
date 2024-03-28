@@ -55,6 +55,8 @@
 
             // Store token in local storage
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('workerId', worker.Id); 
+
 
             // Redirect the user to the appropriate page
             router.push("/dashboard");

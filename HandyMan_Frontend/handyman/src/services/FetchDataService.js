@@ -16,6 +16,19 @@ class FetchDataService {
     getAllJobs() {
         return http.get("/jobs"); 
     }
+
+    getAllUserMessages(userId) {
+        return http.get(`/messages/user/${userId}`);
+    }
+
+    getAllWorkerMessages(workerId) {
+    return http.get(`/messages/worker/${workerId}`);
+    }
+
+    sendMessage(messageData) {
+        return http.post("/messages/send", messageData);
+    }
+
 }
 
 export default new FetchDataService();
