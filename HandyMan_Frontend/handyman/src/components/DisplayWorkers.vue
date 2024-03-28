@@ -6,7 +6,7 @@
             <span>Plumbing </span>
             <span>Electrical </span>
             <span>Masonry</span>
-             <span>Gardening </span>
+            <span>Gardening </span>
 
         </div>
 
@@ -48,9 +48,7 @@ export default{
             FetchDataService.getAllWorkers()
             .then(response =>{
                 this.workers =response.data
-                console.log(response)
-         
-                
+                console.log(response)               
             })
             .catch (error =>{
                 if (error.response) {

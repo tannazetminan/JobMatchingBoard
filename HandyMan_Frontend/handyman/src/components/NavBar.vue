@@ -21,11 +21,9 @@
             </li>
             
             <li v-if="!isLoggedIn">
-                <router-link to="/login" class="nav-link">Hiring Login</router-link>
+                <router-link to="/login" class="nav-link"> Login</router-link>
             </li>
-            <li v-if="!isLoggedIn">
-                <router-link to="/workerlogin" class="nav-link">Worker Login</router-link>
-            </li>
+           
             <li v-if="isLoggedIn">
                 <router-link to="/" class="nav-link"><a href="#" @click="logout">Logout</a></router-link>
             </li>

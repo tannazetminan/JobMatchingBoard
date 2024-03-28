@@ -31,7 +31,7 @@
   </template>
   
   <script>
-  import LoginService from "../services/LoginService";
+ /* import LoginService from "../services/LoginService";
   import router from "../router/index.js";
   
   export default {
@@ -71,7 +71,7 @@
           });
       }
     }
-  };
+  };*/
   </script>
   
   <style scoped>

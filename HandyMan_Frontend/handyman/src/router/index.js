@@ -1,10 +1,11 @@
 import { createWebHistory, createRouter } from "vue-router";
 import UserLogin from "../components/UserLogin.vue";
-import WorkerLogin from "../components/WorkerLogin";
+//import WorkerLogin from "../components/WorkerLogin";
 import HomePage from "../components/HomePage.vue";
 import SingUp from "../components/SingUp.vue";
 import DisplayWorkers from "../components/DisplayWorkers.vue";
 import DisplayJobs from "../components/DisplayJobs.vue"
+import WorkerDetails from "../components/WorkerDetails.vue"
 
 const routes = [
   {
@@ -20,9 +21,9 @@ const routes = [
   },
 
   {
-    name: "WorkerLogin",
-    component: WorkerLogin,
-    path: "/workerlogin"
+    name: "WorkerDetails",
+    component: WorkerDetails,
+    path: "/details"
   },
 
   {

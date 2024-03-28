@@ -50,17 +50,31 @@ export default {
     login() {
       LoginService.login(this.userLogin)
         .then((response) => {
-          let user = response.data;
-          console.log(user);
+          //let user = response.data;
+          //let userId = response.data.record.id
+
           console.log(response);
+          let userType = response.data.type;
+                console.log("type: ", userType)
+                if (userType === "user") {
+                    localStorage.setItem('token', response.data.token);
+                    this.isLoggedIn = true; 
+                    router.push("/");
+                   
+                }
+                else if (userType === "worker") {
+                  localStorage.setItem('token', response.data.token);
+                    this.isLoggedIn = true; 
+                    router.push("/details"); 
+                 }
           
           // Store token in local storage
-          localStorage.setItem('token', response.data.token);
+          //localStorage.setItem('token', response.data.token);
           
-          this.isLoggedIn = true; // Set isLoggedIn to true
+       // Set isLoggedIn to true
 
           // Redirect the user to the appropriate page
-          router.push("/workers");
+         // router.push("/workers");
           //window.location.reload();
         })
         .catch((error) => {
