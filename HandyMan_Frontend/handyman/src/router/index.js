@@ -4,8 +4,11 @@ import UserLogin from "../components/UserLogin.vue";
 import HomePage from "../components/HomePage.vue";
 import SingUp from "../components/SingUp.vue";
 import DisplayWorkers from "../components/DisplayWorkers.vue";
-import DisplayJobs from "../components/DisplayJobs.vue"
 import WorkerDetails from "../components/WorkerDetails.vue"
+import DisplayJobs from "../components/DisplayJobs.vue";
+import UserMessages from "../components/UserMessages.vue";
+import WorkerMessages from "../components/WorkerMessages.vue"
+
 
 const routes = [
   {
@@ -40,6 +43,18 @@ const routes = [
     name: "DisplayJobs",
     component: DisplayJobs,
     path: "/jobs"
+  },
+
+  {
+    name: "UserMessages",
+    component: UserMessages,
+    path: "/usermessages"
+  },
+
+  {
+    name: "WorkerMessages",
+    component: WorkerMessages,
+    path: "/workermessages"
   }
  
 ];

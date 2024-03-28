@@ -47,7 +47,7 @@ public class HandymanApplication {
                 Worker worker = new Worker("worker_" + firstNames.get(i) + lastNames.get(i),
                         passwordEncoder.encode("password" + i), "worker" + i + "@example.com",
                         "Expert in " + skills.get(i), locations.get(i),
-                        4.0 + (i % 5), 10 + i,
+                        1.0 + (i % 5), 10 + i,
                         new HashSet<>(), "09:00-17:00", 100 + i * 100,
                         "555-01" + String.format("%02d", i), communicationPreferences[i % 2]);
                 allWorkers.add(workerRepository.save(worker));
@@ -59,7 +59,7 @@ public class HandymanApplication {
                     User user = userRepository.findById((long) random.nextInt(10) + 1).get();
                     boolean isCompleted = random.nextBoolean();
                     Job job = new Job(userRepository.findById((long) (i % 10 + 1)).get(), worker, isCompleted,
-                            isCompleted ? 4.0 + i % 5 : null,
+                            isCompleted ? 1.0 + (i % 5) : null,
                             jobDescriptions.get(i), 100 + i * 10,
                             new HashSet<>());
                             job = jobRepository.save(job);

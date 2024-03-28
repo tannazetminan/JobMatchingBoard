@@ -73,4 +73,18 @@ public class MessageController {
 
         return allMessages;
     }
+
+
+    @GetMapping("/user/{userId}/all")
+    public ResponseEntity<List<Message>> getAllMessagesByUser(@PathVariable Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Message> messages = messageRepository.findByUser(user);
+
+        if (messages.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(messages, HttpStatus.OK);
+    }
+
 }
