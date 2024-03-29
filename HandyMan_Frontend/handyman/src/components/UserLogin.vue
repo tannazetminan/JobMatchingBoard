@@ -59,23 +59,17 @@ export default {
                 if (userType === "user") {
                     localStorage.setItem('token', response.data.token);
                     this.isLoggedIn = true; 
-                    router.push("/");
+                    router.push("/userdetails");
+                 
                    
                 }
                 else if (userType === "worker") {
                   localStorage.setItem('token', response.data.token);
                     this.isLoggedIn = true; 
-                    router.push("/details"); 
+                    router.push("/workerdetails"); 
+                   
                  }
-          
-          // Store token in local storage
-          //localStorage.setItem('token', response.data.token);
-          
-       // Set isLoggedIn to true
-
-          // Redirect the user to the appropriate page
-         // router.push("/workers");
-          //window.location.reload();
+         
         })
         .catch((error) => {
           console.error(error);
