@@ -39,17 +39,21 @@
             <div v-if="jobs.length" >
                     <div v-for="(job, index) in jobs" :key="index" class="job">
                         <div v-if="jobs.length && displayNewJobs">
-                            <p class="desc-job"><strong>Posted:</strong> {{ date }} </p>
-                            <p class="desc-job"><strong>Description:</strong> {{ job.description }}</p>
-                            <p class="desc-job"><strong>Presupuesto:</strong> {{ job.budget }}</p>
+                            <p class="desc-jobs1">Posted: {{ date }} </p>
+                            <p class="desc-job"> {{ message }}{{ job.description }} {{ message2 }}</p>
+                            <p class="desc-job"><strong>Budged:</strong> ${{ job.budget }}</p>
+                            <div class="container-apply-btn">
+                                <button class="apply-btn">Apply Now</button>
+                            </div>
+                            
                         </div>
                         <div v-else-if="jobs.length && displayOldJobs">
-                            <p class="desc-job"><strong>Description:</strong> {{ job.description }}</p>
-                            <p class="desc-job"><strong>Rate:</strong>
+                            <p class="desc-job"> {{ message }}{{ job.description }} {{ message2 }} </p>
+                            <p class="desc-job"><strong>Rate: </strong>
                                 <span v-if="job.rating !== null">{{ job.rating }}</span>
                                 <span v-else>{{ rating }}</span>
                             </p>
-                            <p class="desc-job"><strong>Status:</strong>
+                            <p class="desc-job"><strong>Status: </strong>
                                 <span>{{ job.is_completed ? 'Completed' : 'In progress' }}</span>
                             </p>
                            
@@ -85,7 +89,10 @@ export default{
             displayNewjobs: true,
             displayOldJobs: false,
             rating: "Rating no available", 
-            status: "In progess"
+            status: "In progess",
+            message: "We are seeking a professional  for ",
+            message2: " . It's required knowledge of construction materials and carpentry techniques.Ability to interpret blueprints and follow instructions.Teamwork skills and ability to meet deadlines"
+
 
         }
 
@@ -230,9 +237,9 @@ input{
     width: 80%;
     border-radius: 0.5rem;
     text-align: left;
-    background-color: rgb(211, 227, 230);
-    padding: 5px
-    
+    background-color: rgb(229, 236, 238);
+    padding: 5px;
+    font-size: 20px;
     
 }
 
@@ -250,7 +257,7 @@ input{
 }
 .personal-data{
     /*background-color: brown;*/
-    background-color: rgb(196, 223, 245);
+    background-color: rgb(230, 239, 247);
     border-radius: 0.5rem;
     padding: 5px;
     font-size: 18px;
@@ -265,11 +272,13 @@ input{
 .setting{
     height: 350px;
     margin-bottom: 50px;
-    background-color: rgb(196, 223, 245);
+    background-color: rgb(230, 239, 247);
     border-radius: 0.5rem;
     margin-top: 15px;
     padding: 5px;
     font-size: 20px;
+    text-align: left;
+ 
 }
 
 
@@ -287,6 +296,7 @@ text-align: left;
     font-size: inherit;
     padding: 0; 
     font-weight: bold;
+    font-size: 25px;
 }
 .edit{
     width: 30px;
@@ -299,8 +309,37 @@ h2{
     margin-top: 15px;
     font-size: 25px;
     width: 90%;
+    text-align: center;
 }
 
+.desc-job{
+    font-size: 20px;
+}
+.desc-jobs1{
+    font-size: 20px;
+   text-align: right;
+   margin-right: 15px;
+   color:rgb(85, 80, 76)
 
+}
+.container-apply-btn{
+    text-align: right;
+}
+.apply-btn{
+    margin-left: 30px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    background-color: transparent;
+    border: none;
+    color: rgb(214, 132, 65); 
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0; 
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 15px;
+    
+    
+}
 
 </style>
