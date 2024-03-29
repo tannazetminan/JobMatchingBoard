@@ -86,8 +86,37 @@ public class JobController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    
-    
-    
+
+    // get all jobs for a specific user
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Job>> getJobsByUserId(@PathVariable Long userId) {
+        try {
+            List<Job> jobs = jobRepository.findByClientId(userId);
+            if (jobs.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(jobs, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // get all jobs for a specific worker
+    @GetMapping("/worker/{workerId}")
+    public ResponseEntity<List<Job>> getJobsByWorkerId(@PathVariable Long workerId) {
+        try {
+            List<Job> jobs = jobRepository.findByWorkerId(workerId);
+            if (jobs.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(jobs, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
 }
 
