@@ -41,6 +41,13 @@ class FetchDataService {
         return http.post("/messages/send", messageData);
     }
 
+    completeJob(jobId) {
+        return http.post(`/jobs/${jobId}/complete`);
+    }
+
+    setJobRating(jobId, rating) {
+        return http.post(`/jobs/${jobId}/rating`, {rating});
+      }
 }
 
 export default new FetchDataService();

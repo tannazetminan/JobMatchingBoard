@@ -36,7 +36,9 @@ import LoginService from "../services/LoginService";
 import router from "../router/index.js";
   
 export default {
+
   name: "UserLogin",
+
   data() {
     return {
       userLogin: {
@@ -45,30 +47,38 @@ export default {
       },
       errorMessage: null,
     };
-},
+  },
+  
   methods: {
     login() {
       LoginService.login(this.userLogin)
         .then((response) => {
-          //let user = response.data;
-          //let userId = response.data.record.id
-
           console.log(response);
+          let userId = response.data.record.id
+          //let user = response.data;
+
           let userType = response.data.type;
-                console.log("type: ", userType)
-                if (userType === "user") {
-                    localStorage.setItem('token', response.data.token);
-                    this.isLoggedIn = true; 
-                    router.push("/userdetails");
-                 
-                   
-                }
-                else if (userType === "worker") {
-                  localStorage.setItem('token', response.data.token);
-                    this.isLoggedIn = true; 
-                    router.push("/workerdetails"); 
-                   
-                 }
+          console.log("type: ", userType)
+          // if (userType === "user" || userType === "worker") {
+          //   localStorage.setItem('token', response.data.token);
+          //   localStorage.setItem(userType === "user" ? ('userId', userId) : ('workerId', userId)); 
+          //   router.push(userType === "user" ? "/userdetails" : "/workerdetails");
+          // }
+
+          if (userType === "user") {
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userId', userId); 
+            console.log(userId);
+            this.isLoggedIn = true; 
+            router.push("/userdetails");                 
+          }
+          else if (userType === "worker") {
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('workerId',userId); 
+            console.log(userId);
+            this.isLoggedIn = true; 
+            router.push("/workerdetails");              
+            }
          
         })
         .catch((error) => {

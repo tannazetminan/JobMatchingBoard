@@ -1,58 +1,67 @@
-<template>
-   
-   <div class="container-worker">
-        <div class="categories">
-            <span> Carpentry</span>
-            <span>Plumbing </span>
-            <span>Electrical </span>
-            <span>Masonry</span>
-            <span>Gardening </span>
-
-        </div>
-
-    <div>
-        <h1 class="title">Hire the best skilled workers </h1>
+<template>   
+  <div class="container-worker">
+    <div class="categories">
+        <span> Carpentry</span>
+        <span>Plumbing </span>
+        <span>Electrical </span>
+        <span>Masonry</span>
+        <span>Gardening </span>
     </div>
+
+  <div>
+      <h1 class="title">Hire the best skilled workers </h1>
+  </div>
     <div class="cards">
-    <div v-for="worker in workers" :key="worker.id" class="card-worker">
-      <img src="images/people.png"  class="profile" />
-      <p>{{ worker.username }}</p>
-      <p>{{ worker.description }}</p>
-      <!-- <div class="rating-container">
-        <img src="images/star.png" class="rating" /><span>{{ worker.averageRating }}</span>
-      </div> -->
-      <div v-if="worker.averageRating === 5"> 
-                <img src="images/5star.png" class="rating" />
-            </div>
-            <div v-if="worker.averageRating === 4"> 
-                <img src="images/4star.png" class="rating" />
-            </div>
-            <div v-if="worker.averageRating === 3"> 
-                <img src="images/3star.png" class="rating" />
-            </div>
-            <div v-if="worker.averageRating === 2"> 
-                <img src="images/2star.png" class="rating" />
-            </div>
-            <div v-if="worker.averageRating=== 1"> 
-                <img src="images/1star.png" class="rating" />
-            </div>
-      <p>Availability: {{ worker.workingHours }}</p>  
-      <button type="submit" class="button-profile">See more</button>        
+      <div v-for="worker in workers" :key="worker.id" class="card-worker">
+        <img src="images/people.png"  class="profile" />
+        <p>{{ worker.username }}</p>
+        <p>{{ worker.description }}</p>
+        <!-- <div class="rating-container">
+          <img src="images/star.png" class="rating" /><span>{{ worker.averageRating }}</span>
+        </div> -->
+        <div v-if="worker.averageRating === 5"> 
+          <img src="images/5star.png" class="rating" />
+        </div>
+        <div v-if="worker.averageRating === 4"> 
+            <img src="images/4star.png" class="rating" />
+        </div>
+        <div v-if="worker.averageRating === 3"> 
+            <img src="images/3star.png" class="rating" />
+        </div>
+        <div v-if="worker.averageRating === 2"> 
+            <img src="images/2star.png" class="rating" />
+        </div>
+        <div v-if="worker.averageRating=== 1"> 
+            <img src="images/1star.png" class="rating" />
+        </div>
+        <p>Availability: {{ worker.workingHours }}</p>  
+        <star-rating v-model:rating="worker.averageRating"
+                  star-size="30"	
+                  show-rating=False
+                  animate=true
+                  @update:rating="setRating(worker.id, worker.totalRatings, $event)">
+              </star-rating>
+        <button type="submit" class="button-profile">See more</button>        
+      </div>
     </div>
   </div>
-   </div>
 
 </template>
 
+
+
 <script>
-
 import FetchDataService from "../services/FetchDataService";
+import StarRating from 'vue-star-rating'
 
-
-export default{
-
-    
+export default{  
     name:"DisplayWorkers",
+
+    components: {
+        StarRating
+    },
+
+
     data() {
     return {
       workers: []
@@ -72,7 +81,14 @@ export default{
             console.log(error.response.data);
             console.log(error.response.status);
         }} );
-      }},
+      },
+        setRating(workerId, totalRatings, rating) {
+          this.rating= rating;
+          console.log(totalRatings)
+          console.log("Updating rating for job ID:", workerId, "with rating:", rating);
+          // Call the updateRating method with jobId and rating
+        }
+    },
     mounted() {
     this.fetchWorkers();
   },
@@ -135,7 +151,7 @@ h1{
 }
 
 .rating{
-  width: 18px;
+  max-width: 80px;
   height: 18px;
   margin: auto;
   margin-top: 15px;
