@@ -86,9 +86,9 @@ public class JobService {
     public Job rateJob(Long jobId, double rating) {
         Job job = jobRepository.findById(jobId).orElseThrow(() -> new RuntimeException("Job not found"));
 
-        if (!job.isIsCompleted()) {
-            throw new RuntimeException("Job is not completed yet. Cannot rate.");
-        }
+//        if (!job.isIsCompleted()) {
+//            throw new RuntimeException("Job is not completed yet. Cannot rate.");
+//        }
 
         // update job rating
         job.setRating(rating);
