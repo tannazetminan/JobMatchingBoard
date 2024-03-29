@@ -25,6 +25,9 @@ class FetchDataService {
         return http.get(`/jobs/skills/${skill}`)
     }
 
+    getjobByWorkerId(sid){
+        return http.get(`/workers/${sid}/jobs`)
+    }
     
     getAllUserMessages(userId) {
         return http.get(`/messages/user/${userId}`);

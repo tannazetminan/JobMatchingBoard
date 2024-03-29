@@ -4,16 +4,26 @@
         
         <div class="cards-description">
            
-                <img src="images/people.png" class="profile" />  
-        
             <div class ="personal-data">
-                <p>{{ worker.username }}</p>
-                <p>{{ worker.description }}</p>
+                <img src="images/people.png" class="profile" />  
+                <p class=" data-description">{{ worker.username }}</p>
+                <p class="data-description">{{ worker.description }}</p>
             </div>
 
 
             <div class="setting">
-                <h3>Preferences</h3>
+                <div class = "edit-preferences">
+                    <h2>Preferences</h2>
+                <img src="images/editar.png" class="edit" /> 
+                </div>
+                
+                <p><strong>Location:</strong> {{ worker.location }}</p>
+                <p><strong>Availability:</strong> {{ worker.workingHours }}</p>
+                <p><strong>Preferred communication:</strong> {{ worker.preferredCommunication }}</p>
+                <p><strong>Phone:</strong> {{ worker.phone }}</p>
+                <p><strong>Email:</strong> {{ worker.email }}</p>
+
+              
             </div>
         </div>
 
@@ -22,15 +32,31 @@
                 <input  tye="text" placeholder="Search..."/>
             </div>
             <div class="title-jobs">
-                <button @click="fetchJobs">Best Matches</button>
-                <button @click="fetchRecentJobs">Recent Jobs</button>
+                <button @click="fetchJobs" class="fetchData">Best Matches</button>
+                <button @click="fetchRecentJobs" class="fetchData">Recent Jobs</button>
             </div>          
                 
             <div v-if="jobs.length" >
                     <div v-for="(job, index) in jobs" :key="index" class="job">
-                        <p class="desc-job">Posted:{{ date }} </p>
-                        <p class="desc-job">Description: {{ job.description }}</p>
-                        <p class="desc-job">Presupuesto: {{ job.budget }}</p>
+                        <div v-if="jobs.length && displayNewJobs">
+                            <p class="desc-job"><strong>Posted:</strong> {{ date }} </p>
+                            <p class="desc-job"><strong>Description:</strong> {{ job.description }}</p>
+                            <p class="desc-job"><strong>Presupuesto:</strong> {{ job.budget }}</p>
+                        </div>
+                        <div v-else-if="jobs.length && displayOldJobs">
+                            <p class="desc-job"><strong>Description:</strong> {{ job.description }}</p>
+                            <p class="desc-job"><strong>Rate:</strong>
+                                <span v-if="job.rating !== null">{{ job.rating }}</span>
+                                <span v-else>{{ rating }}</span>
+                            </p>
+                            <p class="desc-job"><strong>Status:</strong>
+                                <span>{{ job.is_completed ? 'Completed' : 'In progress' }}</span>
+                            </p>
+                           
+                        </div>
+                           
+                        
+                        
                     </div>
                
             </div>
@@ -55,7 +81,11 @@ export default{
             },
             jobs:[],
             date: "",
-            random_number: 0
+            random_number: 0, 
+            displayNewjobs: true,
+            displayOldJobs: false,
+            rating: "Rating no available", 
+            status: "In progess"
 
         }
 
@@ -64,6 +94,8 @@ export default{
     methods:{
 
         retrieveWorker(){
+            this.displayNewJobs = true;
+            this.displayOldJobs = false;
 
             const id = localStorage.getItem('sid')
             console.log("SID:" + id)
@@ -73,6 +105,7 @@ export default{
                 console.log("skills")
                 console.log(this.worker.skills)
                 this.fetchJobs()
+               
             })
             .catch(error=>{
                 console.log(error)
@@ -97,17 +130,37 @@ export default{
                 .then(response => {
                     this.jobs = response.data;
                     this.date= newDate;
+                    this.displayOldJobs=false
+                    this.displayNewJobs=true
+                    
                  
                 })
                 .catch(error => {
                     console.error(error);
                 });
             });
+        },
+        fetchRecentJobs(){
+            const id = localStorage.getItem('sid')
+            FetchDataServices.getjobByWorkerId(id)
+            .then(response=>{
+                this.jobs = response.data
+                this.displayNewJobs=false
+                this.displayOldJobs =true
+                
+                console.log(this.jobs)
+               
+            })
+            .catch(error => {
+                    console.error(error);
+                })
+
         }
 
     },
     mounted(){
         this.retrieveWorker()
+        
         
        
     }
@@ -141,7 +194,7 @@ input{
     border-radius: 0.8rem;
     margin-left: 25px;
     /*background-image: url('../images/search.png');*/
-    background-size: 20px; /* Tamaño de la imagen */
+    background-size: 20px; 
     background-repeat: no-repeat;
     margin-top: 20px;
     
@@ -155,10 +208,8 @@ input{
 }
 .cards-description{
   text-align: center;
-  /*float: left;*/
   width: 20%;
   height: 750px;
-  background-color: rgb(84, 99, 114);
   align-items: flex-start;
   border-radius: 0.5rem;
   
@@ -166,24 +217,21 @@ input{
 }
 
 .card-jobs{
-    /*float: left;*/
     width: 70%;
     text-align: center;
-    margin-left: 100px;
-  
-    
+    margin-left: 100px;  
 
 }
 
 
 .job{
- 
     margin-left: 20px;
     margin-bottom: 20px;
-    border: 1px solid;
     width: 80%;
     border-radius: 0.5rem;
     text-align: left;
+    background-color: rgb(211, 227, 230);
+    padding: 5px
     
     
 }
@@ -194,25 +242,65 @@ input{
 }
 
 .cards{
-    
-    /*margin-bottom: 80px;*/
-    background-color: rgb(40, 85, 110);
+ 
+    background-color: rgb(121, 168, 194);
     align-items: flex-start;
     
    
 }
 .personal-data{
     /*background-color: brown;*/
-    margin-bottom: 100px;
-    margin-bottom: 50px;
+    background-color: rgb(196, 223, 245);
+    border-radius: 0.5rem;
+    padding: 5px;
+    font-size: 18px;
+    margin-top: 15px;
+}
+.data-description{
+    margin-bottom: 15px;
+    padding: 2px;
+    font-size: 20px;
+   
 }
 .setting{
-    height: 600px;
-    /*background-color: brown;*/
+    height: 350px;
     margin-bottom: 50px;
+    background-color: rgb(196, 223, 245);
+    border-radius: 0.5rem;
+    margin-top: 15px;
+    padding: 5px;
+    font-size: 20px;
 }
 
-.title-jobs{}
+
+.title-jobs{
+text-align: left;
+}
+.fetchData{
+    margin-left: 30px;
+    margin-bottom: 40px;
+    font-size: 18px;
+    background-color: transparent;
+    border: none;
+    color: rgb(60, 172, 15); 
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0; 
+    font-weight: bold;
+}
+.edit{
+    width: 30px;
+    height: 40px;
+}
+.edit-preferences{
+    display: flex
+}
+h2{
+    margin-top: 15px;
+    font-size: 25px;
+    width: 90%;
+}
+
 
 
 </style>
