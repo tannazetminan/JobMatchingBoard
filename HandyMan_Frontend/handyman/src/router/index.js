@@ -1,9 +1,11 @@
 import { createWebHistory, createRouter } from "vue-router";
 import UserLogin from "../components/UserLogin.vue";
-import WorkerLogin from "../components/WorkerLogin";
+//import WorkerLogin from "../components/WorkerLogin";
 import HomePage from "../components/HomePage.vue";
 import SingUp from "../components/SingUp.vue";
 import DisplayWorkers from "../components/DisplayWorkers.vue";
+import WorkerDetails from "../components/WorkerDetails.vue";
+import UserDetails from "../components/UserDetails.vue"
 import DisplayJobs from "../components/DisplayJobs.vue";
 import UserMessages from "../components/UserMessages.vue";
 import WorkerMessages from "../components/WorkerMessages.vue"
@@ -23,9 +25,15 @@ const routes = [
   },
 
   {
-    name: "WorkerLogin",
-    component: WorkerLogin,
-    path: "/workerlogin"
+    name: "WorkerDetails",
+    component: WorkerDetails,
+    path: "/workerdetails"
+  },
+
+  {
+    name: "userDetails",
+    component: UserDetails,
+    path: "/userdetails"
   },
 
   {

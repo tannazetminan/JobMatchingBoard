@@ -6,7 +6,7 @@
             <span>Plumbing </span>
             <span>Electrical </span>
             <span>Masonry</span>
-             <span>Gardening </span>
+            <span>Gardening </span>
 
         </div>
 
@@ -37,6 +37,12 @@
                 <img src="images/1star.png" class="rating" />
             </div>
       <p>Availability: {{ worker.workingHours }}</p>  
+      <star-rating v-model:rating="worker.averageRating"
+               star-size="30"	
+               show-rating=False
+               animate=true
+               @update:rating="setRating(worker.id, worker.totalRatings, $event)">
+           </star-rating>
       <button type="submit" class="button-profile">See more</button>        
     </div>
   </div>
@@ -44,15 +50,20 @@
 
 </template>
 
+
+
 <script>
-
 import FetchDataService from "../services/FetchDataService";
+import StarRating from 'vue-star-rating'
 
-
-export default{
-
-    
+export default{  
     name:"DisplayWorkers",
+
+    components: {
+        StarRating
+    },
+
+
     data() {
     return {
       workers: []
@@ -65,16 +76,21 @@ export default{
             FetchDataService.getAllWorkers()
             .then(response =>{
                 this.workers =response.data
-                console.log(response)
-         
-                
+                console.log(response)               
             })
             .catch (error =>{
                 if (error.response) {
             console.log(error.response.data);
             console.log(error.response.status);
         }} );
-      }},
+      },
+        setRating(workerId, totalRatings, rating) {
+          this.rating= rating;
+          console.log(totalRatings)
+          console.log("Updating rating for job ID:", workerId, "with rating:", rating);
+          // Call the updateRating method with jobId and rating
+        }
+    },
     mounted() {
     this.fetchWorkers();
   },

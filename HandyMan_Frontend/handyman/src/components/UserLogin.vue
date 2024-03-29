@@ -36,7 +36,9 @@ import LoginService from "../services/LoginService";
 import router from "../router/index.js";
   
 export default {
+
   name: "UserLogin",
+
   data() {
     return {
       userLogin: {
@@ -45,25 +47,39 @@ export default {
       },
       errorMessage: null,
     };
-},
+  },
+  
   methods: {
     login() {
       LoginService.login(this.userLogin)
         .then((response) => {
-          let user = response.data;
-          console.log(user);
           console.log(response);
-          
-          // Store token in local storage
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('userId', user.Id); 
+          let userId = response.data.record.id
+          //let user = response.data;
 
-          
-          this.isLoggedIn = true; // Set isLoggedIn to true
+          let userType = response.data.type;
+          console.log("type: ", userType)
+          // if (userType === "user" || userType === "worker") {
+          //   localStorage.setItem('token', response.data.token);
+          //   localStorage.setItem(userType === "user" ? ('userId', userId) : ('workerId', userId)); 
+          //   router.push(userType === "user" ? "/userdetails" : "/workerdetails");
+          // }
 
-          // Redirect the user to the appropriate page
-          router.push("/workers");
-          //window.location.reload();
+          if (userType === "user") {
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userId', userId); 
+            console.log(userId);
+            this.isLoggedIn = true; 
+            router.push("/userdetails");                 
+          }
+          else if (userType === "worker") {
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('workerId',userId); 
+            console.log(userId);
+            this.isLoggedIn = true; 
+            router.push("/workerdetails");              
+            }
+         
         })
         .catch((error) => {
           console.error(error);
