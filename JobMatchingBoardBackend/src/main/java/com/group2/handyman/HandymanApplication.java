@@ -84,13 +84,12 @@ public class HandymanApplication {
             });
 
             // Create messages
-            // Create messages
             for (int i = 0; i < 10; i++ ) {
                 for (int j = 1 ; j < 10; j++ ) {
                 	if (i!=j) {
 		                Worker worker = workerRepository.findById((long) (i % 10 + 1)).get();
 		                User user = userRepository.findById((long) (j % 10 + 1)).get();
-		                LocalDateTime timestamp = LocalDateTime.now().minusDays(j % 30);
+		                LocalDateTime timestamp = LocalDateTime.now().minusDays(i % 30);
 		                String content = "Can we schedule a visit for " + jobDescriptions.get(i) + "?";
 		                Message message = new Message(user, worker, content, timestamp);
 		                messageRepository.save(message);
