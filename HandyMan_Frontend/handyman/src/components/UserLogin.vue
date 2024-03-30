@@ -56,24 +56,30 @@ export default {
           console.log(response);
           let userId = response.data.record.id
           //let user = response.data;
-
           let userType = response.data.type;
-          console.log("type: ", userType)
-          // if (userType === "user" || userType === "worker") {
-          //   localStorage.setItem('token', response.data.token);
-          //   localStorage.setItem(userType === "user" ? ('userId', userId) : ('workerId', userId)); 
-          //   router.push(userType === "user" ? "/userdetails" : "/workerdetails");
-          // }
+          localStorage.setItem('token', response.data.token);
 
-          if (userType === "user") {
-            localStorage.setItem('token', response.data.token);
+          //for storing if it is user or worker
+          localStorage.setItem('userType', userType);   
+          
+          //for storing the fullname
+          let parts = response.data.record.username.split("_");
+          localStorage.setItem('fullName', parts[1]); 
+
+          //for updating navbar
+          localStorage.setItem('newLogin', true);   
+          let newLogin =localStorage.getItem('newLogin');   
+          console.log("is it newlogin:" + newLogin);
+
+  
+        
+          if (userType === "user") { 
             localStorage.setItem('userId', userId); 
             console.log(userId);
             this.isLoggedIn = true; 
             router.push("/userdetails");                 
           }
           else if (userType === "worker") {
-            localStorage.setItem('token', response.data.token);
             localStorage.setItem('workerId',userId); 
             console.log(userId);
             this.isLoggedIn = true; 
@@ -92,6 +98,14 @@ export default {
           }
         });
     }
+  },
+
+  mounted() {
+    localStorage.setItem('newLogin', false);    
+    let newLogin;
+    newLogin =localStorage.getItem('newLogin');   
+    console.log("is it newlogin:" + newLogin);
+   
   }
 
 };
@@ -120,8 +134,6 @@ form{
   margin-left: 15rem;
   margin-top: 5rem;
   text-align: left;
- 
-  
   
 }
 

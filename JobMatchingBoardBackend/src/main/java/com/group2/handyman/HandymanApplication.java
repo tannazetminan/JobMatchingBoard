@@ -54,16 +54,24 @@ public class HandymanApplication {
             }
 
             // Create jobs and link them with workers and users, then create skills linked to jobs and workers
+            int[] jobDescriptionIndex = {0}; // Use an array to store the index
             allWorkers.forEach(worker -> {
-                IntStream.rangeClosed(1, 2).forEach(i -> {
+                IntStream.rangeClosed(1, 3).forEach(i -> {
                     User user = userRepository.findById((long) random.nextInt(10) + 1).get();
                     boolean isCompleted = random.nextBoolean();
                     Job job = new Job(userRepository.findById((long) (i % 10 + 1)).get(), worker, isCompleted,
                             isCompleted ? 1.0 + (i % 5) : null,
-                            jobDescriptions.get(i), 100 + i * 10,
+                            jobDescriptions.get(jobDescriptionIndex[0]), 100 + i * 10, // Use jobDescriptionIndex here
                             new HashSet<>());
                             job = jobRepository.save(job);
 
+                    // Increment the job description index
+                    jobDescriptionIndex[0]++;
+                    if (jobDescriptionIndex[0] >= jobDescriptions.size()) {
+                        jobDescriptionIndex[0] = 0; // Reset the index if it exceeds the size of the descriptions list
+                    }
+                            
+               
                     // Assuming each job has 1 skill for simplification
                     Skill skill = new Skill(skills.get(random.nextInt(skills.size())), worker, job);
                     skillRepository.save(skill);
@@ -84,13 +92,17 @@ public class HandymanApplication {
             });
 
             // Create messages
-            for (int i = 0; i < 10; i++) {
-                Worker worker = workerRepository.findById((long) (i % 10 + 1)).get();
-                User user = userRepository.findById((long) ((i + 1) % 10 + 1)).get();
-                LocalDateTime timestamp = LocalDateTime.now().minusDays(i % 30);
-                String content = "Can we schedule a visit for " + jobDescriptions.get(i) + "?";
-                Message message = new Message(user, worker, content, timestamp);
-                messageRepository.save(message);
+            for (int i = 0; i < 10; i++ ) {
+                for (int j = 1 ; j < 10; j++ ) {
+                	if (i!=j) {
+		                Worker worker = workerRepository.findById((long) (i % 10 + 1)).get();
+		                User user = userRepository.findById((long) (j % 10 + 1)).get();
+		                LocalDateTime timestamp = LocalDateTime.now().minusDays(i % 30);
+		                String content = "Can we schedule a visit for " + jobDescriptions.get(i) + "?";
+		                Message message = new Message(user, worker, content, timestamp);
+		                messageRepository.save(message);
+                	}
+                }
             }
         };
     }

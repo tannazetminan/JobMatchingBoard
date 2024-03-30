@@ -16,7 +16,6 @@
                     <h2>Preferences</h2>
                 <img src="images/editar.png" class="edit" /> 
                 </div>
-                
                 <p><strong>Location:</strong> {{ worker.location }}</p>
                 <p><strong>Availability:</strong> {{ worker.workingHours }}</p>
                 <p><strong>Preferred communication:</strong> {{ worker.preferredCommunication }}</p>
@@ -78,6 +77,7 @@ export default{
 
     data(){
         return{
+            newLogin: false,
             worker: {
                 username:"",
                 description:"",
@@ -162,14 +162,24 @@ export default{
                     console.error(error);
                 })
 
-        }
+        },
+        checklogin() {
+        console.log("ddddddddddddddddddddddddddd")
+        localStorage.setItem('newLogin', false);
+        this.newLogin = localStorage.getItem('newLogin');
+        console.log(this.newLogin)
+        window.location.reload();
+      } 
 
     },
     mounted(){
-        this.retrieveWorker()
-        
-        
-       
+      this.retrieveWorker()          
+      let newLogin = localStorage.getItem('newLogin'); 
+      console.log("workerdetails newlogin:" + newLogin);   
+      if (newLogin === 'true') { // Check if newLogin is true
+        localStorage.setItem('newLogin', false);
+        this.checklogin();
+      }  
     }
 
 
@@ -180,7 +190,7 @@ export default{
 
 </script>
 
-<style scoped>
+<style scoped >
 .container-cards{
     width: 90%;
     margin: auto;

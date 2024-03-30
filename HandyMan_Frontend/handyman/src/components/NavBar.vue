@@ -10,24 +10,29 @@
           <li>
             <router-link to="/" class="nav-link">Home</router-link>
           </li>
-          <li v-if="!isLoggedIn">
-            <router-link to="/singup" class="nav-link">Sign up</router-link>
+          <li>
+            <router-link to="/workers" class="nav-link">Workers</router-link>
+          </li>
+          <li>
+            <router-link to="/jobs" class="nav-link">Jobs</router-link>
+          </li>
+          <li v-if="isLoggedIn && userType==='user' ">
+            <router-link to="/userdetails" class="nav-link">Profile</router-link>
+          </li>
+          <li v-if="isLoggedIn && userType==='worker'">
+            <router-link to="/workerdetails" class="nav-link">Profile</router-link>
+          </li>
+          <li v-if="isLoggedIn">
+            <router-link to="/usermessages" class="nav-link">Messages</router-link>
           </li>
           <li v-if="!isLoggedIn">
             <router-link to="/login" class="nav-link">Login</router-link>
           </li>
+          <li v-if="!isLoggedIn">
+            <router-link to="/singup" class="nav-link">Sign up</router-link>
+          </li>
           <li v-if="isLoggedIn">
             <router-link to="/" class="nav-link"><a href="#" @click="logout">Logout</a></router-link>
-          </li>
-          <li v-if="isLoggedIn">
-            <router-link to="/workers" class="nav-link">Workers</router-link>
-          </li>
-          <li v-if="isLoggedIn">
-            <router-link to="/jobs" class="nav-link">Jobs</router-link>
-          </li>
-          <!-- Add the following conditional rendering for the user's messages -->
-          <li v-if="isLoggedIn">
-            <router-link to="/usermessages" class="nav-link">Messages</router-link>
           </li>
         </ul>
       </div>
@@ -37,29 +42,46 @@
 
 <script>
 export default {
+  name: "navBar",
+
   data() {
     return {
-      isLoggedIn: false
+      isLoggedIn: false,
+      userType: null,
     };
   },
+  
+  methods: {
+    logout() {
+      localStorage.removeItem('token');   
+      localStorage.removeItem('userId');      
+      localStorage.removeItem('workerId');      
+      this.isLoggedIn = false;      
+      this.$router.push('/');
+    },
+    chekUserType(){
+      this.userType = localStorage.getItem('userType');
+      console.log("user type" + this.userType)
+    }
+  },
+
   mounted() {
     // Check if token exists in local storage
     if (localStorage.getItem('token')) {
       this.isLoggedIn = true;
+      this.chekUserType();    
     }
   },
-  methods: {
-    logout() {
-      // Remove token from local storage
-      localStorage.removeItem('token');
-      
-      // Update isLoggedIn state
-      this.isLoggedIn = false;
-      
-      // Redirect to home page or login page
-      this.$router.push('/');
-    }
-  }
+
+  // watch: {
+  //   if (newLogin) {
+  //     console.log("ddddddddddddddddddddddddddd")
+
+  //     localStorage.setItem('newLogin', false);
+  //     console.log(newLogin)
+  //     window.location.reload();
+  //   }
+  // }
 };
 </script>
 

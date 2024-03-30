@@ -14,6 +14,8 @@
     <div class="cards">
       <div v-for="worker in workers" :key="worker.id" class="card-worker">
         <img src="images/people.png"  class="profile" />
+        <p><strong>id:</strong> {{ worker.id }}</p>
+
         <p>{{ worker.username }}</p>
         <p>{{ worker.description }}</p>
         <!-- <div class="rating-container">

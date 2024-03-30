@@ -1,7 +1,7 @@
 <template>   
   <div class="container-worker">
 
-    <div class="categories">
+    <!--<div class="categories">
       <div style="color: blue;">"WELCOME user {{ this.clientId }}" &nbsp;&nbsp; &nbsp;&nbsp; </div>
 
       <span> Carpentry</span>
@@ -13,7 +13,8 @@
 
     <div>
       <h1 class="title">UnCompleted Jobs:</h1>
-    </div>
+    </div>-->
+    <header-component></header-component>
 
     <div class="cards">
       <div v-for="job in uncompletedJobs" :key="job.id" class="card-worker">
@@ -22,7 +23,8 @@
           <p>Job Id:{{ job.id }}</p>
           <p>{{ job.description }}</p>
           <p>Clinet Id:{{ job.client }}</p>
-          <div v-if="job.client == this.clientId">g
+          <p>Worker Id:{{ job.worker.id }}</p>
+          <div v-if="job.client == this.clientId">
             <star-rating v-model:rating="job.rating"
               star-size="35"	
               show-rating=False
@@ -48,7 +50,7 @@
         <img src="images/job.png"  class="profile" />
         <p>{{ job.id }}</p>
         <p>{{ job.description }}</p>
-        <p>Worker Id:{{ job.worker_id }}</p>
+        <p>Worker Id:{{ job.worker.username }}</p>
         <p>Clinet Id:{{ job.client }}</p>
         <div v-if="job.rating === null"> 
             <p>Ranking not defined yet</p>
@@ -82,13 +84,16 @@
  <script>
  import FetchDataService from "../services/FetchDataService";
  import StarRating from 'vue-star-rating'
+ import HeaderComponent from './HeaderComponent.vue'
+
 
  export default{ 
      
      name:"DisplayJobs",
 
      components: {
-        StarRating
+        StarRating,
+        HeaderComponent
      },
 
      data() {
