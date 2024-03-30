@@ -14,10 +14,10 @@ public class NotificationService {
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
     public void sendJobCreationNotification(User user, Job job) {
-        logger.info("Notification to User {}: A new job '{}' has been created.", user.getUsername(), job.getDescription());
+        logger.info("Notification to User {}: A new job '{}' has been created.", user.getUsername(), job.getTitle());
     }
 
     public void sendJobCompletionNotification(Worker worker, Job job) {
-        logger.info("Notification to Worker {}: Job '{}' has been completed.", worker.getUsername(), job.getDescription());
+        logger.info("Notification to Worker {}: Job '{}' has been completed.", worker.getUsername(), job.getTitle());
     }
 }

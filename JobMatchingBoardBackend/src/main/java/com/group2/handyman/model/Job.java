@@ -3,8 +3,6 @@ package com.group2.handyman.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,7 +31,8 @@ public class Job {
 
     private boolean isCompleted;
     private Double rating;
-    private String description;
+    private String title;
+	private String description;
     private double budget;
     
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -43,21 +42,22 @@ public class Job {
 
 	public Job() {}
 
-	public Job(User client, Worker worker, boolean isCompleted, Double rating, String description,
+	public Job(User client, Worker worker, boolean isCompleted, Double rating, String title, String description,
 			   double budget, Set<Skill> skills ) {
 		this.client = client;
 		this.worker = worker;
 		this.isCompleted = isCompleted;
 		this.rating = rating;
+		this.title = title;
 		this.description = description;
 		this.budget = budget;
 		this.skills=skills;
 	}
-	public String getDescription() {
-		return description;
+	public String getTitle() {
+		return title;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setTitle(String description) {
+		this.title = description;
 	}
 	public double getBudget() {
 		return budget;
@@ -98,6 +98,22 @@ public class Job {
 
 	 public Set<Skill> getSkills() {
 			return skills;
+	}
+
+	public boolean isCompleted() {
+		return isCompleted;
+	}
+
+	public void setCompleted(boolean completed) {
+		isCompleted = completed;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setSkills(Set<Skill> skills) {

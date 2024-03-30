@@ -75,7 +75,7 @@ public class JobService {
         worker.setCredit(worker.getCredit() + job.getBudget());
 
         // add transaction history to worker
-        String transaction = "Completed job '" + job.getDescription() + "' for $" + job.getBudget();
+        String transaction = "Completed job '" + job.getTitle() + "' for $" + job.getBudget();
         worker.getPreviousTransactions().add(transaction);
 
         workerRepository.save(worker);

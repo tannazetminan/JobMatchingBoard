@@ -22,8 +22,8 @@
           <img src="images/job.png"  class="profile" />
           <p>Job Id:{{ job.id }}</p>
           <p>{{ job.description }}</p>
-          <p>Clinet Id:{{ job.client }}</p>
-          <p>Worker Id:{{ job.worker.id }}</p>
+          <p>Client Id: {{ getClientId(job.client) }}</p>
+          <p>Worker Id:{{ getWorkerId(job.worker) }}</p>
           <div v-if="job.client == this.clientId">
             <star-rating v-model:rating="job.rating"
               star-size="35"	
@@ -50,9 +50,9 @@
         <img src="images/job.png"  class="profile" />
         <p>{{ job.id }}</p>
         <p>{{ job.description }}</p>
-        <p>Worker Id:{{ job.worker.username }}</p>
-        <p>Clinet Id:{{ job.client }}</p>
-        <div v-if="job.rating === null"> 
+        <p>Worker Id:{{ getWorkerId(job.worker) }}</p>
+        <p>Client Id: {{ getClientId(job.client) }}</p>
+        <div v-if="job.rating === null">
             <p>Ranking not defined yet</p>
         </div>
         <div v-if="job.rating === 5"> 
@@ -106,6 +106,15 @@
    },
  
      methods:{
+
+       getClientId(client) {
+         return typeof client === 'object' && client !== null ? client.id : client;
+       },
+
+       getWorkerId(worker) {
+         return typeof worker === 'object' && worker !== null ? worker.id : worker;
+       },
+
       fetchJobs(){
             FetchDataService.getAllJobs()
             .then(response =>{

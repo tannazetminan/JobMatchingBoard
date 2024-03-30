@@ -10,6 +10,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findByUserAndWorker(User user, Worker worker);
     List<Message> findByWorkerAndUser(Worker worker, User user);
     List<Message> findByUser(User user);
+    List<Message> findByWorker(Worker worker);
 
 }
 

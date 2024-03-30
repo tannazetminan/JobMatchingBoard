@@ -88,4 +88,16 @@ public class MessageController {
         return new ResponseEntity<>(messages, HttpStatus.OK);
     }
 
+    @GetMapping("/worker/{workerId}/all")
+    public ResponseEntity<List<Message>> getAllMessagesByWorker(@PathVariable Long workerId) {
+        Worker worker = workerRepository.findById(workerId).orElseThrow(() -> new RuntimeException("Worker not found"));
+
+        List<Message> messages = messageRepository.findByWorker(worker);
+
+        if (messages.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(messages, HttpStatus.OK);
+    }
+
 }
