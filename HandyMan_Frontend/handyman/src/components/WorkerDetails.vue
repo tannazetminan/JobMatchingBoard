@@ -180,7 +180,7 @@ export default{
 
 </script>
 
-<style scoped>
+<style scoped >
 .container-cards{
     width: 90%;
     margin: auto;

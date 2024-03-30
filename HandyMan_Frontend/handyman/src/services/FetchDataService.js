@@ -43,7 +43,7 @@ class FetchDataService {
         return http.post(`/jobs/${jobId}/rating`, {rating});
     }
     getJobByUserId(userId){
-        return http.get(`/jobs/${userId}`);
+        return http.get(`/jobs/user/${userId}`);
     }
 
     //endpoints for message 

@@ -14,9 +14,8 @@
     <div>
       <h1 class="title">UnCompleted Jobs:</h1>
     </div>-->
-    <div>
-        <header-component></header-component>
-    </div>
+    <header-component></header-component>
+
     <div class="cards">
       <div v-for="job in uncompletedJobs" :key="job.id" class="card-worker">
         <div v-if="job.isCompleted === false" class="completedJob">            
@@ -92,9 +91,8 @@
      name:"DisplayJobs",
 
      components: {
-        StarRating, 
+        StarRating,
         HeaderComponent
-       
      },
 
      data() {

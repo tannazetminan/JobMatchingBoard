@@ -59,11 +59,7 @@ export default {
 
           let userType = response.data.type;
           console.log("type: ", userType)
-          // if (userType === "user" || userType === "worker") {
-          //   localStorage.setItem('token', response.data.token);
-          //   localStorage.setItem(userType === "user" ? ('userId', userId) : ('workerId', userId)); 
-          //   router.push(userType === "user" ? "/userdetails" : "/workerdetails");
-          // }
+        
 
           if (userType === "user") {
             localStorage.setItem('token', response.data.token);
