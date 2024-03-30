@@ -91,7 +91,7 @@ public class HandymanApplication {
 		                Worker worker = workerRepository.findById((long) (i % 10 + 1)).get();
 		                User user = userRepository.findById((long) (j % 10 + 1)).get();
 		                LocalDateTime timestamp = LocalDateTime.now().minusDays(j % 30);
-		                String content = "Can we schedule a visit for " + jobDescriptions.get(j) + "?";
+		                String content = "Can we schedule a visit for " + jobDescriptions.get(i) + "?";
 		                Message message = new Message(user, worker, content, timestamp);
 		                messageRepository.save(message);
                 	}
