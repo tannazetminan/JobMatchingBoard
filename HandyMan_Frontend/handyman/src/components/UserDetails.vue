@@ -50,6 +50,7 @@
           <p class="desc-job"><strong>Budget: </strong>        
             <span>{{ job.budget }}</span>
           </p>
+          <p class="desc-job"><strong>Job ID: </strong>{{ job.id }}  </p>
           <p class="desc-job">
             <star-rating v-model:rating="job.rating"
               star-size="35"	
@@ -68,6 +69,7 @@
           <p class="desc-job"><strong>Budget: </strong>        
             <span>{{ job.budget }}</span>
           </p>
+          <p class="desc-job"><strong>Job ID: </strong>{{ job.id }}  </p>
           <!--<p class="desc-job"><strong>Rate: </strong>
                        <span v-if="job.rating !== null">{{ job.rating }}</span>
             <span v-else>{{ rating }}</span>

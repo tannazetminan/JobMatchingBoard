@@ -34,16 +34,14 @@
               <img src="images/budget.png" class="rating" /><span class="bold">Budget: </span> {{ job.budget }}
           </div>
           <p><span class="bold">Job Id: </span>{{ job.id }}</p>
-          <p>Completed: {{ job.isCompleted }}</p>        
-
-          <div v-if="job.client == this.clientId">
+          <div v-if="job.client.id == this.clientId">
             <star-rating v-model:rating="job.rating"
               star-size="35"	
               show-rating=False
               animate=true
               @update:rating="setRating(job.id, $event)">
             </star-rating>    
-            <button @click="markAsCompleted(job.id)" v-if="job.client == clientId" class="button-profile">Mark as Completed</button>    
+            <button @click="markAsCompleted(job.id)" v-if="job.client.id  == clientId" class="button-profile">Mark as Completed</button>    
         </div>  
       
       </div>
