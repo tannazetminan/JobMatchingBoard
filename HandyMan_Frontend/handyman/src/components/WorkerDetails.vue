@@ -164,7 +164,6 @@ export default{
 
         },
         checklogin() {
-        console.log("ddddddddddddddddddddddddddd")
         localStorage.setItem('newLogin', false);
         this.newLogin = localStorage.getItem('newLogin');
         console.log(this.newLogin)

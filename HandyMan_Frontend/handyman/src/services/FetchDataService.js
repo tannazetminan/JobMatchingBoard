@@ -60,7 +60,11 @@ class FetchDataService {
     }
 
     sendMessage(messageData) {
-        return http.post("/messages/send", messageData);
+        return http.post(`/messages/send`, messageData);
+    }
+
+    searchWorkers(query) {
+        return http.get(`/workers/search`, { params: { q: query } });
     }
 
  

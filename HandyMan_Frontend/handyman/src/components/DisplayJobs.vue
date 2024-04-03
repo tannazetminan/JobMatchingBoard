@@ -9,12 +9,14 @@
       <span>Electrical </span>
       <span>Masonry</span>
       <span>Gardening </span>
-    </div> 
+    </div>-->
+
+    <header-component></header-component>
+
 
     <div>
       <h1 class="title">UnCompleted Jobs:</h1>
-    </div>-->
-    <header-component></header-component>
+    </div>
 
     <div class="cards">
       <div v-for="job in uncompletedJobs" :key="job.id" class="card-worker">
@@ -23,7 +25,11 @@
           <p>Job Id:{{ job.id }}</p>
           <p>{{ job.description }}</p>
           <p>Client Id: {{ getClientId(job.client) }}</p>
+          <p>Client: {{ getClientId(job.client.username) }}</p>
+
           <p>Worker Id:{{ getWorkerId(job.worker) }}</p>
+          <p>Worker:{{ getWorkerId(job.worker.username) }}</p>
+
           <div v-if="job.client == this.clientId">
             <star-rating v-model:rating="job.rating"
               star-size="35"	

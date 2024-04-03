@@ -62,9 +62,12 @@ export default {
           //for storing if it is user or worker
           localStorage.setItem('userType', userType);   
           
-          //for storing the fullname
-          let parts = response.data.record.username.split("_");
-          localStorage.setItem('fullName', parts[1]); 
+          // //for storing the fullname
+          // let parts = response.data.record.username.split("_");
+          // if (parts[1] != null || parts[1]!="")
+          // localStorage.setItem('fullName', parts[1]); 
+          let fullname = response.data.record.username;
+          localStorage.setItem('fullName', fullname); 
 
           //for updating navbar
           localStorage.setItem('newLogin', true);   

@@ -37,12 +37,6 @@
             <img src="images/1star.png" class="rating" />
         </div>
         <p>Availability: {{ worker.workingHours }}</p>  
-        <star-rating v-model:rating="worker.averageRating"
-                  star-size="30"	
-                  show-rating=False
-                  animate=true
-                  @update:rating="setRating(worker.id, worker.totalRatings, $event)">
-              </star-rating>
         <button type="submit" class="button-profile">See more</button>        
       </div>
     </div>
@@ -54,15 +48,9 @@
 
 <script>
 import FetchDataService from "../services/FetchDataService";
-import StarRating from 'vue-star-rating'
 
 export default{  
     name:"DisplayWorkers",
-
-    components: {
-        StarRating
-    },
-
 
     data() {
     return {
@@ -84,12 +72,6 @@ export default{
             console.log(error.response.status);
         }} );
       },
-        setRating(workerId, totalRatings, rating) {
-          this.rating= rating;
-          console.log(totalRatings)
-          console.log("Updating rating for job ID:", workerId, "with rating:", rating);
-          // Call the updateRating method with jobId and rating
-        }
     },
     mounted() {
     this.fetchWorkers();
