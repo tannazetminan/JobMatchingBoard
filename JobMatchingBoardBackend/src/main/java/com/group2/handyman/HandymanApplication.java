@@ -74,18 +74,18 @@ public class HandymanApplication {
 
             // Create 20 unique workers, each with exactly one skill
             IntStream.rangeClosed(1, 20).forEach(i -> {
-                String skillName = skillsList.get(i % skillsList.size()); // Ensure unique skill distribution
+                String skillName = skillsList.get(i % skillsList.size());
                 String skillDescription = skillDescriptions.get(skillName);
 
                 Worker worker = new Worker(
                         faker.name().fullName().replace(" ", ".").toLowerCase(),
                         passwordEncoder.encode("password"),
                         faker.internet().emailAddress(),
-                        skillDescription, // Use skill description here
+                        skillDescription,
                         faker.address().city(),
-                        1 + random.nextDouble() * 4,
+                        Math.floor(1 + random.nextDouble() * 5),
                         random.nextInt(100),
-                        new HashSet<>(), // Pass an empty set for skills
+                        new HashSet<>(),
                         "09:00-17:00",
                         1000 + random.nextDouble() * 9000,
                         faker.phoneNumber().cellPhone(),
@@ -94,11 +94,9 @@ public class HandymanApplication {
 
                 worker = workerRepository.save(worker);
 
-                // Create and directly link the skill to the worker
                 Skill workerSkill = new Skill(skillName, worker, null);
                 workerSkill = skillRepository.save(workerSkill);
 
-                // Now that the skill is saved, you can add it to the worker's skills and save the worker again if needed
                 worker.getSkills().add(workerSkill);
                 workerRepository.save(worker);
             });
@@ -115,7 +113,7 @@ public class HandymanApplication {
                 String jobTitle = skill;
                 String jobDescription = "A " + skill.toLowerCase() + " job requiring attention to detail.";
 
-                Job job = new Job(user, worker, isCompleted, isCompleted ? Math.floor(random.nextDouble() * 5) : null,
+                Job job = new Job(user, worker, isCompleted, isCompleted ? Math.floor(random.nextDouble() * 5 + 1) : null,
                         jobTitle, jobDescription, Math.round((100.0 + random.nextDouble() * 400.0) * 100.0) / 100.0,
                         new HashSet<>());
                 job = jobRepository.save(job);
@@ -129,7 +127,6 @@ public class HandymanApplication {
                 users.forEach(user -> {
                     if (random.nextBoolean()) {
                         LocalDateTime timestamp = LocalDateTime.now().minusDays(random.nextInt(30) + 1);
-                        // Pick a random skill for conversation
                         String skill = skillsList.get(random.nextInt(skillsList.size()));
                         String[] messages = messageTemplates.get(skill);
 
