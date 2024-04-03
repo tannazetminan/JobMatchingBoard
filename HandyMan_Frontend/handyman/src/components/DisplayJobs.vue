@@ -21,14 +21,17 @@
     <div class="cards">
       <div v-for="job in uncompletedJobs" :key="job.id" class="card-worker">
         <div v-if="job.isCompleted === false" class="completedJob">            
-          <img src="images/job.png"  class="profile" />
-          <p>Job Id:{{ job.id }}</p>
-          <p>{{ job.description }}</p>
+          <!-- <img src="images/job.png"  class="profile" /> -->
+          <p>Job Id: {{ job.id }}</p>
+          <p>Job Title: {{ job.title }}</p>
+          <p>Job Description: {{ message }}{{ job.description }} {{ message2 }} </p>
           <p>Client Id: {{ getClientId(job.client) }}</p>
-          <p>Client: {{ getClientId(job.client.username) }}</p>
+          <!-- <p>Client: {{ getClientId(job.client.username) }}</p> -->
 
           <p>Worker Id:{{ getWorkerId(job.worker) }}</p>
-          <p>Worker:{{ getWorkerId(job.worker.username) }}</p>
+          <!-- <p>Worker:{{ getWorkerId(job.worker.username) }}</p> -->
+
+          <p>Completed: {{ job.isCompleted }}</p>        
 
           <div v-if="job.client == this.clientId">
             <star-rating v-model:rating="job.rating"
@@ -49,38 +52,42 @@
     <h1 class="title">Completed Jobs:</h1>
   </div>
 
-  <div class="cards"> 
+  <div class="cards-completed"> 
     <div v-for="job in completedJobs" :key="job.id" class="card-worker">
 
       <div class="unCompletedJob">
         <img src="images/job.png"  class="profile" />
         <p>{{ job.id }}</p>
-        <p>{{ job.description }}</p>
-        <p>Worker Id:{{ getWorkerId(job.worker) }}</p>
-        <p>Client Id: {{ getClientId(job.client) }}</p>
-        <div v-if="job.rating === null">
-            <p>Ranking not defined yet</p>
-        </div>
-        <div v-if="job.rating === 5"> 
-            <img src="images/5star.png" class="rating" />
-        </div>
-        <div v-if="job.rating === 4"> 
-            <img src="images/4star.png" class="rating" />
-        </div>
-        <div v-if="job.rating === 3"> 
-            <img src="images/3star.png" class="rating" />
-        </div>
-        <div v-if="job.rating === 2"> 
-            <img src="images/2star.png" class="rating" />
-        </div>
-        <div v-if="job.rating === 1"> 
-            <img src="images/1star.png" class="rating" />
-        </div>
-        <div class="rating-container">
-            <img src="images/budget.png" class="rating" /><span>Budget: {{ job.budget }}</span>
-        </div>
-        <p>Completed: {{ job.isCompleted }}</p>        
-        <button type="submit" class="button-profile">See more</button>        
+        <p>Job Title: {{ job.title }}</p>
+        <p>Job Description: {{ job.description }}</p>
+        <p>Worker:{{ getWorkerId(job.worker) }}</p>
+        <p>Client: {{ getClientId(job.client) }}</p>
+        <div class="middle-div">
+          <div class="rating-container">
+              <img src="images/budget.png" class="rating" /><span>Budget: {{ job.budget }}</span>
+          </div>
+          <div v-if="job.rating === null">
+              <p>Ranking not defined yet</p>
+          </div>
+          <div v-if="job.rating === 5"> 
+              <img src="images/5star.png" class="rating" />
+          </div>
+          <div v-if="job.rating === 4"> 
+              <img src="images/4star.png" class="rating" />
+          </div>
+          <div v-if="job.rating === 3"> 
+              <img src="images/3star.png" class="rating" />
+          </div>
+          <div v-if="job.rating === 2"> 
+              <img src="images/2star.png" class="rating" />
+          </div>
+          <div v-if="job.rating === 1"> 
+              <img src="images/1star.png" class="rating" />
+          </div>
+          <p></p>
+          <p>Completed: {{ job.isCompleted }}</p>        
+          <button type="submit" class="button-profile">See more</button>    
+        </div>    
       </div>
       </div>
     </div>
@@ -107,7 +114,9 @@
        jobs: [],
        completedJobs: [],
        uncompletedJobs: [],
-       clientId : null       
+       clientId : null,
+       message: "We are seeking a professional for ",
+       message2: ". It's required knowledge of construction materials and carpentry techniques. Ability to interpret blueprints and follow instructions. Teamwork skills and ability to meet deadlines"       
      }
    },
  
@@ -200,29 +209,43 @@
  
  .cards{
    margin: auto;
-   text-align: center;
    width: 70%;
    display: grid;
    grid-gap: 10px;
    margin-top: 6rem;
-   grid-template-columns: repeat(5, minmax(250px, 1fr));
+   grid-template-columns: repeat(1, minmax(290px, 1fr));
    text-align: center;
- 
- 
+   font-size: 18px;
+   text-align: justify;
+   font-size: 20px;
+   font-weight: lighter;
  }
+
+ .cards-completed{
+   margin: auto;
+   width: 70%;
+   display: grid;
+   grid-gap: 10px;
+   margin-top: 6rem;
+   grid-template-columns: repeat(3, minmax(290px, 1fr));
+   font-weight: bold;
+   text-align: center;
+   font-size: 16px;
+ }
+ 
  .card-worker{
    box-sizing: border-box;
    border-radius: 0.5rem;
    display: flex;
    flex-direction: column;
-   text-align: center;
+   text-align: justify;
    transition: transform 0.3s ease;
    max-width:80%;
-   font-weight: bold;
-   background-color:white;
+   background-color: rgb(229, 236, 238);
    margin-left: 20px;
-   border: 1px solid rgb(31, 142, 175);
+   /* border: 1px solid rgb(31, 142, 175); */
    line-height: 1; 
+   padding: 20px;
  }
  .profile{
    width: 100px;
@@ -238,6 +261,7 @@
    margin-top: 15px;
    display:inline;
    width: auto;
+   text-align: center;
  }
  .rating-container img,
  .rating-container span {
@@ -259,10 +283,12 @@
    border: none;
    border-radius: 4px;
    cursor: pointer;
-  
    margin: auto;
    margin-bottom: 10px;
  }
  
+ .middle-div{
+  text-align: left;
+ }
  
  </style>

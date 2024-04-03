@@ -141,7 +141,7 @@ methods: {
         this.successMessage = "Worker created successfully!";
         this.errorMessage = null;
         // Redirect to the home page after a successful form submission
-        this.$router.push('/workerlogin');
+        this.$router.push('/login');
       })
       .catch(error => {
         console.error("Error creating worker:", error);
