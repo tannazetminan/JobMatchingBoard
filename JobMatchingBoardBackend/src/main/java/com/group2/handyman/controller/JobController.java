@@ -35,14 +35,45 @@ public class JobController {
         }
     }
 
+//    // create a job
+//    @PostMapping("/create")
+//    public ResponseEntity<Job> createJob(@RequestParam Long clientId, @RequestBody Job jobDetails) {
+//        try {
+//            Job createdJob = jobService.createJob(clientId,  jobDetails);
+//            return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
+//        } catch (RuntimeException e) {
+//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//        }
+//    }
+
     // create a job
     @PostMapping("/create")
-    public ResponseEntity<Job> createJob(@RequestParam Long clientId, @RequestBody Job jobDetails) {
+    public ResponseEntity<Job> createJob(@RequestParam Long clientId, @RequestBody JobCreateDto jobDto) {
         try {
-            Job createdJob = jobService.createJob(clientId,  jobDetails);
+            Job jobDetails = new Job();
+            jobDetails.setIsCompleted(jobDto.isCompleted());
+            jobDetails.setRating(jobDto.getRating());
+            jobDetails.setTitle(jobDto.getTitle());
+            jobDetails.setDescription(jobDto.getDescription());
+            jobDetails.setBudget(jobDto.getBudget());
+
+            Job createdJob = jobService.createJob(clientId, jobDetails);
             return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // update a job
+    @PutMapping("/{jobId}")
+    public ResponseEntity<Job> updateJob(@PathVariable Long jobId, @RequestBody JobUpdateDto jobUpdateDto) {
+        try {
+            // Delegate the update operation to a service method
+            Job updatedJob = jobService.updateJob(jobId, jobUpdateDto);
+            return ResponseEntity.ok(updatedJob);
+        } catch (RuntimeException e) {
+            // Handle not found or other exceptions appropriately
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 

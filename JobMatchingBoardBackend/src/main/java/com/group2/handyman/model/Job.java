@@ -3,6 +3,7 @@ package com.group2.handyman.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,12 +22,14 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+	@JsonManagedReference
     private User client;
 
-    @ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "worker_id")
+	@JsonManagedReference
     private Worker worker;
 
     private boolean isCompleted;

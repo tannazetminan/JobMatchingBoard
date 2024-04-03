@@ -56,6 +56,25 @@ public class JobService {
     }
 
     @Transactional
+    public Job updateJob(Long jobId, JobUpdateDto jobUpdateDto) {
+        Job job = jobRepository.findById(jobId).orElseThrow(() -> new RuntimeException("Job not found."));
+
+        if (jobUpdateDto.getCompleted() != null) job.setIsCompleted(jobUpdateDto.getCompleted());
+        if (jobUpdateDto.getRating() != null) job.setRating(jobUpdateDto.getRating());
+        if (jobUpdateDto.getTitle() != null) job.setTitle(jobUpdateDto.getTitle());
+        if (jobUpdateDto.getDescription() != null) job.setDescription(jobUpdateDto.getDescription());
+        if (jobUpdateDto.getBudget() != null) job.setBudget(jobUpdateDto.getBudget());
+        if (jobUpdateDto.getWorkerId() != null) {
+            Worker worker = workerRepository.findById(jobUpdateDto.getWorkerId())
+                    .orElseThrow(() -> new RuntimeException("Worker not found."));
+            job.setWorker(worker);
+            worker.getJobs().add(job);
+        }
+
+        return jobRepository.save(job);
+    }
+
+    @Transactional
     public Job completeJob(Long jobId) {
         Job job = jobRepository.findById(jobId).orElseThrow(() -> new RuntimeException("Job not found."));
 
