@@ -37,9 +37,9 @@ public class JobController {
 
     // create a job
     @PostMapping("/create")
-    public ResponseEntity<Job> createJob(@RequestParam Long clientId, @RequestParam Long workerId, @RequestBody Job jobDetails) {
+    public ResponseEntity<Job> createJob(@RequestParam Long clientId, @RequestBody Job jobDetails) {
         try {
-            Job createdJob = jobService.createJob(clientId, workerId, jobDetails);
+            Job createdJob = jobService.createJob(clientId,  jobDetails);
             return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

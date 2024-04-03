@@ -25,9 +25,9 @@ public class JobService {
     private NotificationService notificationService;
 
     @Transactional
-    public Job createJob(Long clientId, Long workerId, Job jobDetails) {
+    public Job createJob(Long clientId,  Job jobDetails) {
         User client = userRepository.findById(clientId).orElseThrow(() -> new RuntimeException("Client not found."));
-        Worker worker = workerRepository.findById(workerId).orElseThrow(() -> new RuntimeException("Worker not found."));
+        //Worker worker = workerRepository.findById(workerId).orElseThrow(() -> new RuntimeException("Worker not found."));
 
         // if client has enough credit
         if (client.getCredit() < jobDetails.getBudget()) {
@@ -40,14 +40,14 @@ public class JobService {
 
         // set client and worker for the job
         jobDetails.setClient(client);
-        jobDetails.setWorker(worker);
+        //jobDetails.setWorker(worker);
 
         // add job to worker's job list
-        worker.getJobs().add(jobDetails);
+        //worker.getJobs().add(jobDetails);
 
         // save the job
         Job savedJob = jobRepository.save(jobDetails);
-        workerRepository.save(worker);
+        //workerRepository.save(worker);
 
         // send job creation notification
         notificationService.sendJobCreationNotification(client, savedJob);

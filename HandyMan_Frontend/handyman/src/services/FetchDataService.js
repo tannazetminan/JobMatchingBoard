@@ -46,6 +46,10 @@ class FetchDataService {
         return http.get(`/jobs/user/${userId}`);
     }
 
+    postNewJob(clientId, data){
+        return http.post(`/jobs/create?clientId=${clientId}`, data)
+    }
+
     //endpoints for message 
     getAllUserMessages(userId) {
         return http.get(`/messages/user/${userId}/all`);

@@ -14,19 +14,19 @@
                 </div>
                 <form @submit.prevent="submitForm">
                     <div class="container-lbl">
-                        <label for="description">Title</label>
-                        <input type="text" id="email"  />
+                        <label for="title" >Title</label>
+                        <input type="text" id="email" v-model="newJob.title" />
                     </div>
                     <div class="container-lbl">
-                        <label for="description">Type</label>
-                        <textarea></textarea>
+                        <label for="description" >Description</label>
+                        <textarea v-model="newJob.description" ></textarea>
                     </div>
                     <div class="container-lbl">
-                        <label for="description">Budget</label><br>
-                        <input type="text" id="email"  />
+                        <label for="budget">Budget</label><br>
+                        <input type="text" id="budget" v-model="newJob.budget"   />
                     </div>
                     <div class=" container-btn">
-                        <button type="submit">Send</button>
+                        <button type="submit" @click = "handleSubmit">Send</button>
                     </div>
                 </form>
             </div>          
@@ -34,27 +34,34 @@
     <div class="card-jobs">   
 
       <div class="title-jobs">       
-        <button @click="markAsCompleted" class="fetchData">Completed Jobs</button>
+        
         <button @click="markAsUnCompleted" class="fetchData">In progress</button>
+        <button @click="markAsCompleted" class="fetchData">Completed Jobs</button>
+       
+
       </div>
         
       <div v-if="completedJobs.length">
         <div v-for="(job, index) in completedJobs" :key="index" class="job">
           <p class="desc-jobs1">Posted: {{ date }} </p>
+          <p class="desc-job">{{ job.title }} </p>
           <p class="desc-job">{{ message }}{{ job.description }} {{ message2 }}</p>
         </div>
       </div>
   
       <div v-if="uncompletedJobs.length">
         <div v-for="(job, index) in uncompletedJobs" :key="index" class="job">
+          <p class="desc-job">{{ job.title }} </p>
           <p class="desc-job">{{ message }}{{ job.description }} {{ message2 }} </p>
           <p class="desc-job"><strong>Rate: </strong>
             <span v-if="job.rating !== null">{{ job.rating }}</span>
             <span v-else>{{ rating }}</span>
           </p>
-          <p class="desc-job"><strong>Status: </strong>
-            <span>{{ job.is_completed ? 'Completed' : 'In progress' }}</span>
+          <p class="desc-job"><strong>Budget: </strong>
+        
+            <span>{{ job.budget }}</span>
           </p>
+          
         </div>
       </div>
     </div>
@@ -87,6 +94,11 @@
         completedJobs: [],
         uncompletedJobs: [],
         clientId: null,
+        newJob: {
+          title:"",
+          description:"",
+          budget: ""
+        }, 
         rating: "Rating not available",
         message: "We are seeking a professional for ",
         message2: ". It's required knowledge of construction materials and carpentry techniques. Ability to interpret blueprints and follow instructions. Teamwork skills and ability to meet deadlines"
@@ -117,7 +129,7 @@
         FetchDataServices.getJobByUserId(id)
           .then(response => {
             this.jobs = response.data;
-            this.markAsCompleted()
+            this.markAsUnCompleted()
           })
           .catch(error => {
             if (error.response) {
@@ -138,15 +150,38 @@
         
       },
       checklogin() {
-        console.log("ddddddddddddddddddddddddddd")
+        console.log("")
         localStorage.setItem('newLogin', false);
         this.newLogin = localStorage.getItem('newLogin');
         console.log(this.newLogin)
         window.location.reload();
-      }  
+      } ,
+
+      handleSubmit(){
+
+        let id = localStorage.getItem('userId')
+        let newJobPost = {
+        
+            title: this.newJob.title,
+            description: this.newJob.description,
+            budget: this.newJob.budget
+        }
+    
+        FetchDataServices.postNewJob(id, newJobPost)
+        .then(response=>{
+          console.log(response)
+          this.fetchJobs(id);
+        })
+        .catch(error => {
+            if (error.response) {
+              console.log(error.response.data);
+              console.log(error.response.status);
+            }
+          });
+      
+    }
       
     },
-
     mounted() {
       this.retrieveUser(); 
       let newLogin = localStorage.getItem('newLogin'); 
@@ -155,7 +190,8 @@
         localStorage.setItem('newLogin', false);
         this.checklogin();
       }  
-    }
+    }, 
+   
   }
   </script>
   
