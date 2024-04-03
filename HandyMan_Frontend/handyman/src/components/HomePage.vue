@@ -105,25 +105,24 @@ export default {
         });
     },
     search() {
-      // Fetch all workers
-      FetchDataService.getAllWorkers()
-        .then((response) => {
-          // Store all workers
-          const allWorkers = response.data;
-          // Apply filtering logic to all workers
-          const filteredWorkers = allWorkers.filter(worker => {
-            const nameMatch = worker.username.toLowerCase().includes(this.searchTerm.toLowerCase());
-            const ratingMatch = !this.selectedRating || worker.averageRating >= parseInt(this.selectedRating);
-            return nameMatch && ratingMatch;
-          });
-          // Update the topWorkers array with filtered workers
-          this.topWorkers = filteredWorkers;
-        })
-        .catch((error) => {
-          console.error("Error fetching workers:", error);
-        });
-    },
-
+  // Fetch all workers
+  FetchDataService.getAllWorkers()
+    .then((response) => {
+      // Store all workers
+      const allWorkers = response.data;
+      // Apply filtering logic to all workers
+      const filteredWorkers = allWorkers.filter(worker => {
+        const nameMatch = worker.username.toLowerCase().includes(this.searchTerm.toLowerCase());
+        const ratingMatch = !this.selectedRating || worker.averageRating === parseInt(this.selectedRating);
+        return nameMatch && ratingMatch;
+      });
+      // Update the topWorkers array with filtered workers
+      this.topWorkers = filteredWorkers;
+    })
+    .catch((error) => {
+      console.error("Error fetching workers:", error);
+    });
+  },
 
     filterWorkers() {
       // Filter workers based on search criteria

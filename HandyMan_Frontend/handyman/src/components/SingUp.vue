@@ -125,7 +125,9 @@ data() {
 methods: {
   async submitWorkerForm() {
     // Combine firstName and lastName to create the username
-    this.worker.username = "worker_" + capitalizeFirstLetter(this.worker.firstname) + capitalizeFirstLetter(this.worker.lastname);
+    // this.worker.username = "worker_" + capitalizeFirstLetter(this.worker.firstname) + capitalizeFirstLetter(this.worker.lastname);
+    this.worker.username = capitalizeFirstLetter(this.worker.firstname) + "." + capitalizeFirstLetter(this.worker.lastname);
+
 
     // Hash the password using bcrypt
     const hashedPassword = await bcrypt.hash(this.worker.password, 10);
@@ -149,7 +151,9 @@ methods: {
   },
   async submitUserForm() {
     // Combine firstName and lastName to create the username
-    this.user.username = "user_" + capitalizeFirstLetter(this.user.firstname) + capitalizeFirstLetter(this.user.lastname);
+    // this.user.username = "user_" + capitalizeFirstLetter(this.user.firstname) + capitalizeFirstLetter(this.user.lastname);
+    this.user.username = capitalizeFirstLetter(this.user.firstname) + "." + capitalizeFirstLetter(this.user.lastname);
+
 
     // Hash the password using bcrypt
     const hashedPassword = await bcrypt.hash(this.user.password, 10);
