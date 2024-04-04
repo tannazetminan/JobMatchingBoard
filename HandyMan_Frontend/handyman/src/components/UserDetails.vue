@@ -429,7 +429,7 @@ text-align: left;
 margin:auto;
 margin-top:2px;
 margin-bottom: 2px;
-color: blakc
+color: black
 
 }
 .container-lbl{

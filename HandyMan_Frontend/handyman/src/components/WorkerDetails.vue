@@ -14,15 +14,27 @@
             <div class="setting">
                 <div class = "edit-preferences">
                     <h2>Preferences</h2>
-                <img src="images/editar.png" class="edit" /> 
+                <img src="images/editar.png" class="edit" @click="editPreferences" /> 
                 </div>
-                <p><strong>Location:</strong> {{ worker.location }}</p>
-                <p><strong>Availability:</strong> {{ worker.workingHours }}</p>
-                <p><strong>Preferred communication:</strong> {{ worker.preferredCommunication }}</p>
-                <p><strong>Phone:</strong> {{ worker.phone }}</p>
-                <p><strong>Email:</strong> {{ worker.email }}</p>
-
-              
+                <div  v-if="showForm" class=" container form">
+                    <form >
+                        <label for="location">Location:</label>
+                        <input type="text" id="location" v-model="worker_settings.location">
+                        <label for="phone">Phone:</label>
+                        <input type="text" id="phone" v-model="worker_settings.phone">
+                        <label for="email">Email:</label>
+                        <input type="text" id="email" v-model="worker_settings.email">
+                        <button type="submit" @click="savePreferences">Save</button>
+                    </form>
+                </div>
+                <div v-else>
+                    <p><strong>Location:</strong> {{ worker.location }}</p>
+                    <p><strong>Availability:</strong> {{ worker.workingHours }}</p>
+                    <p><strong>Preferred communication:</strong> {{ worker.preferredCommunication }}</p>
+                    <p><strong>Phone:</strong> {{ worker.phone }}</p>
+                    <p><strong>Email:</strong> {{ worker.email }}</p>
+                </div>
+           
             </div>
         </div>
 
@@ -88,6 +100,14 @@ export default{
             random_number: 0, 
             displayNewjobs: true,
             displayOldJobs: false,
+            showForm: false ,
+            worker_settings:{
+                location:"",
+                availability: "",
+                communication:"",
+                phone: "",
+                email: ""
+            },
             rating: "Rating no available", 
             status: "In progess",
             message: "We are seeking a professional  for ",
@@ -168,7 +188,30 @@ export default{
         this.newLogin = localStorage.getItem('newLogin');
         console.log(this.newLogin)
         window.location.reload();
-      } 
+      },
+
+      editPreferences(){
+        this.showForm=true;
+      },
+      savePreferences(event){
+        event.preventDefault()
+        const id = localStorage.getItem('sid')
+        console.log(id)
+        let updateData = {
+            location:this. worker_settings.location,
+            phone: this.worker_settings.phone,
+            email: this.worker_settings.email
+        };
+        console.log(updateData)
+        FetchDataServices.updateWorker(id,updateData)
+        .then(response=>{
+            console.log(response)
+        })
+        .catch(error => {
+                    console.error(error);
+        })
+
+      }
 
     },
     mounted(){
@@ -349,6 +392,71 @@ h2{
     margin-right: 15px;
     
     
+}
+
+.container-form{
+    background-color: #dde6ee;
+    height: 450px;
+    border-radius: 0.5rem; 
+    font-size: 20px;
+    margin: auto;
+    margin-top: 10px;
+    
+  }
+form{
+padding: 3px;
+width: 80%;
+height: 350px;
+border-radius: 0.5rem;
+margin: auto;
+text-align: center;
+
+
+}
+.ctn-title{
+    margin-top: 25px; 
+    padding: 0.5px;
+}
+.title{
+    margin-top: 25px;
+    padding: 0.5px;
+}
+input{
+
+width: 90%;
+padding: 0.5rem;
+border-radius: 4px;
+box-sizing: border-box; 
+border-color: #55970a;
+margin:auto;
+margin-top:2px;
+
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #e27713;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-right: 5px;
+  font-weight: bold;
+ 
+  
+  
+}
+label{
+
+display: inline-block;
+color:black;
+text-align: left;
+margin:auto;
+margin-top:2px;
+margin-bottom: 2px;
+color: black
+
 }
 
 </style>

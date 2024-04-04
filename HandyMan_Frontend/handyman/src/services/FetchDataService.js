@@ -15,6 +15,10 @@ class FetchDataService {
     //endpoints  for worker 
     getWorkerById(sid){
         return http.get(`/workers/${sid}`)
+
+    }
+    updateWorker(sid, data){
+        return  http.put(`/workers/${sid}`, data)
     }
    
     //endpoints fo user

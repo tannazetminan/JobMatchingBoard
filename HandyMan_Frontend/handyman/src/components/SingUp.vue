@@ -63,7 +63,7 @@
       </div>
       <div>
         <label for="email">Email:</label>
-        <input type="text" id="email" v-model="user.email" placeholder="Enter your email" />
+        <input type="email" id="email" v-model="user.email" placeholder="Enter your email" />
       </div>
       <div>
         <label for="password">Password:</label>
