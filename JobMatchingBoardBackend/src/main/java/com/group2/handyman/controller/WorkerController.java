@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.group2.handyman.model.Job;
+import com.group2.handyman.model.WorkerUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,19 +73,31 @@ public class WorkerController {
     
     // update an existing worker
     @PutMapping("/{id}")
-    public ResponseEntity<Worker> updateWorker(@PathVariable Long id, @RequestBody Worker workerDetails) {
-        Worker worker = workerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Worker not found with id " + id));
-        
-        // update worker
-        worker.setUsername(workerDetails.getUsername());
-        worker.setEmail(workerDetails.getEmail());
-        worker.setDescription(workerDetails.getDescription());
-        worker.setLocation(workerDetails.getLocation());
-        
+    public ResponseEntity<Worker> updateWorker(@PathVariable Long id, @RequestBody WorkerUpdateDto workerDetailsDto) {
+        Worker worker = workerRepository.findById(id).orElseThrow(() -> new RuntimeException("Worker not found with id " + id));
+
+        worker.setUsername(workerDetailsDto.getUsername());
+        worker.setEmail(workerDetailsDto.getEmail());
+        worker.setDescription(workerDetailsDto.getDescription());
+        worker.setLocation(workerDetailsDto.getLocation());
+
         final Worker updatedWorker = workerRepository.save(worker);
         return ResponseEntity.ok(updatedWorker);
     }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Worker> updateWorker(@PathVariable Long id, @RequestBody Worker workerDetails) {
+//        Worker worker = workerRepository.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Worker not found with id " + id));
+//
+//        // update worker
+//        worker.setUsername(workerDetails.getUsername());
+//        worker.setEmail(workerDetails.getEmail());
+//        worker.setDescription(workerDetails.getDescription());
+//        worker.setLocation(workerDetails.getLocation());
+//
+//        final Worker updatedWorker = workerRepository.save(worker);
+//        return ResponseEntity.ok(updatedWorker);
+//    }
 
     // get a worker's past jobs
     @GetMapping("/{id}/jobs")
