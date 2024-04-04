@@ -124,7 +124,7 @@
         newJob: {
           title:"",
           description:"",
-          budget: ""
+          budget: 0
         }, 
         rating: "Rating not available",
         message: "We are seeking a professional for ",
