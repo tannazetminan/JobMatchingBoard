@@ -16,8 +16,13 @@
         <img src="images/people.png"  class="profile" />
         <p><strong>id:</strong> {{ worker.id }}</p>
 
-        <p>{{ worker.username }}</p>
-        <p>{{ worker.description }}</p>
+        <p style="font-size: large;">{{ worker.username }}</p>
+        <p style="font-weight: normal;">{{ worker.description }}</p>
+        <p style="text-align: left; margin-left: 10px;">
+          <img src="../../public/images/phone.png" width="25px" height="25px" style="margin-bottom: -7px;"/> {{ worker.phone }}<br/><br/>
+          <img src="../../public/images/email.png" width="30px" height="30px" style="margin-bottom: -10px; padding-right: 2px; margin-left: -2px;"/>{{ worker.email }}
+      </p>
+        
         <!-- <div class="rating-container">
           <img src="images/star.png" class="rating" /><span>{{ worker.averageRating }}</span>
         </div> -->
@@ -36,7 +41,6 @@
         <div v-if="worker.averageRating=== 1"> 
             <img src="images/1star.png" class="rating" />
         </div>
-        <p>Availability: {{ worker.workingHours }}</p>  
         <button type="submit" class="button-profile">See more</button>        
       </div>
     </div>
@@ -108,7 +112,7 @@ h1{
   display: grid;
   grid-gap: 10px;
   margin-top: 10rem;
-  grid-template-columns: repeat(5, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, minmax(250px, 1fr));
   text-align: center;
 
 
@@ -120,7 +124,7 @@ h1{
   flex-direction: column;
   text-align: center;
   transition: transform 0.3s ease;
-  max-width:80%;
+  max-width:95%;
   font-weight: bold;
   background-color:white;
   margin-left: 20px;
@@ -135,10 +139,11 @@ h1{
 }
 
 .rating{
-  max-width: 80px;
-  height: 18px;
+  max-width: 110px;
+  height: 25px;
   margin: auto;
   margin-top: 15px;
+  margin-bottom: 15px;
   display:inline
 }
 .rating-container img,

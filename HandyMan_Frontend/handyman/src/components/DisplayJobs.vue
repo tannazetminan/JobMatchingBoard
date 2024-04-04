@@ -20,27 +20,28 @@
 
     <div class="cards">
       <div v-for="job in uncompletedJobs" :key="job.id" class="card-worker">
-        <div v-if="job.isCompleted === false" class="completedJob">            
+        <div v-if="job.isCompleted === false" class="completedJob" style="font-weight: normal;">            
           <!-- <img src="images/job.png"  class="profile" /> -->
-          <p>Job Id: {{ job.id }}</p>
-          <p>Job Title: {{ job.title }}</p>
-          <p>Job Description: {{ message }}{{ job.description }} {{ message2 }} </p>
-          <p>Client Id: {{ getClientId(job.client) }}</p>
+          <p><span class="bold">Job Title: </span>{{ job.title }}</p>
+          <p><span class="bold">Job Description: </span>{{ message }}{{ job.description }} {{ message2 }} </p>
+          <p><span class="bold">Client Id: </span>{{ getClientId(job.client) }}</p>
           <!-- <p>Client: {{ getClientId(job.client.username) }}</p> -->
 
-          <p>Worker Id:{{ getWorkerId(job.worker) }}</p>
+          <p><span class="bold">Worker Id:</span>{{ getWorkerId(job.worker) }}</p>
           <!-- <p>Worker:{{ getWorkerId(job.worker.username) }}</p> -->
 
-          <p>Completed: {{ job.isCompleted }}</p>        
-
-          <div v-if="job.client == this.clientId">
+          <div class="rating-container">
+              <img src="images/budget.png" class="rating" /><span class="bold">Budget: </span> {{ job.budget }}
+          </div>
+          <p><span class="bold">Job Id: </span>{{ job.id }}</p>
+          <div v-if="job.client.id == this.clientId">
             <star-rating v-model:rating="job.rating"
               star-size="35"	
               show-rating=False
               animate=true
               @update:rating="setRating(job.id, $event)">
             </star-rating>    
-            <button @click="markAsCompleted(job.id)" v-if="job.client == clientId" class="button-profile">Mark as Completed</button>    
+            <button @click="markAsCompleted(job.id)" v-if="job.client.id  == clientId" class="button-profile">Mark as Completed</button>    
         </div>  
       
       </div>
@@ -53,18 +54,17 @@
   </div>
 
   <div class="cards-completed"> 
-    <div v-for="job in completedJobs" :key="job.id" class="card-worker">
+    <div v-for="job in completedJobs" :key="job.id" class="card-worker" style="font-weight: normal;">
 
       <div class="unCompletedJob">
         <img src="images/job.png"  class="profile" />
         <p>{{ job.id }}</p>
-        <p>Job Title: {{ job.title }}</p>
-        <p>Job Description: {{ job.description }}</p>
-        <p>Worker:{{ getWorkerId(job.worker) }}</p>
-        <p>Client: {{ getClientId(job.client) }}</p>
+        <p><span class="bold">Job Title: </span>{{ job.title }}</p>
+        <p><span class="bold">Client Id: </span>{{ getClientId(job.client) }}</p>
+        <p><span class="bold">Worker Id:</span>{{ getWorkerId(job.worker) }}</p>
         <div class="middle-div">
           <div class="rating-container">
-              <img src="images/budget.png" class="rating" /><span>Budget: {{ job.budget }}</span>
+              <img src="images/budget.png" class="rating" /><span class="bold">Budget: </span> {{ job.budget }}
           </div>
           <div v-if="job.rating === null">
               <p>Ranking not defined yet</p>
@@ -96,8 +96,8 @@
  
  <script>
  import FetchDataService from "../services/FetchDataService";
- import StarRating from 'vue-star-rating'
- import HeaderComponent from './HeaderComponent.vue'
+ import StarRating from 'vue-star-rating';
+ import HeaderComponent from './HeaderComponent.vue';
 
 
  export default{ 
@@ -160,11 +160,6 @@
               console.error("Error marking job as completed:", error);
             });
         },
-        // setRating(rating){
-        //   this.rating= rating;
-        //   console.log("Updating rating for job ID:", this.job.id , "with rating:", rating);
-
-        // },
         setRating(jobId, rating) {
           FetchDataService.setJobRating(jobId, rating)
         .then(response => {
@@ -218,7 +213,6 @@
    font-size: 18px;
    text-align: justify;
    font-size: 20px;
-   font-weight: lighter;
  }
 
  .cards-completed{
@@ -228,7 +222,6 @@
    grid-gap: 10px;
    margin-top: 6rem;
    grid-template-columns: repeat(3, minmax(290px, 1fr));
-   font-weight: bold;
    text-align: center;
    font-size: 16px;
  }
@@ -267,6 +260,7 @@
  .rating-container span {
      display: inline-block;
      margin-right: 5px;
+     margin-top: 0px;
      
  }
  .subtitle-worker{
@@ -291,4 +285,8 @@
   text-align: left;
  }
  
+
+ .bold{
+  font-weight: bold;
+ }
  </style>
