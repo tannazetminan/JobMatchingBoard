@@ -43,39 +43,66 @@
         
       <div v-if="completedJobs.length">
         <div v-for="(job, index) in completedJobs" :key="index" class="job">
-          <p class="desc-jobs1">Posted: {{ date }} </p>
-          <p class="desc-job">{{ job.title }} </p>
-          <p class="desc-job">{{ message }}{{ job.description }} {{ message2 }}</p>
+          <!-- <p class="desc-jobs1">Posted: {{ date }} </p> -->
+          <p class="desc-job" style="font-weight: bold;">{{ job.title }} </p>
+          <p class="desc-job">{{ message }}{{ job.description }} {{ message2 }} </p>
+          <p class="desc-job"><span style="font-weight: bold;">Worker's Name: </span>{{ job.worker.username }} </p>
+          <p class="desc-job"><strong>Budget: </strong>        
+            <span>{{ job.budget }}</span>
+          </p>
+          <p class="desc-job"><strong>Job ID: </strong>{{ job.id }}  </p>
+          <p class="desc-job">
+            <star-rating v-model:rating="job.rating"
+              star-size="35"	
+              show-rating=False
+              animate=true
+              @update:rating="setRating(job.id, $event)">
+            </star-rating>   
+          </p>
         </div>
       </div>
   
       <div v-if="uncompletedJobs.length">
         <div v-for="(job, index) in uncompletedJobs" :key="index" class="job">
-          <p class="desc-job">{{ job.title }} </p>
+          <p class="desc-job" style="font-weight: bold;">{{ job.title }} </p>
           <p class="desc-job">{{ message }}{{ job.description }} {{ message2 }} </p>
-          <p class="desc-job"><strong>Rate: </strong>
-            <span v-if="job.rating !== null">{{ job.rating }}</span>
-            <span v-else>{{ rating }}</span>
-          </p>
-          <p class="desc-job"><strong>Budget: </strong>
-        
+          <p class="desc-job"><strong>Budget: </strong>        
             <span>{{ job.budget }}</span>
           </p>
+          <p class="desc-job"><strong>Job ID: </strong>{{ job.id }}  </p>
+          <!--<p class="desc-job"><strong>Rate: </strong>
+                       <span v-if="job.rating !== null">{{ job.rating }}</span>
+            <span v-else>{{ rating }}</span>
+          </p> -->
+           <p class="desc-job"><star-rating v-model:rating="job.rating"
+              star-size="35"	
+              show-rating=False
+              animate=true
+              @update:rating="setRating(job.id, $event)">
+            </star-rating>  
+            </p>
           
+
+          <p class="desc-job"> 
+            <button @click="markAsCompleted(job.id)" v-if="job.worker !=null" class="button-profile">Mark as Completed</button>    
+          </p>    
         </div>
       </div>
     </div>
   </div>
 </template>
   
-  <script>
+<script>
   import FetchDataServices from '../services/FetchDataService'
+  import StarRating from 'vue-star-rating';
+
   //import HeaderComponent from './HeaderComponent.vue'
   
   export default {
     name: "userDetails",
 
     components: {
+      StarRating,
       //HeaderComponent,
     },
 
@@ -97,7 +124,7 @@
         newJob: {
           title:"",
           description:"",
-          budget: ""
+          budget: 0
         }, 
         rating: "Rating not available",
         message: "We are seeking a professional for ",
@@ -106,8 +133,7 @@
     },
 
     methods: {
-      retrieveUser() {   
-    
+      retrieveUser() {       
         let id = localStorage.getItem('userId')
         let fullName ;
         this.fullName = localStorage.getItem('fullName')
@@ -124,8 +150,7 @@
             console.log(error)
           })
       },
-      fetchJobs(id) {
-      
+      fetchJobs(id) {      
         FetchDataServices.getJobByUserId(id)
           .then(response => {
             this.jobs = response.data;
@@ -177,9 +202,18 @@
               console.log(error.response.data);
               console.log(error.response.status);
             }
-          });
-      
-    }
+          });      
+    },
+    setRating(jobId, rating) {
+          FetchDataServices.setJobRating(jobId, rating)
+        .then(response => {
+          console.log("Job rating updated:", jobId, "Rating:", rating);
+          console.log(response)
+        })
+        .catch(error => {
+          console.error("Error updating job rating:", error);
+        });
+        }
       
     },
     mounted() {
@@ -193,9 +227,10 @@
     }, 
    
   }
-  </script>
+</script>
   
-  <style scoped >
+<style scoped >
+
   .container-cards{
       width: 95%;
       margin: auto;
@@ -253,8 +288,7 @@
       text-align: left;
       background-color: rgb(229, 236, 238);
       padding: 5px;
-      font-size: 20px;
-      
+      font-size: 20px;      
   }
   
   .desc-job{
@@ -262,13 +296,11 @@
       font-size: 18px;
   }
   
-  .cards{
-   
-      background-color: rgb(121, 168, 194);
-      align-items: flex-start;
-      
-     
+  .cards{   
+    background-color: rgb(121, 168, 194);
+    align-items: flex-start;    
   }
+
   .personal-data{
      
       background-color: rgb(230, 239, 247);
@@ -277,40 +309,41 @@
       font-size: 18px;
       margin-top: 15px;
   }
+
   .data-description{
       margin-bottom: 15px;
       padding: 2px;
-      font-size: 20px;
-     
+      font-size: 20px;     
   }
+
   .setting{
-      height: 350px;
-      margin-bottom: 50px;
-      background-color: rgb(230, 239, 247);
-      border-radius: 0.5rem;
-      margin-top: 15px;
-      padding: 5px;
-      font-size: 20px;
-      text-align: left;
-   
+    height: 350px;
+    margin-bottom: 50px;
+    background-color: rgb(230, 239, 247);
+    border-radius: 0.5rem;
+    margin-top: 15px;
+    padding: 5px;
+    font-size: 20px;
+    text-align: left;  
   }
   
   
   .title-jobs{
-  text-align: left;
+    text-align: left;
   }
+
   .fetchData{
-      margin-left: 30px;
-      margin-bottom: 40px;
-      font-size: 18px;
-      background-color: transparent;
-      border: none;
-      color: rgb(60, 172, 15); 
-      cursor: pointer;
-      font-size: inherit;
-      padding: 0; 
-      font-weight: bold;
-      font-size: 25px;
+    margin-left: 30px;
+    margin-bottom: 40px;
+    font-size: 18px;
+    background-color: transparent;
+    border: none;
+    color: rgb(60, 172, 15); 
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0; 
+    font-weight: bold;
+    font-size: 25px;
   }
   .edit{
       width: 30px;
@@ -320,41 +353,40 @@
       display: flex
   }
   h2{
-      margin-top: 15px;
-      font-size: 25px;
-      width: 90%;
-      text-align: center;
+    margin-top: 15px;
+    font-size: 25px;
+    width: 90%;
+    text-align: center;
   }
   
   .desc-job{
-      font-size: 20px;
+    font-size: 20px;
   }
   .desc-jobs1{
-      font-size: 20px;
-     text-align: right;
-     margin-right: 15px;
-     color:rgb(85, 80, 76)
+    font-size: 20px;
+    text-align: right;
+    margin-right: 15px;
+    color:rgb(85, 80, 76)
   
   }
   .container-apply-btn{
-      text-align: right;
+    text-align: right;
   }
   .apply-btn{
-      margin-left: 30px;
-      margin-bottom: 20px;
-      font-size: 18px;
-      background-color: transparent;
-      border: none;
-      color: rgb(214, 132, 65); 
-      cursor: pointer;
-      font-size: inherit;
-      padding: 0; 
-      font-weight: bold;
-      font-size: 20px;
-      margin-right: 15px;
-      
-      
+    margin-left: 30px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    background-color: transparent;
+    border: none;
+    color: rgb(214, 132, 65); 
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0; 
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 15px;       
   }
+
 .container-form{
     background-color: #dde6ee;
     height: 450px;
@@ -364,14 +396,15 @@
     margin-top: 10px;
     
   }
-form{
-padding: 2px;
-width: 80%;
-height: 350px;
-border-radius: 0.5rem;
-margin: auto;
-text-align: center;
-background-color: #205d96;
+
+  form{
+    padding: 2px;
+    width: 80%;
+    height: 350px;
+    border-radius: 0.5rem;
+    margin: auto;
+    text-align: center;
+    background-color: #205d96;
 
 }
 .ctn-title{
@@ -383,15 +416,13 @@ background-color: #205d96;
     padding: 0.5px;
 }
 input{
-
-width: 90%;
-padding: 0.5rem;
-border-radius: 4px;
-box-sizing: border-box; 
-border-color: #55970a;
-margin:auto;
-margin-top:2px;
-
+  width: 90%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  box-sizing: border-box; 
+  border-color: #55970a;
+  margin:auto;
+  margin-top:2px;
 }
 
 button {
@@ -403,21 +434,18 @@ button {
   cursor: pointer;
   margin-top: 20px;
   margin-right: 5px;
-  font-weight: bold;
- 
-  
-  
+  font-weight: bold;  
 }
+
 textarea{
   height: 100px;
-  width:90%;
- 
+  width:90%; 
   border-radius: 4px;
-    box-sizing: border-box; 
-    margin-left: 2rem;
-    border-color: #7de20a;
-    margin:auto;
-    margin-top:2px;
+  box-sizing: border-box; 
+  margin-left: 2rem;
+  border-color: #7de20a;
+  margin:auto;
+  margin-top:2px;
 }
 
 
@@ -429,14 +457,14 @@ text-align: left;
 margin:auto;
 margin-top:2px;
 margin-bottom: 2px;
-color: blakc
+color: black
 
 }
 .container-lbl{
-    text-align: left;
-    margin-left: 15px;
-    margin-bottom: 2px;
-    margin-top:10px;
+  text-align: left;
+  margin-left: 15px;
+  margin-bottom: 2px;
+  margin-top:10px;
 }
 
-  </style>
+</style>

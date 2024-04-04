@@ -44,11 +44,13 @@
           <!-- <img :src="`images/${worker.profileImage}`" class="profile" /> -->
           <img src="images/user.png" class="profile" />
           <p>{{ worker.id }}</p>
-          <p>{{ worker.username }}</p>
-          <p>{{ worker.description }}</p>
-          <!-- <div class="rating-container">
-            <img src="images/star.png" class="rating" /><span>{{ worker.averageRating }}</span>
-          </div> -->
+          <p>
+            <span style="font-weight: bold; font-size: larger;">{{ worker.username }} <br/><br/></span>
+          {{ worker.description }}</p>
+          <p style="text-align: left; margin-left: 10px;">
+            <img src="../../public/images/phone.png" width="25px" height="25px" style="margin-bottom: -7px;"/> {{ worker.phone }}<br/><br/>
+            <img src="../../public/images/email.png" width="30px" height="30px" style="margin-bottom: -10px; padding-right: 2px; margin-left: -2px;"/>{{ worker.email }}
+          </p>
           <div v-if="worker.averageRating === 5"> 
             <img src="images/5star.png" class="rating" />
           </div>
@@ -64,8 +66,10 @@
           <div v-if="worker.averageRating=== 1"> 
               <img src="images/1star.png" class="rating" />
           </div>
-          <p>Availability: {{ worker.availability }}</p>
-          <button type="button" class="button-profile">See more</button>
+          <div v-if="worker.averageRating=== 0"> 
+              Rating not defined
+          </div>
+          <br/><button type="button" class="button-profile">See more</button><br/>
         </div>
       </div>
     </div>
@@ -237,12 +241,10 @@ button {
   display: grid;
   grid-gap: 10px;
   margin-left: 10px;
-  grid-template-columns: repeat(3, minmax(250px, 1fr));
- 
+  grid-template-columns: repeat(3, minmax(250px, 1fr)); 
   text-align: center;
-
-
 }
+
 .card-worker{
   box-sizing: border-box;
   border-radius: 0.5rem;
@@ -251,12 +253,13 @@ button {
   text-align: center;
   transition: transform 0.3s ease;
   max-width:80%;
-  font-weight: bold;
   background-color:white;
   margin-left: 20px;
   border: 1px solid rgb(31, 142, 175);
   line-height: 1; 
   margin-bottom: 50px;
+  font-weight: normal;
+  font-size: 20px;
 }
 .profile{
   width: 100px;
@@ -266,7 +269,8 @@ button {
 }
 
 .rating{
-  max-width: 80px;
+  max-width: 170px;
+  height: 30px;
   margin: auto;
   margin-top: 15px;
   display:inline

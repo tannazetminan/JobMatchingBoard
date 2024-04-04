@@ -10,7 +10,7 @@
         <form @submit.prevent="login">
           <div>
             <label for="email">EMAIL:</label>
-            <input type="text" id="email" placeholder="Enter your email" v-model="userLogin.email" />
+            <input type="email" id="email" placeholder="Enter your email" v-model="userLogin.email" />
           </div>
           <div>
             <label for="password">PASSWORD:</label>
