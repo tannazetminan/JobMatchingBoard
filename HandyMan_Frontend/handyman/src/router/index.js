@@ -8,6 +8,7 @@ import UserDetails from "../components/UserDetails.vue"
 import DisplayJobs from "../components/DisplayJobs.vue";
 import UserMessages from "../components/UserMessages.vue";
 import WorkerMessages from "../components/WorkerMessages.vue"
+import SelectedWorker from "../components/SelectedWorker.vue"
 
 
 
@@ -62,6 +63,12 @@ const routes = [
     name: "WorkerMessages",
     component: WorkerMessages,
     path: "/workermessages"
+  },
+
+  {
+    name: "SelectedWorker",
+    component: SelectedWorker,
+    path: "/selectedworker/:workerId"
   }
  
 ];

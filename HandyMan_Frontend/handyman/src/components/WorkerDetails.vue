@@ -206,7 +206,11 @@ export default{
         FetchDataServices.updateWorker(id,updateData)
         .then(response=>{
             console.log(response)
+           
+            this.showForm=false;
+            this.retrieveUser(); 
         })
+        
         .catch(error => {
                     console.error(error);
         })

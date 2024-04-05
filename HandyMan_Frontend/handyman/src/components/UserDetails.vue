@@ -196,6 +196,7 @@
         .then(response=>{
           console.log(response)
           this.fetchJobs(id);
+          
         })
         .catch(error => {
             if (error.response) {

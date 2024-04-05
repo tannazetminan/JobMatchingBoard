@@ -41,7 +41,7 @@
         <div v-if="worker.averageRating=== 1"> 
             <img src="images/1star.png" class="rating" />
         </div>
-        <button type="submit" class="button-profile">See more</button>        
+        <button type="submit" class="button-profile" @click="sendData(worker.id)">See more</button>        
       </div>
     </div>
   </div>
@@ -58,9 +58,11 @@ export default{
 
     data() {
     return {
-      workers: []
+      workers: [],
+      id:1
       
     }
+    
   },
 
     methods:{
@@ -76,10 +78,19 @@ export default{
             console.log(error.response.status);
         }} );
       },
+
+      sendData(workerId){
+       
+          console.log("mira lo que tengo aca", workerId)
+          this.$router.push({name:"SelectedWorker", params: { workerId: workerId }})
+        
+      }
     },
     mounted() {
     this.fetchWorkers();
+    
   },
+ 
 }
 </script>
 
