@@ -43,7 +43,7 @@
         <div v-for="worker in topWorkers" :key="worker.id" class="card-worker">
           <!-- <img :src="`images/${worker.profileImage}`" class="profile" /> -->
           <img src="images/user.png" class="profile" />
-          <p>{{ worker.id }}</p>
+          <!-- <p>{{ worker.id }}</p> -->
           <p>
             <span style="font-weight: bold; font-size: larger;">{{ worker.username }} <br/><br/></span>
           {{ worker.description }}</p>

@@ -135,7 +135,7 @@ h1{
   flex-direction: column;
   text-align: center;
   transition: transform 0.3s ease;
-  max-width:95%;
+  max-width:98%;
   font-weight: bold;
   background-color:white;
   margin-left: 20px;

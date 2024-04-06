@@ -14,8 +14,16 @@
                 </div>
                 <form @submit.prevent="submitForm">
                     <div class="container-lbl">
-                       
-                        <input type="text" id="email" v-model="newJob.title" required="true" placeholder="Title"/>
+
+                      <select v-model="newJob.title" required placeholder="Title" >
+                        <option value="" disabled>Select category</option>
+                        <option value="Carpentry">Carpentry</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Masonry">Masonry</option>
+                        <option value="Gardening">Gardening</option>
+                        <option value="Electrical">Electrical</option>
+                      </select>
+                      <!-- <input type="text" id="email" v-model="newJob.title" required="true" placeholder="Title"/> -->
                         
                     </div>
                     <div class="container-lbl">

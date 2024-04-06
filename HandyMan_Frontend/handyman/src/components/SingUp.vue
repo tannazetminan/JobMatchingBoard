@@ -15,25 +15,25 @@
       <form v-if="userType === 'worker'" @submit.prevent="submitWorkerForm">
         <div class="names">
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" v-model="worker.firstname" placeholder="Enter your first name" />
+        <input type="text" id="firstName" v-model="worker.firstname" placeholder="Enter your first name"  required/>
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" v-model="worker.lastname" placeholder="Enter your last name" />
+        <input type="text" id="lastName" v-model="worker.lastname" placeholder="Enter your last name"  required/>
       </div>
       <div>
         <label for="email">Email:</label>
-        <input type="text" id="email" v-model="worker.email" placeholder="Enter your email" />
+        <input type="text" id="email" v-model="worker.email" placeholder="Enter your email"  required/>
       </div>
       <div>
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="worker.password" placeholder="Enter your password" />
+        <input type="password" id="password" v-model="worker.password" placeholder="Enter your password" pattern=".{6,}" required/>
       </div>
       <div>
         <label for="location">Location:</label>
-        <input type="text" id="location" v-model="worker.location" placeholder="Enter your location" />
+        <input type="text" id="location" v-model="worker.location" placeholder="Enter your location"  required />
       </div>
       <div>
         <label for="description">Description:</label>
-        <textarea v-model="worker.description" placeholder="Describe your profile"></textarea>
+        <textarea v-model="worker.description" placeholder="Describe your profile"  required></textarea>
       </div>
       <div class="form-group">
         <label for="category">Category:</label>
@@ -55,23 +55,23 @@
       <form v-else-if="userType === 'empresa'" @submit.prevent="submitUserForm">
       <div>
         <label for="firtsname">First Name:</label>
-        <input type="text" id="firstname"  v-model="user.firstname" placeholder="Enter your first name" />
+        <input type="text" id="firstname"  v-model="user.firstname" placeholder="Enter your first name"  required/>
       </div>
       <div>
         <label for="lastname">Last Name:</label>
-        <input type="text" id="lastname" v-model="user.lastname" placeholder="Enter your last name" />
+        <input type="text" id="lastname" v-model="user.lastname" placeholder="Enter your last name"  required/>
       </div>
       <div>
         <label for="email">Email:</label>
-        <input type="email" id="email" v-model="user.email" placeholder="Enter your email" />
+        <input type="email" id="email" v-model="user.email" placeholder="Enter your email"  required/>
       </div>
       <div>
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="user.password" placeholder="Enter your password" />
+        <input type="password" id="password" v-model="user.password" placeholder="Enter your password" pattern=".{6,}" required/>
       </div>
       <div>
         <label for="credit">Credit:</label>
-        <input type="text" id="credit" v-model="user.credit" placeholder="Enter your credit" />
+        <input type="text" id="credit" v-model="user.credit" placeholder="Enter your credit"  required/>
       </div>
       <div>
           <button type="submit">Sign up </button>
@@ -108,7 +108,8 @@ data() {
       password: "",
       location: "",
       description: "",
-      category: ""
+      category: "",
+      categoryList: []
     },
     user: {
       username: "",
@@ -116,7 +117,7 @@ data() {
       lastname: "",        
       password: "",
       email: "",
-      credit: 0 
+      credit: 1000.0 
     },
     successMessage: null,
     errorMessage: null

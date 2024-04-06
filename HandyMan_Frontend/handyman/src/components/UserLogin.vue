@@ -55,6 +55,7 @@ export default {
         .then((response) => {
           console.log(response);
           let userId = response.data.record.id
+          console.log("workerid: " , userId)
           //let user = response.data;
           let userType = response.data.type;
           localStorage.setItem('token', response.data.token);

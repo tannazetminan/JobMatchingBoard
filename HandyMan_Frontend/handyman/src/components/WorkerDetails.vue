@@ -128,7 +128,7 @@ export default{
             this.displayNewJobs = true;
             this.displayOldJobs = false;
 
-            const id = localStorage.getItem('sid')
+            const id = localStorage.getItem('workerId')
             console.log("SID:" + id)
             FetchDataServices.getWorkerById(id)
             .then(response =>{
@@ -172,7 +172,7 @@ export default{
             });
         },
         fetchRecentJobs(){
-            const id = localStorage.getItem('sid')
+            const id = localStorage.getItem('workerId')
             FetchDataServices.getjobByWorkerId(id)
             .then(response=>{
                 this.jobs = response.data
@@ -201,7 +201,7 @@ export default{
       },
       savePreferences(event){
         event.preventDefault()
-        const id = localStorage.getItem('sid')
+        const id = localStorage.getItem('workerId')
         
         if(this.worker_settings.location.trim() === '' ){
             this.worker_settings.location = this.worker.location

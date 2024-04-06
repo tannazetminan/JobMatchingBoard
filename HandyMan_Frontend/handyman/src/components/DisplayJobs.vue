@@ -24,10 +24,9 @@
           <!-- <img src="images/job.png"  class="profile" /> -->
           <p><span class="bold">Job Title: </span>{{ job.title }}</p>
           <p><span class="bold">Job Description: </span>{{ message }}{{ job.description }} {{ message2 }} </p>
-          <p><span class="bold">Client Id: </span>{{ getClientId(job.client) }}</p>
+          <p><span class="bold">Client Nme: </span>{{ getClientId(job.client.username) }}</p>
           <!-- <p>Client: {{ getClientId(job.client.username) }}</p> -->
-
-          <p><span class="bold">Worker Id:</span>{{ getWorkerId(job.worker) }}</p>
+          <!-- <p><span class="bold">Worker Id:</span>{{ getWorkerId(job.worker) }}</p> -->
           <!-- <p>Worker:{{ getWorkerId(job.worker.username) }}</p> -->
 
           <div class="rating-container">
@@ -84,9 +83,9 @@
           <div v-if="job.rating === 1"> 
               <img src="images/1star.png" class="rating" />
           </div>
-          <p></p>
+          <!-- <p></p>
           <p>Completed: {{ job.isCompleted }}</p>        
-          <button type="submit" class="button-profile">See more</button>    
+          <button type="submit" class="button-profile">See more</button>     -->
         </div>    
       </div>
       </div>
@@ -248,8 +247,8 @@
  }
  
  .rating{
-   max-width: 70px;
-   max-height: 18px;
+   max-width: 100px;
+   max-height: 21px;
    margin: auto;
    margin-top: 15px;
    display:inline;
