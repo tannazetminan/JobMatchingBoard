@@ -21,7 +21,7 @@ public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
 	@JsonManagedReference

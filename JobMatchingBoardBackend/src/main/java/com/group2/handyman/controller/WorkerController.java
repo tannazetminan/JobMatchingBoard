@@ -3,15 +3,12 @@ package com.group2.handyman.controller;
 import java.util.List;
 import java.util.Set;
 
-import com.group2.handyman.model.Job;
-import com.group2.handyman.model.WorkerUpdateDto;
+import com.group2.handyman.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.group2.handyman.model.Worker;
-import com.group2.handyman.model.WorkerRepository;
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/workers")
@@ -56,10 +53,28 @@ public class WorkerController {
     }
 
     // create a new worker
+//    @PostMapping
+//    public ResponseEntity<Worker> createWorker(@RequestBody Worker worker) {
+//        Worker savedWorker = workerRepository.save(worker);
+//        return new ResponseEntity<>(savedWorker, HttpStatus.CREATED);
+//    }
+
     @PostMapping
-    public ResponseEntity<Worker> createWorker(@RequestBody Worker worker) {
-        Worker savedWorker = workerRepository.save(worker);
-        return new ResponseEntity<>(savedWorker, HttpStatus.CREATED);
+    public ResponseEntity<Worker> createWorker(@RequestBody WorkerCreateDto workerDto) {
+        try {
+            Worker workerDetails = new Worker();
+            workerDetails.setUsername(workerDto.getUsername());
+            workerDetails.setPassword(workerDto.getPassword());
+            workerDetails.setEmail(workerDto.getEmail());
+            workerDetails.setDescription(workerDto.getDescription());
+            workerDetails.setLocation(workerDto.getLocation());
+
+            Worker createdWorker = workerRepository.save(workerDetails);
+            return new ResponseEntity<>(createdWorker, HttpStatus.CREATED);
+
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
  // give a new rate, based on the worker ID
