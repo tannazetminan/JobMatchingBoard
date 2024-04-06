@@ -113,7 +113,7 @@ public class HandymanApplication {
                 String jobTitle = skill;
                 String jobDescription = "A " + skill.toLowerCase() + " job requiring attention to detail.";
 
-                Job job = new Job(user, worker, isCompleted, isCompleted ? Math.floor(random.nextDouble() * 5 + 1) : null,
+                Job job = new Job(user, isCompleted ? worker : null, isCompleted, isCompleted ? Math.floor(random.nextDouble() * 5 + 1) : null,
                         jobTitle, jobDescription, Math.round((100.0 + random.nextDouble() * 400.0) * 100.0) / 100.0,
                         new HashSet<>());
                 job = jobRepository.save(job);
