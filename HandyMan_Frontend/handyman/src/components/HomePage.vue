@@ -69,7 +69,7 @@
           <div v-if="worker.averageRating=== 0"> 
               Rating not defined
           </div>
-          <br/><button type="button" class="button-profile">See more</button><br/>
+          <br/><button type="button" class="button-profile" @click="sendData(worker.id)">See more</button><br/>
         </div>
       </div>
     </div>
@@ -141,6 +141,14 @@ export default {
       this.fetchTopWorkers();
 
     }
+    ,
+    
+    sendData(workerId){
+       
+       console.log("mira lo que tengo aca", workerId)
+       this.$router.push({name:"SelectedWorker", params: { workerId: workerId }})
+     
+   }
 
   },
   mounted() {

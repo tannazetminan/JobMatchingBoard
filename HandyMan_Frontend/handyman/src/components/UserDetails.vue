@@ -14,19 +14,25 @@
                 </div>
                 <form @submit.prevent="submitForm">
                     <div class="container-lbl">
-                        <label for="title" >Title</label>
-                        <input type="text" id="email" v-model="newJob.title" />
+                       
+                        <input type="text" id="email" v-model="newJob.title" required="true" placeholder="Title"/>
+                        
                     </div>
                     <div class="container-lbl">
-                        <label for="description" >Description</label>
-                        <textarea v-model="newJob.description" ></textarea>
+                     
+                        <textarea v-model="newJob.description" required="true" placeholder="Description of the job"></textarea>
+                        
                     </div>
                     <div class="container-lbl">
-                        <label for="budget">Budget</label><br>
-                        <input type="text" id="budget" v-model="newJob.budget"   />
+                      
+                        <input type="text" id="budget" v-model="newJob.budget" required="true" placeholder ="Budget" />
+                        <span v-if="!isValidBudget" class="error-message">{{ errorMessage2 }}</span>
+                        
                     </div>
                     <div class=" container-btn">
                         <button type="submit" @click = "handleSubmit">Send</button>
+                        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+
                     </div>
                 </form>
             </div>          
@@ -35,12 +41,12 @@
 
       <div class="title-jobs">       
         
-        <button @click="markAsUnCompleted" class="fetchData">In progress</button>
+        <button @click="markAsUnCompleted" class="fetchData">Recent Jobs</button>
         <button @click="markAsCompleted" class="fetchData">Completed Jobs</button>
        
 
       </div>
-        
+      
       <div v-if="completedJobs.length">
         <div v-for="(job, index) in completedJobs" :key="index" class="job">
           <!-- <p class="desc-jobs1">Posted: {{ date }} </p> -->
@@ -65,7 +71,7 @@
       <div v-if="uncompletedJobs.length">
         <div v-for="(job, index) in uncompletedJobs" :key="index" class="job">
           <p class="desc-job" style="font-weight: bold;">{{ job.title }} </p>
-          <p class="desc-job">{{ message }}{{ job.description }} {{ message2 }} </p>
+          <p class="desc-job">{{ job.description }} </p>
           <p class="desc-job"><strong>Budget: </strong>        
             <span>{{ job.budget }}</span>
           </p>
@@ -124,108 +130,129 @@
         newJob: {
           title:"",
           description:"",
-          budget: 0
+          budget: ""
         }, 
+        isValidBudget: true,
+        errorMessage :"",
+        errorMessage2 :"",
         rating: "Rating not available",
         message: "We are seeking a professional for ",
         message2: ". It's required knowledge of construction materials and carpentry techniques. Ability to interpret blueprints and follow instructions. Teamwork skills and ability to meet deadlines"
       }
+
     },
 
     methods: {
-      retrieveUser() {       
-        let id = localStorage.getItem('userId')
-        let fullName ;
-        this.fullName = localStorage.getItem('fullName')
-        console.log(fullName);
-       
-        console.log("SID:" + id)
-        FetchDataServices.getUserById(id)
-          .then(response => {
-            this.user = response.data
-            console.log(this.user)
-            this.fetchJobs(id)
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      },
-      fetchJobs(id) {      
-        FetchDataServices.getJobByUserId(id)
-          .then(response => {
-            this.jobs = response.data;
-            this.markAsUnCompleted()
-          })
-          .catch(error => {
-            if (error.response) {
-              console.log(error.response.data);
-              console.log(error.response.status);
-            }
-          });
-      },
-      markAsCompleted() {
-        this.completedJobs = this.jobs.filter(job => job.isCompleted);
-        this.uncompletedJobs = []          
-      },
-      markAsUnCompleted() {
-        this.uncompletedJobs = this.jobs.filter(job => !job.isCompleted);
+        retrieveUser() {       
+          let id = localStorage.getItem('userId')
+          let fullName ;
+          this.fullName = localStorage.getItem('fullName')
+          console.log(fullName);
         
-        console.log(this.uncompletedJobs)
-        this.completedJobs = []
-        
-      },
-      checklogin() {
-        console.log("")
-        localStorage.setItem('newLogin', false);
-        this.newLogin = localStorage.getItem('newLogin');
-        console.log(this.newLogin)
-        window.location.reload();
-      } ,
-
-      handleSubmit(){
-
-        let id = localStorage.getItem('userId')
-        let newJobPost = {
-        
-            title: this.newJob.title,
-            description: this.newJob.description,
-            budget: this.newJob.budget
-        }
-    
-        FetchDataServices.postNewJob(id, newJobPost)
-        .then(response=>{
-          console.log(response)
-          this.fetchJobs(id);
+          console.log("SID:" + id)
+          FetchDataServices.getUserById(id)
+            .then(response => {
+              this.user = response.data
+              console.log(this.user)
+              this.fetchJobs(id)
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        },
+        fetchJobs(id) {      
+          FetchDataServices.getJobByUserId(id)
+            .then(response => {
+              this.jobs = response.data;
+              this.markAsUnCompleted()
+            })
+            .catch(error => {
+              if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+              }
+            });
+        },
+        markAsCompleted() {
+          this.completedJobs = this.jobs.filter(job => job.isCompleted);
+          this.uncompletedJobs = []          
+        },
+        markAsUnCompleted() {
+          this.uncompletedJobs = this.jobs.filter(job => !job.isCompleted);
           
-        })
-        .catch(error => {
-            if (error.response) {
-              console.log(error.response.data);
-              console.log(error.response.status);
-            }
-          });      
-    },
-    setRating(jobId, rating) {
-          FetchDataServices.setJobRating(jobId, rating)
-        .then(response => {
-          console.log("Job rating updated:", jobId, "Rating:", rating);
-          console.log(response)
-        })
-        .catch(error => {
-          console.error("Error updating job rating:", error);
-        });
-        }
+          console.log(this.uncompletedJobs)
+          this.completedJobs = []
+          
+        },
+        checklogin() {
+          console.log("")
+          localStorage.setItem('newLogin', false);
+          this.newLogin = localStorage.getItem('newLogin');
+          console.log(this.newLogin)
+          window.location.reload();
+        } ,
+
+        handleSubmit(){
+          let id = localStorage.getItem('userId')
+          //input validation 
+          if (this.newJob.title.trim() === '' || this.newJob.description.trim() === '' || this.newJob.budget.trim() === '') {
+            this.errorMessage = "All fields are required";
+            return; 
+           }
+
+    
+          if (isNaN(this.newJob.budget)) {
+              this.isValidBudget = false;
+              this.errorMessage2 = "Budget must be a number";
+              return; 
+          }
+          let newJobPost = {
+              title: this.newJob.title,
+              description: this.newJob.description,
+              budget: this.newJob.budget
+          };
       
-    },
-    mounted() {
-      this.retrieveUser(); 
-      let newLogin = localStorage.getItem('newLogin'); 
-      console.log("workerdetails newlogin:" + newLogin);   
-      if (newLogin === 'true') { // Check if newLogin is true
-        localStorage.setItem('newLogin', false);
-        this.checklogin();
-      }  
-    }, 
+          FetchDataServices.postNewJob(id, newJobPost)
+          .then(response=>{
+            console.log(response)
+            this.fetchJobs(id);
+            this.newJob.title="",
+            this.newJob.description="",
+            this.newJob.budget=""
+           
+          this.errorMessage = "";
+            
+          })
+          .catch(error => {
+              if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+              }
+            });
+
+          }, 
+        
+      setRating(jobId, rating) {
+            FetchDataServices.setJobRating(jobId, rating)
+          .then(response => {
+            console.log("Job rating updated:", jobId, "Rating:", rating);
+            console.log(response)
+          })
+          .catch(error => {
+            console.error("Error updating job rating:", error);
+          });
+          }
+        
+      },
+      mounted() {
+        this.retrieveUser(); 
+        let newLogin = localStorage.getItem('newLogin'); 
+        console.log("workerdetails newlogin:" + newLogin);   
+        if (newLogin === 'true') { // Check if newLogin is true
+          localStorage.setItem('newLogin', false);
+          this.checklogin();
+        }  
+      }, 
    
   }
 </script>
@@ -466,6 +493,10 @@ color: black
   margin-left: 15px;
   margin-bottom: 2px;
   margin-top:10px;
+}
+.error-message{
+  color:white;
+  font-size: 16px;
 }
 
 </style>

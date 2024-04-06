@@ -18,13 +18,15 @@
                 </div>
                 <div  v-if="showForm" class=" container form">
                     <form >
-                        <label for="location">Location:</label>
-                        <input type="text" id="location" v-model="worker_settings.location">
-                        <label for="phone">Phone:</label>
-                        <input type="text" id="phone" v-model="worker_settings.phone">
-                        <label for="email">Email:</label>
-                        <input type="text" id="email" v-model="worker_settings.email">
+                        
+                        <input type="text" id="location" v-model="worker_settings.location" placeholder="Location">
+                       
+                        <input type="text" id="phone" v-model="worker_settings.phone" placeholder="Phone">
+                        
+                        <input type="text" id="email" v-model="worker_settings.email" placeholder="Email">
+                        
                         <button type="submit" @click="savePreferences">Save</button>
+                        <button type="submit" @click="hideForm">Cancel</button>
                     </form>
                 </div>
                 <div v-else>
@@ -108,6 +110,8 @@ export default{
                 phone: "",
                 email: ""
             },
+            errorMessage:"",
+            errorMessage2:"", 
             rating: "Rating no available", 
             status: "In progess",
             message: "We are seeking a professional  for ",
@@ -129,8 +133,8 @@ export default{
             FetchDataServices.getWorkerById(id)
             .then(response =>{
                 this.worker = response.data
-                console.log("skills")
-                console.log(this.worker.skills)
+                console.log("username")
+                console.log(this.worker.username)
                 this.fetchJobs()
                
             })
@@ -173,8 +177,7 @@ export default{
             .then(response=>{
                 this.jobs = response.data
                 this.displayNewJobs=false
-                this.displayOldJobs =true
-                
+                this.displayOldJobs =true   
                 console.log(this.jobs)
                
             })
@@ -193,11 +196,28 @@ export default{
       editPreferences(){
         this.showForm=true;
       },
+      hideform(){
+         this.showForm=false;
+      },
       savePreferences(event){
         event.preventDefault()
         const id = localStorage.getItem('sid')
-        console.log(id)
+        
+        if(this.worker_settings.location.trim() === '' ){
+            this.worker_settings.location = this.worker.location
+        }
+        if(this.worker_settings.phone.trim() === '' ){
+            this.worker_settings.phone = this.worker.phone
+        }
+        if(this.worker_settings.email.trim() === '' ){
+            this.worker_settings.email = this.worker.email
+        }
+
+       
+    
         let updateData = {
+            username:this.worker.username,
+            description:this.worker.description,
             location:this. worker_settings.location,
             phone: this.worker_settings.phone,
             email: this.worker_settings.email
@@ -205,17 +225,22 @@ export default{
         console.log(updateData)
         FetchDataServices.updateWorker(id,updateData)
         .then(response=>{
-            console.log(response)
-           
+            console.log(response.data)
             this.showForm=false;
-            this.retrieveUser(); 
+            this.worker.location = updateData.location;
+            this.worker.phone = updateData.phone;
+            this.worker.email = updateData.email;
+            this.worker_settings.location="";
+            this.worker_settings.phone="";
+            this.worker_settings.email="";
         })
         
         .catch(error => {
                     console.error(error);
         })
 
-      }
+      },
+     
 
     },
     mounted(){
@@ -226,7 +251,7 @@ export default{
         localStorage.setItem('newLogin', false);
         this.checklogin();
       }  
-    }
+    },
 
 
 
@@ -256,7 +281,6 @@ input{
     height: 30px;
     border-radius: 0.8rem;
     margin-left: 25px;
-    /*background-image: url('../images/search.png');*/
     background-size: 20px; 
     background-repeat: no-repeat;
     margin-top: 20px;
@@ -318,6 +342,7 @@ input{
     padding: 5px;
     font-size: 18px;
     margin-top: 15px;
+    color: black;
 }
 .data-description{
     margin-bottom: 15px;
