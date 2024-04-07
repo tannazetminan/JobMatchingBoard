@@ -13,11 +13,11 @@
               </div>
               <form @submit.prevent="submitForm">
                   <div class="container-lbl">
-                      <label for="description">To: </label>
+                      <label for="description">To </label> <br/>
                       <input type="text" id="email" v-model="recipientId" value="id number"/>
                   </div>
                   <div class="container-lbl">
-                      <label for="description" >Text:</label>
+                      <label for="description" >Text </label>
                       <textarea v-model="messageContent"></textarea>
                   </div>
                   <div class=" container-btn">
@@ -66,55 +66,39 @@ export default {
         };
     },
 
-    computed: {
-    // Group messages by sender and receiver pairs
-    groupedMessages() {
-      const grouped = {};
-      this.messages.forEach(message => {
-        const key = message.senderId + '-' + message.receiverId;
-        if (!grouped[key]) {
-          grouped[key] = [];
-        }
-        grouped[key].push(message);
-      });
-      return Object.values(grouped);
-    }
-  },
     methods: {
-        fetchMessages() {
-            let userType = localStorage.getItem('userType');
-            let id;
-            let sender;
-            let fullName;
-            this.fullName = localStorage.getItem('fullName');
-            console.log(fullName);
-            console.log(sender);
-            if (userType == "user") {
-              id = localStorage.getItem('userId');
-              FetchDataService.getAllUserMessages(id)
+      fetchMessages() {
+        let userType = localStorage.getItem('userType');
+        let id;
+        let sender;
+        let fullName;
+        this.fullName = localStorage.getItem('fullName');
+        console.log(fullName);
+        console.log(sender);
+        if (userType == "user") {
+            id = localStorage.getItem('userId');
+            FetchDataService.getAllUserMessages(id)
                 .then(response => {
-                    this.messages = response.data;
-                    
-
+                    this.messages = response.data.reverse(); // Reverse the messages array
                 })
                 .catch(error => {
                     console.error("Error fetching messages:", error);
                 });
-            } else if (userType == "worker") {
-              id = localStorage.getItem('workerId');
-              FetchDataService.getAllWorkerMessages(id)
+        } else if (userType == "worker") {
+            id = localStorage.getItem('workerId');
+            FetchDataService.getAllWorkerMessages(id)
                 .then(response => {
-                    this.messages = response.data;
+                    this.messages = response.data.reverse(); // Reverse the messages array
                 })
                 .catch(error => {
                     console.error("Error fetching messages:", error);
                 });
-            }          
-        },
-        formatDate(timestamp) {
+        }
+      },
+      formatDate(timestamp) {
             return new Date(timestamp).toLocaleString();
-        },
-        submitForm() {
+      },
+      submitForm() {
           let userType = localStorage.getItem('userType');
           const recipientId = parseInt(this.recipientId);
           const content = this.messageContent;
@@ -136,14 +120,12 @@ export default {
           FetchDataService.sendMessage(messageData)
               .then(response => {
                   console.log("Message sent:", response.data);
-                  // Optionally, you can update the messages list after sending the message
                   this.fetchMessages();
               })
               .catch(error => {
                   console.error("Error sending message:", error);
               });
       }
-
     },
 
     mounted() {
