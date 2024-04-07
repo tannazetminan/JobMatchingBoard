@@ -21,14 +21,9 @@
     <div class="cards">
       <div v-for="job in uncompletedJobs" :key="job.id" class="card-worker">
         <div v-if="job.isCompleted === false" class="completedJob" style="font-weight: normal;">            
-          <!-- <img src="images/job.png"  class="profile" /> -->
-          <p><span class="bold">Job Title: </span>{{ job.title }}</p>
+          <p><span class="bold">Job Category: </span>{{ job.title }}</p>
           <p><span class="bold">Job Description: </span>{{ message }}{{ job.description }} {{ message2 }} </p>
           <p><span class="bold">Client Nme: </span>{{ getClientId(job.client.username) }}</p>
-          <!-- <p>Client: {{ getClientId(job.client.username) }}</p> -->
-          <!-- <p><span class="bold">Worker Id:</span>{{ getWorkerId(job.worker) }}</p> -->
-          <!-- <p>Worker:{{ getWorkerId(job.worker.username) }}</p> -->
-
           <div class="rating-container">
               <img src="images/budget.png" class="rating" /><span class="bold">Budget: </span> {{ job.budget }}
           </div>
@@ -58,9 +53,9 @@
       <div class="unCompletedJob">
         <img src="images/job.png"  class="profile" />
         <p>{{ job.id }}</p>
-        <p><span class="bold">Job Title: </span>{{ job.title }}</p>
-        <p><span class="bold">Client Id: </span>{{ getClientId(job.client) }}</p>
-        <p><span class="bold">Worker Id:</span>{{ getWorkerId(job.worker) }}</p>
+        <p><span class="bold">Job Category: </span>{{ job.title }}</p>
+        <p><span class="bold">Client: </span>{{ getClientId(job.client.username) }}</p>
+        <p><span class="bold">Worker:</span>{{ getWorkerId(job.worker.username) }}</p>
         <div class="middle-div">
           <div class="rating-container">
               <img src="images/budget.png" class="rating" /><span class="bold">Budget: </span> {{ job.budget }}
@@ -83,9 +78,6 @@
           <div v-if="job.rating === 1"> 
               <img src="images/1star.png" class="rating" />
           </div>
-          <!-- <p></p>
-          <p>Completed: {{ job.isCompleted }}</p>        
-          <button type="submit" class="button-profile">See more</button>     -->
         </div>    
       </div>
       </div>
