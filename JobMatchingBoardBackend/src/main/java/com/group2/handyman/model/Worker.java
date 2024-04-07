@@ -41,6 +41,7 @@ public class Worker{
 
 	@ElementCollection
 	private List<String> previousTransactions = new ArrayList<>();
+
 	@JsonIgnoreProperties("client")
 	@OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonBackReference

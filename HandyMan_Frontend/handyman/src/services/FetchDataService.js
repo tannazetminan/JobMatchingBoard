@@ -1,10 +1,11 @@
 import http from "../http-common.js";
 
 class FetchDataService {
+
     getAllWorkers() {
         return http.get("/workers");
     }
-    //create user/worker
+
     createWorker(workerData) {
         return http.post("/workers", workerData);
     }
@@ -12,25 +13,22 @@ class FetchDataService {
     createUser(userData) {
         return http.post("/users", userData); 
     }
-    //endpoints  for worker 
     getWorkerById(sid){
         return http.get(`/workers/${sid}`)
-
     }
+
     updateWorker(sid, data){
         return  http.put(`/workers/${sid}`, data)
     }
-   
-    //endpoints fo user
-   
+    
     getUserById(sid){
         return http.get(`/users/${sid}`)
     }
     
-    //endpoints for jobs
     getAllJobs() {
         return http.get("/jobs"); 
     }
+
     getjobBySkill(skill){
         return http.get(`/jobs/skills/${skill}`)
     }
@@ -46,6 +44,7 @@ class FetchDataService {
     setJobRating(jobId, rating) {
         return http.post(`/jobs/${jobId}/rating`, {rating});
     }
+
     getJobByUserId(userId){
         return http.get(`/jobs/user/${userId}`);
     }
@@ -64,7 +63,7 @@ class FetchDataService {
     }
 
     getAllWorkerMessages(workerId) {
-    return http.get(`/messages/worker/${workerId}`);
+        return http.get(`/messages/worker/${workerId}/all`);
     }
 
     sendMessage(messageData) {
@@ -73,11 +72,7 @@ class FetchDataService {
 
     searchWorkers(query) {
         return http.get(`/workers/search`, { params: { q: query } });
-    }
-
- 
-
-    
+    }    
     
 }
 

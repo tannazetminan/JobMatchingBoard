@@ -34,6 +34,10 @@ public class Skill {
 
 	public Skill() {}
 
+	public Skill(String name) {
+		this.name = name;
+	}
+
 	public Skill(String name, Worker worker) {
 		this.name = name;
 		this.worker = worker;

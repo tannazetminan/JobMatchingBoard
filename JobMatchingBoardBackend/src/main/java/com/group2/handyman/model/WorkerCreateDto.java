@@ -1,11 +1,25 @@
 package com.group2.handyman.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class WorkerCreateDto {
     private String username;
     private String password;
     private String email;
     private String description;
     private String location;
+    private List<String> skillNames = new ArrayList<>();
+
+    public List<String> getSkillNames() {
+        return skillNames;
+    }
+
+    public void setSkillNames(List<String> skillNames) {
+        this.skillNames = skillNames;
+    }
 
     public String getUsername() {
         return username;

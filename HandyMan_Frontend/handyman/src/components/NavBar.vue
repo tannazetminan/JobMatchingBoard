@@ -23,7 +23,7 @@
             <router-link to="/workerdetails" class="nav-link">Profile</router-link>
           </li>
           <li v-if="isLoggedIn">
-            <router-link to="/usermessages" class="nav-link">Messages</router-link>
+            <router-link to="/messages" class="nav-link">Messages</router-link>
           </li>
           <li v-if="!isLoggedIn">
             <router-link to="/login" class="nav-link">Login</router-link>
