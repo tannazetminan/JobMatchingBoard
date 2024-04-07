@@ -1,12 +1,16 @@
 package com.group2.handyman.controller;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.group2.handyman.configuration.SecurityConfig;
 import com.group2.handyman.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:8081")
@@ -16,6 +20,9 @@ public class WorkerController {
 
     @Autowired
     private WorkerRepository workerRepository;
+
+    @Autowired
+    private SkillRepository skillRepository;
     
     // get all workers
     @GetMapping
@@ -53,28 +60,27 @@ public class WorkerController {
     }
 
     // create a new worker
-//    @PostMapping
-//    public ResponseEntity<Worker> createWorker(@RequestBody Worker worker) {
-//        Worker savedWorker = workerRepository.save(worker);
-//        return new ResponseEntity<>(savedWorker, HttpStatus.CREATED);
-//    }
-
     @PostMapping
     public ResponseEntity<Worker> createWorker(@RequestBody WorkerCreateDto workerDto) {
-        try {
-            Worker workerDetails = new Worker();
-            workerDetails.setUsername(workerDto.getUsername());
-            workerDetails.setPassword(workerDto.getPassword());
-            workerDetails.setEmail(workerDto.getEmail());
-            workerDetails.setDescription(workerDto.getDescription());
-            workerDetails.setLocation(workerDto.getLocation());
+        Worker worker = new Worker();
+        worker.setUsername(workerDto.getUsername());
+        worker.setPassword(workerDto.getPassword());
+        worker.setEmail(workerDto.getEmail());
+        worker.setDescription(workerDto.getDescription());
+        worker.setLocation(workerDto.getLocation());
 
-            Worker createdWorker = workerRepository.save(workerDetails);
-            return new ResponseEntity<>(createdWorker, HttpStatus.CREATED);
+        Worker savedWorker = workerRepository.save(worker);
 
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        // Create and save skills
+        for (String skillName : workerDto.getSkillNames()) {
+            Skill skill = new Skill(skillName, savedWorker, null);
+            Skill savedSkill = skillRepository.save(skill);
+            savedWorker.getSkills().add(savedSkill);
         }
+
+
+        workerRepository.save(savedWorker);
+        return new ResponseEntity<>(savedWorker, HttpStatus.CREATED);
     }
 
  // give a new rate, based on the worker ID

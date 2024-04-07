@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import UserLogin from "../components/UserLogin.vue";
 import HomePage from "../components/HomePage.vue";
-import SingUp from "../components/SingUp.vue";
+import SingUp from "../components/SignUp.vue";
 import DisplayWorkers from "../components/DisplayWorkers.vue";
 import WorkerDetails from "../components/WorkerDetails.vue";
 import UserDetails from "../components/UserDetails.vue"

@@ -1,7 +1,7 @@
 <template>
   <div class = "container-singup">
       <img src="images/workers2.jpg" class="img-workers" />
-      
+
       <div class="container-form">
           <div class ="container-grettings">
           <h2 class ="grettings">Wellcome to Handyman</h2>
@@ -11,7 +11,7 @@
           <button @click="userType = 'worker'" class="type-user ">I am worker</button>
           <button @click="userType = 'empresa'" class="type-user2">I'm hiring </button>
       </div>
-      
+
       <form v-if="userType === 'worker'" @submit.prevent="submitWorkerForm">
         <div class="names">
         <label for="firstName">First Name:</label>
@@ -35,21 +35,21 @@
         <label for="description">Description:</label>
         <textarea v-model="worker.description" placeholder="Describe your profile"  required></textarea>
       </div>
-      <div class="form-group">
-        <label for="category">Category:</label>
-        <select id="category" v-model="worker.category">
-          <option value="" disabled>Select category</option>
-          <option value="carpentry">Carpentry</option>
-          <option value="plumbing">Plumbing</option>
-          <option value="electrical">Electrical</option>
-          <option value="masonry">Masonry</option>
-          <option value="gardening">Gardening</option>
-        </select>
-      </div>
+        <div class="form-group">
+          <label for="skill">Skill:</label>
+          <select id="skill" v-model="tempSkill">
+            <option value="" disabled>Select skill</option>
+            <option value="Carpentry">Carpentry</option>
+            <option value="Plumbing">Plumbing</option>
+            <option value="Electrical">Electrical</option>
+            <option value="Masonry">Masonry</option>
+            <option value="Gardening">Gardening</option>
+          </select>
+        </div>
       <div>
         <button type="submit">Sign up</button>
       </div>
-    
+
     </form>
 
       <form v-else-if="userType === 'empresa'" @submit.prevent="submitUserForm">
@@ -100,6 +100,7 @@ name: "SignUp",
 data() {
   return {
     userType: null,
+    tempSkill : "",
     worker: {
       username: "",
       firstname: "",
@@ -108,35 +109,42 @@ data() {
       password: "",
       location: "",
       description: "",
-      category: "",
-      categoryList: []
+      skills: []
     },
     user: {
       username: "",
       firstname: "",
-      lastname: "",        
+      lastname: "",
       password: "",
       email: "",
-      credit: 1000.0 
+      credit: 1000.0
     },
     successMessage: null,
     errorMessage: null
   };
 },
 methods: {
+  addSkill() {
+    if (this.tempSkill && !this.worker.skills.includes(this.tempSkill)) {
+      this.worker.skills.push(this.tempSkill);
+    }
+    this.tempSkill = "";
+  },
+
   async submitWorkerForm() {
     // Combine firstName and lastName to create the username
     // this.worker.username = "worker_" + capitalizeFirstLetter(this.worker.firstname) + capitalizeFirstLetter(this.worker.lastname);
     this.worker.username = capitalizeFirstLetter(this.worker.firstname) + "." + capitalizeFirstLetter(this.worker.lastname);
 
-
+    this.addSkill();
     // Hash the password using bcrypt
     const hashedPassword = await bcrypt.hash(this.worker.password, 10);
 
     // Set the hashed password to the worker object
     this.worker.password = hashedPassword;
 
-    FetchDataService.createWorker(this.worker)
+    FetchDataService.createWorker({...this.worker,
+      skillNames: this.worker.skills})
       .then(response => {
         console.log("Worker created successfully:", response.data);
         this.successMessage = "Worker created successfully!";
@@ -161,7 +169,7 @@ methods: {
 
     // Set the hashed password to the user object
     this.user.password = hashedPassword;
-    
+
     FetchDataService.createUser(this.user)
       .then(response => {
         console.log("User created successfully:", response.data);
