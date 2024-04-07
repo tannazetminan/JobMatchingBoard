@@ -52,22 +52,27 @@
             <div v-if="jobs.length" >
                     <div v-for="(job, index) in jobs" :key="index" class="job">
                         <div v-if="jobs.length && displayNewJobs">
-                            <p class="desc-jobs1">Posted: {{ date }} </p>
-                            <p class="desc-job"> {{ message }}{{ job.description }} {{ message2 }}</p>
-                            <p class="desc-job"><strong>Budged:</strong> ${{ job.budget }}</p>
-                            <div class="container-apply-btn">
-                                <button class="apply-btn">Apply Now</button>
+                                
+                                    <p class="desc-jobs1">Posted: {{ date }} </p>
+                                    <p class="desc-job"> {{ message }}{{ job.description }} {{ message2 }}</p>
+                                    <p class="desc-job"><strong>Budged:</strong> ${{ job.budget }}</p>
+                                    <p class="desc-job"><strong>Job Id:</strong> {{ job.id }}</p>
+                                    <div class="container-apply-btn">
+                                    <button class="apply-btn" @click="applyJob(job.id)">Apply Now</button>
+                               
                             </div>
-                            
                         </div>
                         <div v-else-if="jobs.length && displayOldJobs">
                             <p class="desc-job"> {{ message }}{{ job.description }} {{ message2 }} </p>
                             <p class="desc-job"><strong>Rate: </strong>
+                              
                                 <span v-if="job.rating !== null">{{ job.rating }}</span>
+                                
                                 <span v-else>{{ rating }}</span>
                             </p>
+                            <p class="desc-job"><strong>Job Id:</strong> {{ job.id }}</p>
                             <p class="desc-job"><strong>Status: </strong>
-                                <span>{{ job.is_completed ? 'Completed' : 'In progress' }}</span>
+                                <span>{{ job.isCompleted ? 'Completed' : 'In progress' }}</span>
                             </p>
                            
                         </div>
@@ -110,6 +115,7 @@ export default{
                 phone: "",
                 email: ""
             },
+            applied: false,
             errorMessage:"",
             errorMessage2:"", 
             rating: "Rating no available", 
@@ -156,14 +162,12 @@ export default{
             console.log(todayDate)
 
             const newDate = todayDate.toLocaleDateString();
-           
             FetchDataServices.getjobBySkill(skill.name)
                 .then(response => {
-                    this.jobs = response.data;
+                    this.jobs = response.data.filter(job => job.worker === null);
                     this.date= newDate;
                     this.displayOldJobs=false
                     this.displayNewJobs=true
-                    
                  
                 })
                 .catch(error => {
@@ -178,7 +182,6 @@ export default{
                 this.jobs = response.data
                 this.displayNewJobs=false
                 this.displayOldJobs =true   
-                console.log(this.jobs)
                
             })
             .catch(error => {
@@ -240,6 +243,24 @@ export default{
         })
 
       },
+      applyJob(idJob){
+        
+        let updatedJob={
+            workerId: this.worker.id
+        }
+        FetchDataServices.updateJobs(idJob, updatedJob)
+        .then(response=>{
+            console.log(response)
+            
+            
+        })
+        .catch(error => {
+                    console.error(error);
+        })
+      },
+      
+
+
      
 
     },

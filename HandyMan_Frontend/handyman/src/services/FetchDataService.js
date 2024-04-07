@@ -54,6 +54,10 @@ class FetchDataService {
         return http.post(`/jobs/create?clientId=${clientId}`, data)
     }
 
+    updateJobs(sid, data){
+        return http.put(`/jobs/${sid}`, data)
+    }
+
     //endpoints for message 
     getAllUserMessages(userId) {
         return http.get(`/messages/user/${userId}/all`);
