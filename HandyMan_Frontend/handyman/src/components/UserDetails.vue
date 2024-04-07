@@ -98,7 +98,7 @@
           
 
           <p class="desc-job"> 
-            <button @click="markAsCompleted(job.id)" v-if="job.worker !=null" class="button-profile">Mark as Completed</button>    
+            <button @click="markCompleted(job.id)" v-if="job.worker !=null" class="button-profile">Mark as Completed</button>    
           </p>    
         </div>
       </div>
@@ -191,6 +191,17 @@
           console.log(this.uncompletedJobs)
           this.completedJobs = []
           
+        },
+        markCompleted(jobId) {
+          FetchDataServices.completeJob(jobId)
+            .then(response => {
+              console.log("Job marked as completed:", jobId);
+              console.log(response);
+              this.fetchJobs(localStorage.getItem('userId'));
+            })
+            .catch(error => {
+              console.error("Error marking job as completed:", error);
+            });
         },
         checklogin() {
           console.log("")

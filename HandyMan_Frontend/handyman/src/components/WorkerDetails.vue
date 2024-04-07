@@ -55,6 +55,7 @@
                                 
                                     <p class="desc-jobs1">Posted: {{ date }} </p>
                                     <p class="desc-job"> {{ message }}{{ job.description }} {{ message2 }}</p>
+                                    <p class="desc-job"><strong>Client:</strong> {{ job.client.username }}</p>
                                     <p class="desc-job"><strong>Budged:</strong> ${{ job.budget }}</p>
                                     <p class="desc-job"><strong>Job Id:</strong> {{ job.id }}</p>
                                     <div class="container-apply-btn">
@@ -64,12 +65,11 @@
                         </div>
                         <div v-else-if="jobs.length && displayOldJobs">
                             <p class="desc-job"> {{ message }}{{ job.description }} {{ message2 }} </p>
-                            <p class="desc-job"><strong>Rate: </strong>
-                              
-                                <span v-if="job.rating !== null">{{ job.rating }}</span>
-                                
+                            <p class="desc-job"><strong>Rate: </strong>                            
+                                <span v-if="job.rating !== null">{{ job.rating }}</span>                                
                                 <span v-else>{{ rating }}</span>
                             </p>
+                            <p class="desc-job"><strong>Client:</strong> {{ job.client.username }}</p>
                             <p class="desc-job"><strong>Job Id:</strong> {{ job.id }}</p>
                             <p class="desc-job"><strong>Status: </strong>
                                 <span>{{ job.isCompleted ? 'Completed' : 'In progress' }}</span>
@@ -214,9 +214,7 @@ export default{
         }
         if(this.worker_settings.email.trim() === '' ){
             this.worker_settings.email = this.worker.email
-        }
-
-       
+        }       
     
         let updateData = {
             username:this.worker.username,
@@ -236,33 +234,25 @@ export default{
             this.worker_settings.location="";
             this.worker_settings.phone="";
             this.worker_settings.email="";
-        })
-        
+        })        
         .catch(error => {
                     console.error(error);
         })
-
       },
-      applyJob(idJob){
-        
+      applyJob(idJob){        
         let updatedJob={
             workerId: this.worker.id
         }
         FetchDataServices.updateJobs(idJob, updatedJob)
         .then(response=>{
-            console.log(response)
-            
-            
+            this.fetchJobs(); 
+            this.fetchRecentJobs(); 
+            console.log(response) 
         })
         .catch(error => {
                     console.error(error);
         })
-      },
-      
-
-
-     
-
+      },    
     },
     mounted(){
       this.retrieveWorker()          
